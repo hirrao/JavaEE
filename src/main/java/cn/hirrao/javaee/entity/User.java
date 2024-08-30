@@ -1,5 +1,6 @@
 package cn.hirrao.javaee.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,8 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 public class User {
-    private long uid;
+    @TableId(value = "uid")
+    private Long uid;
     private String userName;
     @JsonIgnore
     private String phoneNumber;
@@ -19,8 +21,4 @@ public class User {
     private String sex;
     private LocalDate birthday;
     private int permission;
-
-    public User() {
-
-    }
 }

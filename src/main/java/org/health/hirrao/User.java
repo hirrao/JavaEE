@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.HashMap;
 
 @Getter
 @Setter
@@ -15,9 +16,21 @@ public class User {
     private String phoneNumber;
     private String userPassword;
     private String sex;
-    private Date birthday;
+    private LocalDate birthday;
     private int permission;
+
     public User() {
 
+    }
+
+    public HashMap<String, Object> toMap() {
+        var map = new HashMap<String, Object>();
+        map.put("id", id);
+        map.put("userName", userName);
+        map.put("phoneNumber", phoneNumber);
+        map.put("sex", sex);
+        map.put("birthday", birthday);
+        map.put("permission", permission);
+        return map;
     }
 }

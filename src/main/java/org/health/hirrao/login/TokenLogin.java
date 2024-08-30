@@ -20,6 +20,7 @@ public class TokenLogin {
         }
         try {
             var id = parseToken(token);
+            //TODO 根据ID查询用户信息, 之后使用toMap返回
             map.put("status", "success");
             map.put("id", id);
         }

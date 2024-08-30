@@ -18,6 +18,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUid(long uid) {
+        return userMapper.findByUid(uid);
+    }
+
+    @Override
     public void register(long uid,String userName, String userPassword) {
         //加密
         String p1 = DigestUtils.md5DigestAsHex(userPassword.getBytes());

@@ -19,6 +19,6 @@ public class User {
     private String phoneNumber;
     private String userPassword;
     private String sex;
-    private LocalDate birthday;
+    private String birthday;
     private int permission;
 }

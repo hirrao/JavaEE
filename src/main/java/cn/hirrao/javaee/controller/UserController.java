@@ -4,11 +4,11 @@ package cn.hirrao.javaee.controller;
 import cn.hirrao.javaee.entity.Result;
 import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.service.UserService;
+import cn.hirrao.javaee.utils.Jwt;
 import cn.hirrao.javaee.utils.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
@@ -19,7 +19,7 @@ import static cn.hirrao.javaee.utils.Jwt.createToken;
 public class UserController {
 
     final SnowFlake snowFlake = new SnowFlake(1, 1);
-    @Autowired(required = false)
+    @Autowired
     private UserService userService;
 
     @PostMapping("/register")
@@ -60,5 +60,13 @@ public class UserController {
                 return Result.error("密码错误");
             }
         }
+    }
+
+    @GetMapping("/userInfo")
+    public Result userInfo(@RequestHeader(name = "Authorization") String token) {
+        //根据用户的token获取用户信息
+        String uid = Jwt.parseToken(token);
+        User user = userService.findByUid(Long.parseLong(uid));
+        return Result.success(user);
     }
 }

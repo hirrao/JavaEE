@@ -79,11 +79,6 @@
             <artifactId>druid-spring-boot-3-starter</artifactId>
             <version>1.2.18</version>
         </dependency>
-        <dependency>
-            <groupId>com.auth0</groupId>
-            <artifactId>java-jwt</artifactId>
-            <version>4.4.0</version>
-        </dependency>
     </dependencies>
 
     <build>

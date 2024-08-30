@@ -13,7 +13,7 @@ public class Login {
     public Object login(@RequestParam String username, @RequestParam String password) {
         var map = new HashMap<String, Object>();
         //TODO 鉴权是否正确登录, 目前暂时使用测试User对象
-        var user = new User("114514", "WJC", "WJC@WJC.com");
+        var user = new User(114514, "hirrao", "123456", "123456", "男", null, 1);
         map.put("token", createToken(user));
         map.put("user", user);
         map.put("status", "success");

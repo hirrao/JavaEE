@@ -7,14 +7,14 @@ import static org.health.hirrao.token.Create.key;
 /**
  * 解析token
  */
-public class Prase {
+public class Parse {
     /**
      * 解析token
      *
      * @param token 传入的token
      * @return 直接返回UID
      */
-    public static String praseToken(String token) {
+    public static String parseToken(String token) {
         return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload().getId();
     }
 }

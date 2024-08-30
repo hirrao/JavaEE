@@ -20,7 +20,7 @@ public class Create {
      * @return 生成的经过压缩的token
      */
     public static String createToken(User user) {
-        var builder = Jwts.builder().id(user.getId()).subject(user.getName()).issuedAt(new Date()).signWith(key).expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 2));
+        var builder = Jwts.builder().id(String.valueOf(user.getId())).subject(user.getUserName()).issuedAt(new Date()).signWith(key).expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 2));
         return builder.compact();
     }
 }

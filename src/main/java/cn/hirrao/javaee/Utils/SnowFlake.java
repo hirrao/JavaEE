@@ -34,20 +34,6 @@ public class SnowFlake {
         this.machineId = machineId;
     }
 
-    public static void main(String[] args) {
-        SnowFlake snowFlake = new SnowFlake(1, 1);
-
-        long startTime = System.nanoTime();
-
-        for (int i = 0; i < 1000000; i++) {
-            System.out.println(snowFlake.nextId());
-        }
-
-        long endTime = System.nanoTime();
-
-        System.out.println("用时：" + (endTime - startTime) / 1000000 + "ms");
-    }
-
     /**
      * 产生下一个ID
      *

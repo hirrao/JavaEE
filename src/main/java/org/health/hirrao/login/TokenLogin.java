@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 
-import static org.health.hirrao.token.Prase.praseToken;
+import static org.health.hirrao.token.Parse.parseToken;
 
 @RestController
 public class TokenLogin {
@@ -19,7 +19,7 @@ public class TokenLogin {
             return map;
         }
         try {
-            var id = praseToken(token);
+            var id = parseToken(token);
             map.put("status", "success");
             map.put("id", id);
         }

@@ -6,7 +6,6 @@ import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.service.UserService;
 import cn.hirrao.javaee.utils.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,9 +52,7 @@ public class UserController {
         if (user == null) {
             return Result.error("用户名不存在");
         } else {
-            String p1 = DigestUtils.md5DigestAsHex(userPassword.getBytes());
-            String p2 = DigestUtils.md5DigestAsHex(p1.getBytes());
-            if (p2.equals(user.getUserPassword())) {
+            if (userPassword.equals(user.getUserPassword())) {
                 //密码正确，根据用户的uid和用户名生成token
                 String token = createToken(user);
                 return Result.success(token);

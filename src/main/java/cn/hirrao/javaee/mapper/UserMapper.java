@@ -1,7 +1,6 @@
-package cn.hirrao.javaee.Mapper;
+package cn.hirrao.javaee.mapper;
 
-import cn.hirrao.javaee.Entity.User;
-import cn.hirrao.javaee.Utils.SnowFlake;
+import cn.hirrao.javaee.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -15,5 +14,5 @@ public interface UserMapper extends BaseMapper<User> {
 
 
     @Insert("insert into user(uid,userName, userPassword) values(#{uid},#{userName}, #{userPassword})")
-    void addUser(long uid,String userName, String userPassword);
+    void addUser(long uid, String userName, String userPassword);
 }

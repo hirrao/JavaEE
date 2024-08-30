@@ -1,4 +1,4 @@
-package cn.hirrao.javaee.Utils;
+package cn.hirrao.javaee.utils;
 
 import io.jsonwebtoken.Jwts;
 

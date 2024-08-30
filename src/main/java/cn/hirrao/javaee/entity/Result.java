@@ -1,4 +1,4 @@
-package cn.hirrao.javaee.Entity;
+package cn.hirrao.javaee.entity;
 
 
 import lombok.AllArgsConstructor;

@@ -1,13 +1,11 @@
-package cn.hirrao.javaee.Entity;
+package cn.hirrao.javaee.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 
 @Getter
 @Setter

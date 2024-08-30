@@ -1,8 +1,8 @@
-package cn.hirrao.javaee.Service.impl;
+package cn.hirrao.javaee.service.impl;
 
-import cn.hirrao.javaee.Entity.User;
-import cn.hirrao.javaee.Mapper.UserMapper;
-import cn.hirrao.javaee.Service.UserService;
+import cn.hirrao.javaee.entity.User;
+import cn.hirrao.javaee.mapper.UserMapper;
+import cn.hirrao.javaee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;

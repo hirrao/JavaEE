@@ -1,7 +1,7 @@
-package cn.hirrao.javaee.Service;
+package cn.hirrao.javaee.service;
 
 
-import cn.hirrao.javaee.Entity.User;
+import cn.hirrao.javaee.entity.User;
 import org.springframework.stereotype.Service;
 
 @Service

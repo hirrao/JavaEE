@@ -1,4 +1,4 @@
-package cn.hirrao.javaee.Utils;
+package cn.hirrao.javaee.utils;
 
 public class SnowFlake {
     private final static long START_TIMESTAMP = 1480166465631L;

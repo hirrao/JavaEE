@@ -1,4 +1,4 @@
-package org.health.hirrao;
+package cn.hirrao.javaee.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

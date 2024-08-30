@@ -1,8 +1,8 @@
-package org.health.hirrao.token;
+package cn.hirrao.javaee.token;
 
 import io.jsonwebtoken.Jwts;
 
-import static org.health.hirrao.token.Create.key;
+import static cn.hirrao.javaee.token.Create.key;
 
 /**
  * 解析token

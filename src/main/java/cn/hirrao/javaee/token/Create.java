@@ -1,7 +1,7 @@
-package org.health.hirrao.token;
+package cn.hirrao.javaee.token;
 
 import io.jsonwebtoken.Jwts;
-import org.health.hirrao.User;
+import cn.hirrao.javaee.Entity.User;
 
 import javax.crypto.SecretKey;
 import java.util.Date;

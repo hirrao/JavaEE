@@ -1,4 +1,4 @@
-package org.health;
+package cn.hirrao.javaee;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package org.health;
+package cn.hirrao.javaee;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -6,6 +6,7 @@ import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.service.UserService;
 import cn.hirrao.javaee.utils.Jwt;
 import cn.hirrao.javaee.utils.SnowFlake;
+import cn.hirrao.javaee.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -63,10 +64,8 @@ public class UserController {
     }
 
     @GetMapping("/userInfo")
-    public Result userInfo(@RequestHeader(name = "Authorization") String token) {
-        //根据用户的token获取用户信息
-        String uid = Jwt.parseToken(token);
-        User user = userService.findByUid(Long.parseLong(uid));
+    public Result userInfo() {
+        User user = ThreadLocalUtil.get();
         return Result.success(user);
     }
 }

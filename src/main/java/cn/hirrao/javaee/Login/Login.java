@@ -1,4 +1,4 @@
-package cn.hirrao.javaee.login;
+package cn.hirrao.javaee.Login;
 
 import cn.hirrao.javaee.Entity.User;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-import static cn.hirrao.javaee.token.Create.createToken;
+import static cn.hirrao.javaee.Utils.Create.createToken;
 
 @RestController
 public class Login {

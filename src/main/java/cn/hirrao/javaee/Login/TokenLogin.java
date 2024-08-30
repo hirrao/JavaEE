@@ -1,4 +1,4 @@
-package cn.hirrao.javaee.login;
+package cn.hirrao.javaee.Login;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 
-import static cn.hirrao.javaee.token.Parse.parseToken;
+import static cn.hirrao.javaee.Utils.Parse.parseToken;
 
 @RestController
 public class TokenLogin {

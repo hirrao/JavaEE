@@ -1,4 +1,4 @@
-package cn.hirrao.javaee.Login;
+package cn.hirrao.javaee.Controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;

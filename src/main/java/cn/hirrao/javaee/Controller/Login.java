@@ -1,4 +1,4 @@
-package cn.hirrao.javaee.Login;
+package cn.hirrao.javaee.Controller;
 
 import cn.hirrao.javaee.Entity.User;
 import org.springframework.web.bind.annotation.PostMapping;

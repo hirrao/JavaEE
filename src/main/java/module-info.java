@@ -4,4 +4,6 @@ module org.health{
     requires spring.web;
     requires lombok;
     requires jjwt.api;
+
+    opens org.health;
 }

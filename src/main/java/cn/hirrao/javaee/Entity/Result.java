@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor  //生成无参构造
 @AllArgsConstructor //生成有参构造
 @Getter
-public class Result<T> {
+public class Result {
     private Integer code;//状态码，0表示成功，-1表示失败
     private String message;//提示信息
-    private T data;//响应数据，比如token
+    private Object data;//响应数据，比如token
 
-    public static <E> Result<E> success(E data) {
-        return new Result<>(0,"success",data);
+    public static  Result success(Object data) {
+        return new Result(0,"success",data);
     }
     public static Result success() {
         return new Result(0,"success",null);

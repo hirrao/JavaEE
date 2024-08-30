@@ -59,7 +59,7 @@ public class UserController {
             if(p2.equals(u.getUserPassword())) {
                 //密码正确，根据用户的uid和用户名生成token
                 Map<String,Object> claims = new HashMap<>();
-                claims.put("uid", u.getId());
+                claims.put("uid", u.getUid());
                 claims.put("userName", u.getUserName());
                 String token = JwtUtil.genToken(claims);
                 return Result.success(token);

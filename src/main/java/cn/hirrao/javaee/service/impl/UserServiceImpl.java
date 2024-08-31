@@ -9,8 +9,11 @@ import org.springframework.util.DigestUtils;
 
 @Service
 public class UserServiceImpl implements UserService {
+    private final UserMapper userMapper;
     @Autowired
-    private UserMapper userMapper;
+    private UserServiceImpl(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     @Override
     public User findByUsername(String userName) {
@@ -23,12 +26,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(long uid,String userName, String userPassword) {
-        //加密
-        String p1 = DigestUtils.md5DigestAsHex(userPassword.getBytes());
-        String p2 = DigestUtils.md5DigestAsHex(p1.getBytes());
+    public User findByPhoneNumber(String phoneNumber) {
+        return userMapper.findByPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public void register(long uid, String userName, String userPassword, String phoneNumber) {
+        //摘要
+        String password = DigestUtils.md5DigestAsHex(userPassword.getBytes());
         //添加
-        userMapper.addUser(uid,userName,p2);
+        userMapper.addUser(uid, userName, password, phoneNumber);
     }
 
     @Override

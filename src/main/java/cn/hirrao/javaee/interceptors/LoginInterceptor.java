@@ -14,8 +14,11 @@ import org.springframework.web.servlet.HandlerInterceptor;
 //拦截器
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
-    @Autowired
     UserService userService;
+    @Autowired
+    private LoginInterceptor(UserService userService) {
+        this.userService = userService;
+    }
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         //获取请求头中的token

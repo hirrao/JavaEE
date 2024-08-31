@@ -8,6 +8,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+
+
+//JsonIgnore注解是jackson包中的注解，用于返回json数据时，忽略该字段
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,5 +23,6 @@ public class User {
     private String userPassword;
     private String sex;
     private String birthday;
+    @JsonIgnore
     private int permission;
 }

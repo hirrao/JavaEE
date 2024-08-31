@@ -9,4 +9,6 @@ public interface UserService {
     User findByUsername(String userName);
     User findByUid(long uid);
     void register(long uid,String userName, String userPassword);
+
+    void update(User user);
 }

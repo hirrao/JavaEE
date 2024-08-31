@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Result login(String userName, String userPassword) {
+    public Result login(String userName,String userPassword) {
         if (Objects.equals(userName, "") || Objects.equals(userPassword, "")) {
             return Result.error("用户名或密码不能为空");
         }
@@ -53,7 +53,9 @@ public class UserController {
         if (user == null) {
             return Result.error("用户名不存在");
         } else {
-            if (userPassword.equals(user.getUserPassword())) {
+            String userPassword2 = DigestUtils.md5DigestAsHex(userPassword.getBytes());
+            String userPassword3 = DigestUtils.md5DigestAsHex(userPassword2.getBytes());
+            if (userPassword3.equals(user.getUserPassword())) {
                 //密码正确，根据用户的uid和用户名生成token
                 String token = createToken(user);
                 return Result.success(token);
@@ -67,5 +69,11 @@ public class UserController {
     public Result userInfo() {
         User user = ThreadLocalUtil.get();
         return Result.success(user);
+    }
+
+    @PutMapping("/update")
+    public Result update(@RequestBody User user) {
+        userService.update(user);
+        return Result.success();
     }
 }

@@ -30,4 +30,9 @@ public class UserServiceImpl implements UserService {
         //添加
         userMapper.addUser(uid,userName,p2);
     }
+
+    @Override
+    public void update(User user) {
+        userMapper.update(user);
+    }
 }

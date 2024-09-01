@@ -8,17 +8,17 @@
   
       <section class="services">
         <div class="service">
-          <img src="../../b.webp" alt="全科医生服务">
+          <img src="/b.webp" alt="全科医生服务">
           <h3>全科医生服务</h3>
           <p>我们的全科医生为您提供全面的健康咨询和治疗服务，关注您的整体健康。</p>
         </div>
         <div class="service">
-          <img src="../../a.webp" alt="专科诊疗">
+          <img src="/a.webp" alt="专科诊疗">
           <h3>专科诊疗</h3>
           <p>我们的专科医生团队为您提供精确的诊断和贴心的治疗，确保最佳的服务质量。</p>
         </div>
         <div class="service">
-          <img src="../../c.webp" alt="健康体检">
+          <img src="/c.webp" alt="健康体检">
           <h3>健康体检</h3>
           <p>定期健康体检让您时刻了解自己的健康状况，预防潜在疾病，保证身体健康。</p>
         </div>
@@ -36,7 +36,7 @@
   
 <style>
   body {
-      background-image: url('../../back.jpg');
+      background-image: url('/back.jpg');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;

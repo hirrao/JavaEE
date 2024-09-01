@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
     private final LoginInterceptor loginInterceptor;
 
     @Autowired
-    private WebConfig(LoginInterceptor loginInterceptor) {
+    public WebConfig(LoginInterceptor loginInterceptor) {
         this.loginInterceptor = loginInterceptor;
     }
 

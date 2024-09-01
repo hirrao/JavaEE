@@ -3,8 +3,30 @@
         <header>  
           <h2>智慧心康</h2>  
         </header>  
-  
-        <nav>  
+
+        <el-menu
+          :default-active="this.$route.path"
+          class="el-menu-demo"
+          mode="horizontal"
+          :ellipsis="false"
+          @select="handleSelect"
+          unique-opened
+          router>
+          <el-menu-item index="/">首页</el-menu-item>
+          <el-menu-item index="/bloodPressure">血压管理</el-menu-item>
+          <el-menu-item index="/medicine">药物管理</el-menu-item>
+          <el-menu-item index="/healthAdvice">健康贴士</el-menu-item>
+          <template v-if="isLoggedIn">
+            <el-menu-item index="/profile">个人中心</el-menu-item>
+            <el-menu-item @click="logout">登出</el-menu-item>
+          </template>
+          <template v-else>
+            <el-menu-item index="/login">登录</el-menu-item>
+            <el-menu-item index="/register">注册</el-menu-item>
+          </template>
+        </el-menu>
+
+        <!-- <nav>  
           <a href="/">首页</a>  
           <a href="/bloodPressure">血压管理</a>  
           <a href="/medicine">药物管理</a>  
@@ -17,13 +39,14 @@
           <a href="/login">登录</a>  
           <a href="/register">注册</a>
           </template>
-        </nav>  
+        </nav>   -->
       </div>  
 </template>
 
 <script setup>
   import router from '@/router';
   import { ref } from 'vue';
+
   let isLoggedIn = ref(!!localStorage.getItem('token'));
 
   function logout() {
@@ -50,4 +73,29 @@
       text-decoration: none;  
       color: white;  
   }  
+
+  .el-menu{
+    --el-menu-bg-color: rgba(20, 1, 1);;
+    --el-menu-text-color:white;
+    /* margin: 0 auto;  */
+  }
+
+  /* 去掉下划线 */
+  .el-menu.el-menu--horizontal.el-menu-demo{
+    border-bottom: none;
+  /* border-bottom:solid 2px rgba(20, 1, 1); */
+  }
+
+  /* .el-menu-item.is-active{
+  background: rgba(20, 1, 1);;
+  } */
+
+  /* .el-menu--horizontal>.el-menu-item.is-active{
+  border-bottom: none;
+
+  } */
+  /* .el-menu--horizontal > .el-menu-item{
+  border-bottom: none;
+  text-decoration: none;
+  } */
 </style>

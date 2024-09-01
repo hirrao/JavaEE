@@ -1,6 +1,29 @@
 <template>
     <div class="login-form">
-      <form>
+      <!--element版-->
+      <el-form ref="form" label-width="80px">
+        <el-form-item label="用户名" prop="username">
+            <el-input v-model="username" type="text" placeholder="请输入用户名"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="phonenumber">
+          <div class="form-group">
+            <div class="input-container">
+              <el-input id="phonenumber" v-model="phonenumber" type="text" placeholder="请输入手机号"></el-input>
+              <el-button class="button1" type="primary" :disabled="isButtonDisabled" @click="sendVerificationCode">
+                {{ isButtonDisabled ? `${countdown}秒后重发` : '发送验证码' }}
+              </el-button>
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item label="验证码" prop="verificationCode">
+            <el-input v-model="verificationCode" type="text" placeholder="请输入验证码"></el-input>
+        </el-form-item>
+        <el-form-item align="center">
+          <el-button class="button2" type="primary" size="mini" @click="next">下一步</el-button>
+        </el-form-item>
+      </el-form>
+
+      <!-- <form>
         <div class="form-group">
           <label for="username">用户名:</label>
           <input type="text" id="username" v-model="username" required />
@@ -21,14 +44,14 @@
           <input type="text" id="verification-code" v-model="verificationCode" required />
           <button class="button2" @click="next">下一步</button>
         </div>
-      </form>
+      </form> -->
     </div>
   </template>
   
   <script setup lang="ts">
   import { ref } from 'vue'
   import router from '../router'
-  import axios from 'axios';
+  import instance from '../axios';
   // 定义响应式数据
   const username = ref('')
   const phonenumber = ref('')
@@ -41,7 +64,7 @@
     if (isButtonDisabled.value) return
   
 
-    const response = await axios.post('https://api.javaee.hirrao.cn/user/auth/messageSend', {
+    const response = await instance.post('user/auth/messageSend', {
         phoneNumber: phonenumber.value,
     },{
         headers: {
@@ -67,6 +90,18 @@
   const next =() => {
     router.push('/setPassword')
   }
+
+  // let loginMessage={
+  //   username:"",
+  //   phonenumber : "",
+  //   verificationCode : ""
+  // }
+
+  // const rules={
+  //   username:[{required:true,message:"用户名不能为空",trigger:"blur"}],
+  //   phonenumber:[{required:true,message:"手机号不能为空",trigger:"blur"}],
+  //   verificationCode:[{required:true,message:"验证码不能为空",trigger:"blur"}]
+  // }
   </script>
   
   <style scoped>
@@ -118,7 +153,7 @@
   }
   
   .button1 {
-    width:30%;
+    width:40%;
     padding: 10px 10px;
     padding-left: 20px;
     font-size: 16px;

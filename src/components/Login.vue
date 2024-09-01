@@ -1,19 +1,26 @@
 <template>
     <div class="login-form">
-      <!-- <el-form ref="form" label-width="80px">
+      <!--el-form版-->
+      <el-form ref="form" label-width="80px" @submit.prevent="handleSubmit">
         <el-form-item label="用户名" prop="username">
-            <el-input v-model="username" placeholder="请输入用户名" required></el-input>
+            <el-input v-model="username" type="text" placeholder="请输入用户名" required></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
             <el-input v-model="password" type="password" placeholder="密码" required></el-input>
         </el-form-item>
         <el-form-item align="center">
-            <el-button type="primary" size="mini" @click="AddRecord">添加</el-button>
-            <el-button type="info" size="mini" @click="CloseDialog">取消</el-button>
+          <el-button type="primary" size="mini" @click="handleSubmit">登录</el-button>
         </el-form-item>
-      </el-form> -->
 
-      <form @submit.prevent="handleSubmit">
+        <div class="tips"  style="float:left;">              
+        <el-link underline="true" @click="retrievePWD">忘记密码</el-link>
+        </div>
+        <div class="tips"  style="float:right;">         
+        <el-link @click="regis">还没有账号？点击注册</el-link> 
+        </div>
+      </el-form>
+
+      <!-- <form @submit.prevent="handleSubmit">
         <div class="form-group">
           <label for="username">用户名:</label>
           <input
@@ -42,7 +49,7 @@
         <div class="tips"  style="float:right;">         
         <el-link @click="regis">还没有账号？点击注册</el-link> 
         </div>
-      </form>
+      </form> -->
     </div>
     
   </template>
@@ -50,7 +57,7 @@
   <script setup lang="ts">
   import router from '../router';
   import { ref } from 'vue';
-  import axios from '../axios';
+  import instance from '../axios';
   import md5 from 'crypto-js/md5';
   // 定义响应式数据
   const username = ref('');
@@ -62,7 +69,7 @@
     try {
       const newPwd = md5(password.value).toString();
       const newPwd2 = md5(newPwd).toString();
-      const response = await axios.post('/user/auth/login', {
+      const response = await instance.post('/user/auth/login', {
         userName: username.value,
         userPassword: newPwd2,
       },{

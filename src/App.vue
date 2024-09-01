@@ -1,11 +1,13 @@
 <script setup lang="ts">
-
-import Home from './components/Home.vue'
+  import AppHeader from './components/Header.vue';
 </script>
 
 <template>
-  <div>
-    <Home></Home>
+  <div id="app">
+    <main class="container">
+      <AppHeader />
+      <router-view />
+    </main>
   </div>
 </template>
 

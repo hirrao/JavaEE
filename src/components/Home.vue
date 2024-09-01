@@ -1,20 +1,5 @@
 <template>
     <div>
-      <div class="header-nav-container">  
-        <header>  
-          <h2>智慧心康</h2>  
-        </header>  
-  
-        <nav>  
-          <a href="#">首页</a>  
-          <a href="#">血压管理</a>  
-          <a href="#">药物管理</a>  
-          <a href="#">健康贴士</a>  
-          <a href="#">登录</a>  
-          <a href="#">注册</a>  
-        </nav>  
-      </div>  
-  
       <section class="hero">
         <h1>致力于您的健康</h1>
         <p>我们提供优质的医疗健康服务，关爱每一个人</p>
@@ -23,17 +8,17 @@
   
       <section class="services">
         <div class="service">
-          <img src="../../public/b.webp" alt="全科医生服务">
+          <img src="../../b.webp" alt="全科医生服务">
           <h3>全科医生服务</h3>
           <p>我们的全科医生为您提供全面的健康咨询和治疗服务，关注您的整体健康。</p>
         </div>
         <div class="service">
-          <img src="../../public/a.webp" alt="专科诊疗">
+          <img src="../../a.webp" alt="专科诊疗">
           <h3>专科诊疗</h3>
           <p>我们的专科医生团队为您提供精确的诊断和贴心的治疗，确保最佳的服务质量。</p>
         </div>
         <div class="service">
-          <img src="../../public/c.webp" alt="健康体检">
+          <img src="../../c.webp" alt="健康体检">
           <h3>健康体检</h3>
           <p>定期健康体检让您时刻了解自己的健康状况，预防潜在疾病，保证身体健康。</p>
         </div>
@@ -45,15 +30,13 @@
     </div>
   </template>
   
-<script lang="ts">
-  export default{
-    name:'Home'
-  };
+<script setup lang="ts">
+
   </script>
   
 <style>
   body {
-      background-image: url('../../public/back.jpg');
+      background-image: url('../../back.jpg');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -62,22 +45,7 @@
       margin: 0;
       padding: 0;
   }
-  .header-nav-container {  
-      display: flex;  
-      justify-content: space-between; 
-      align-items: center;  
-      background-color: rgb(16, 204, 185);;  
-      color: white;  
-      padding: 0px 20px;  
-  }  
-  nav {  
-      display: flex;  
-  }  
-  nav a {  
-      margin-left: 20px;  
-      text-decoration: none;  
-      color: white;  
-  }  
+  
   .hero {
       color: white;
       text-align: center;

@@ -33,7 +33,11 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public Result register(String userName, String userPassword, String phoneNumber, String messageCode) {
+    public Result register(@RequestBody Map<String,String> map) {
+        String userName = map.get("userName");
+        String userPassword = map.get("userPassword");
+        String phoneNumber = map.get("phoneNumber");
+        String messageCode = map.get("messageCode");
         if (userName == null || userPassword == null || !userName.matches("^[a-zA-Z0-9_]{3,20}$") || !userPassword.matches("^[a-zA-Z0-9_]{6,20}$")) {
             return Result.error(101, "非法用户名或密码");
         }
@@ -54,7 +58,8 @@ public class AuthController {
     }
 
     @PostMapping("/messageSend")
-    public Result messageSend(String phoneNumber) {
+    public Result messageSend(@RequestBody Map<String,String> map) {
+        String phoneNumber = map.get("phoneNumber");
         User user = userService.findByPhoneNumber(phoneNumber);
         if (user != null) {
             return Result.error(103, "手机号已被占用");

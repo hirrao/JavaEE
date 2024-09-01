@@ -58,7 +58,7 @@
   <script setup lang="ts">
   import router from '../router';
   import { ref } from 'vue';
-  import instance from '../router';
+  import instance from '../axios';
   import md5 from 'crypto-js/md5';
   // 定义响应式数据
   const username = ref('');
@@ -69,10 +69,9 @@
   const handleSubmit = async () => {
     try {
       const newPwd = md5(password.value).toString();
-      const newPwd2 = md5(newPwd).toString();
       const response = await instance.post('/user/auth/login', {
         userName: username.value,
-        userPassword: newPwd2,
+        userPassword: newPwd,
       },{
         headers: {
           'Content-Type': 'application/json',

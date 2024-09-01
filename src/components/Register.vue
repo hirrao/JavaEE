@@ -22,36 +22,13 @@
           <el-button class="button2" type="primary" size="mini" @click="next">下一步</el-button>
         </el-form-item>
       </el-form>
-
-      <!-- <form>
-        <div class="form-group">
-          <label for="username">用户名:</label>
-          <input type="text" id="username" v-model="username"/>
-        </div>
-  
-        <div class="form-group">
-          <label for="phonenumber">手机号:</label>
-          <div class="input-container">
-            <input type="text" id="phonenumber" v-model="phonenumber" />
-            <button class="button1" :disabled="isButtonDisabled" @click="sendVerificationCode">
-              {{ isButtonDisabled ? `${countdown}秒后重发` : '发送验证码' }}
-            </button>
-          </div>
-        </div>
-  
-        <div class="form-group">
-          <label for="verification-code">验证码:</label>
-          <input type="text" id="verification-code" v-model="verificationCode"/>
-          <button class="button2" @click="next">下一步</button>
-        </div>
-      </form> -->
     </div>
   </template>
   
   <script setup lang="ts">
   import { ref } from 'vue'
   import router from '../router'
-  import instance from '../router';
+  import instance from '../axios';
   // 定义响应式数据
   const username = ref('')
   const phonenumber = ref('')
@@ -62,7 +39,10 @@
   
   const sendVerificationCode = async () => {
     if (isButtonDisabled.value) return
-  
+    if(phonenumber.value.length != 11 || isNaN(Number(phonenumber.value)) || phonenumber.value[0] != '1'){
+      alert("请输入正确的手机号")
+      return
+    }
 
     const response = await instance.post('user/auth/messageSend', {
         phoneNumber: phonenumber.value,
@@ -87,21 +67,51 @@
     }, 1000)
   }
 
-  const next =() => {
-    router.push('/setPassword')
+  const next = async () => {
+    if(username.value == ""){
+      alert("请输入用户名")
+      return
+    }
+    if(verificationCode.value == ""){
+      alert("请输入验证码")
+      return
+    }
+    try{
+      await instance.post('/user/auth/find',{
+        userName: username.value,
+        phoneNumber: phonenumber.value,
+      },{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch(error){
+      alert('用户名或手机号已存在')
+      username.value = ''
+      phonenumber.value = ''
+      verificationCode.value = ''
+      return
+    }
+    try{
+      const response = await instance.post('/user/auth/message', {
+        userName: username.value,
+        phoneNumber: phonenumber.value,
+        messageCode: verificationCode.value,
+      },{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      localStorage.setItem('userName', username.value)
+      localStorage.setItem('phoneNumber', phonenumber.value)
+      localStorage.setItem('messageCode', verificationCode.value)
+      router.push('/setPassword')
+    }
+      catch(error){
+        alert('验证码错误')
+        verificationCode.value = ''
+    }
   }
-
-  // let loginMessage={
-  //   username:"",
-  //   phonenumber : "",
-  //   verificationCode : ""
-  // }
-
-  // const rules={
-  //   username:[{required:true,message:"用户名不能为空",trigger:"blur"}],
-  //   phonenumber:[{required:true,message:"手机号不能为空",trigger:"blur"}],
-  //   verificationCode:[{required:true,message:"验证码不能为空",trigger:"blur"}]
-  // }
   </script>
   
   <style scoped>

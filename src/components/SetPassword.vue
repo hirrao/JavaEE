@@ -19,15 +19,40 @@
   <script setup lang="ts">
   import { ref } from 'vue'
   import router from '../router'
+  import instance from '../axios'
+  import md5 from 'crypto-js/md5'
   let password = ref('')
   let password2 = ref('')
   
   const next = () => {
     if (password.value !== password2.value) {
       alert("两次密码不一致，请重新输入")
+      return ;
     } else {
-      alert("密码设置成功")
-      router.push('/login')
+      try{
+        const userName = localStorage.getItem('userName')
+        const phoneNumber = localStorage.getItem('phoneNumber')
+        const messageCode = localStorage.getItem('messageCode')
+        let pwd = md5(password.value).toString()
+        instance.post('user/auth/register', {
+          userName: userName,
+          phoneNumber: phoneNumber,
+          userPassword: pwd,
+          messageCode: messageCode
+        },{
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          alert("注册成功")
+          localStorage.removeItem('userName')
+          localStorage.removeItem('phoneNumber')
+          router.push('/login')
+      }
+      catch(e){
+        console.log(e)
+      }
+
     }
   }
   </script>

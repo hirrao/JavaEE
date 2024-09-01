@@ -7,6 +7,7 @@ import Register from '@/components/Register.vue';
 import ForgetPassword from '@/components/ForgetPassword.vue';
 import HealthAdvice from '@/components/HealthAdvice.vue';
 import Medicine from '@/components/Medicine.vue';
+import SetPassword from '@/components/SetPassword.vue';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -42,6 +43,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/medicine',
     name: 'Medicine',
     component: Medicine
+  },
+  {
+    path: '/setPassword',
+    name: 'SetPassword',
+    component: SetPassword
   }
 ];
 

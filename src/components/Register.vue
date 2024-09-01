@@ -19,7 +19,7 @@
         <div class="form-group">
           <label for="verification-code">验证码:</label>
           <input type="text" id="verification-code" v-model="verificationCode" required />
-          <button class="button2">下一步</button>
+          <button class="button2" @click="next">下一步</button>
         </div>
       </form>
     </div>
@@ -27,6 +27,7 @@
   
   <script setup lang="ts">
   import { ref } from 'vue'
+  import router from '../router'
   
   // 定义响应式数据
   const username = ref('')
@@ -54,6 +55,10 @@
       }
     }, 1000)
   }
+
+  const next =() => {
+    router.push('/setPassword')
+  }
   </script>
   
   <style scoped>
@@ -73,10 +78,11 @@
   .input-container {
     display: flex;
     align-items: center;
+    gap:10px;
   }
   
   .input-container input {
-    flex: 1;
+    flex: 10;
   }
   
   label {
@@ -104,8 +110,9 @@
   }
   
   .button1 {
-    margin-left: 10px;
-    padding: 10px 20px;
+    width:30%;
+    padding: 10px 10px;
+    padding-left: 20px;
     font-size: 16px;
     background-color: #007bff;
     color: #ffffff;

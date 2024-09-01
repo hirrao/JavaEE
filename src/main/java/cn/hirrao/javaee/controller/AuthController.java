@@ -11,10 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Objects;
 
 import static cn.hirrao.javaee.utils.Jwt.createToken;
@@ -76,7 +75,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Result login(String userName, String userPassword) {
+    public Result login(@RequestBody Map<String,String> map) {
+        String userName = map.get("userName");
+        String userPassword = map.get("userPassword");
         if (Objects.equals(userName, "") || Objects.equals(userPassword, "")) {
             return Result.error(104, "用户名或密码错误");
         }
@@ -84,8 +85,7 @@ public class AuthController {
         if (user == null) {
             return Result.error(104, "用户名或密码错误");
         } else {
-            String password = DigestUtils.md5DigestAsHex(userPassword.getBytes());
-            if (password.equals(user.getUserPassword())) {
+            if (userPassword.equals(user.getUserPassword())) {
                 //密码正确，根据用户的uid和用户名生成token
                 String token = createToken(user);
                 return Result.success(token);
@@ -96,7 +96,10 @@ public class AuthController {
     }
 
     @PostMapping("/resetPassword")
-    public Result resetPassword(String phoneNumber, String messageCode, String newPassword) {
+    public Result resetPassword(@RequestBody Map<String,String> map) {
+        String phoneNumber = map.get("phoneNumber");
+        String messageCode = map.get("messageCode");
+        String newPassword = map.get("newPassword");
         User user = userService.findByPhoneNumber(phoneNumber);
         if (user == null) {
             return Result.error(105, "用户不存在");

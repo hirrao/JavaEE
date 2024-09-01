@@ -43,8 +43,8 @@
       </div>  
 </template>
 
-<script setup>
-  import router from '@/router';
+<script setup lang="ts">
+  import router from '../router';
   import { ref } from 'vue';
 
   let isLoggedIn = ref(!!localStorage.getItem('token'));

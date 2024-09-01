@@ -20,6 +20,7 @@
         </div>
       </el-form>
 
+      <!--form版-->
       <!-- <form @submit.prevent="handleSubmit">
         <div class="form-group">
           <label for="username">用户名:</label>
@@ -57,13 +58,13 @@
   <script setup lang="ts">
   import router from '../router';
   import { ref } from 'vue';
-  import instance from '../axios';
+  import instance from '../router';
   import md5 from 'crypto-js/md5';
   // 定义响应式数据
   const username = ref('');
   const password = ref('');
   const token = ref('');
-  
+
   // 定义提交处理函数
   const handleSubmit = async () => {
     try {

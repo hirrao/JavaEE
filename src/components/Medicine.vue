@@ -10,12 +10,12 @@
         <el-table-column prop="eat" label="是否食用" />
       </el-table>
       <el-pagination
-        :page-size.sync="pageSize"
-        :current-page.sync="currentPage"
+        v-model:page-size="pageSize"
+        v-model:current-page="currentPage"
         :page-sizes="[5,10,15,20]"
         layout="sizes,prev,pager,next,jumper,->,total"
-        @current-change=""
-        @size-change=""
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
         :total="total">
       </el-pagination>
     </el-card>
@@ -31,12 +31,12 @@
         <el-table-column prop="eat" label="是否食用" />
     </el-table>
     <el-pagination
-        :page-size.sync="pageSize"
-        :current-page.sync="currentPage"
+       v-model:page-size="pageSize"
+        v-model:current-page="currentPage"
         :page-sizes="[5,10,15,20]"
         layout="sizes,prev,pager,next,jumper,->,total"
-        @current-change=""
-        @size-change=""
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
         :total="total">
     </el-pagination>
     </el-card>
@@ -55,6 +55,14 @@
     const pageSize=5;
     const currentPage=1;
     const total=8;
+
+    function handleSizeChange(newSize: number) {
+      // handle the size change logic here
+    }
+    
+    function handleCurrentChange(newPage: number) {
+      // handle the current change logic here
+    }
 </script>
 
 <style>

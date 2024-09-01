@@ -26,13 +26,13 @@
       <!-- <form>
         <div class="form-group">
           <label for="username">用户名:</label>
-          <input type="text" id="username" v-model="username" required />
+          <input type="text" id="username" v-model="username"/>
         </div>
   
         <div class="form-group">
           <label for="phonenumber">手机号:</label>
           <div class="input-container">
-            <input type="text" id="phonenumber" v-model="phonenumber" required />
+            <input type="text" id="phonenumber" v-model="phonenumber" />
             <button class="button1" :disabled="isButtonDisabled" @click="sendVerificationCode">
               {{ isButtonDisabled ? `${countdown}秒后重发` : '发送验证码' }}
             </button>
@@ -41,7 +41,7 @@
   
         <div class="form-group">
           <label for="verification-code">验证码:</label>
-          <input type="text" id="verification-code" v-model="verificationCode" required />
+          <input type="text" id="verification-code" v-model="verificationCode"/>
           <button class="button2" @click="next">下一步</button>
         </div>
       </form> -->
@@ -51,7 +51,7 @@
   <script setup lang="ts">
   import { ref } from 'vue'
   import router from '../router'
-  import instance from '../axios';
+  import instance from '../router';
   // 定义响应式数据
   const username = ref('')
   const phonenumber = ref('')

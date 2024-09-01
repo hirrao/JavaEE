@@ -32,10 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(long uid, String userName, String userPassword, String phoneNumber) {
-        //摘要
-        String password = DigestUtils.md5DigestAsHex(userPassword.getBytes());
-        //添加
-        userMapper.addUser(uid, userName, password, phoneNumber);
+        userMapper.addUser(uid, userName, userPassword, phoneNumber);
     }
 
     @Override
@@ -45,7 +42,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updatePassword(long uid, String userPassword) {
-        String password = DigestUtils.md5DigestAsHex(userPassword.getBytes());
-        userMapper.updatePassword(uid, password);
+        userMapper.updatePassword(uid, userPassword);
     }
 }

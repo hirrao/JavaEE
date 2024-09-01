@@ -32,13 +32,12 @@ public class AuthController {
         this.redisService = redisService;
     }
 
-    @PostMapping("/register")
-    public Result register(@RequestBody Map<String,String> map) {
+    @PostMapping("/message")
+    public Result message(@RequestBody Map<String,String> map) {
         String userName = map.get("userName");
-        String userPassword = map.get("userPassword");
         String phoneNumber = map.get("phoneNumber");
         String messageCode = map.get("messageCode");
-        if (userName == null || userPassword == null || !userName.matches("^[a-zA-Z0-9_]{3,20}$") || !userPassword.matches("^[a-zA-Z0-9_]{6,20}$")) {
+        if (userName == null || !userName.matches("^[a-zA-Z0-9_]{3,20}$")) {
             return Result.error(101, "非法用户名或密码");
         }
         User user = userService.findByUsername(userName);
@@ -50,6 +49,24 @@ public class AuthController {
         }
         if (!redisService.get(phoneNumber).equals(messageCode)) {
             return Result.error(112, "验证码错误");
+        }
+        return Result.success();
+    }
+
+    @PostMapping("/register")
+    public Result register(@RequestBody Map<String,String> map) {
+        String userName = map.get("userName");
+        String userPassword = map.get("userPassword");
+        String phoneNumber = map.get("phoneNumber");
+        if (userName == null || userPassword == null || !userName.matches("^[a-zA-Z0-9_]{3,20}$") || !userPassword.matches("^[a-zA-Z0-9_]{6,20}$")) {
+            return Result.error(101, "非法用户名或密码");
+        }
+        User user = userService.findByUsername(userName);
+        if (user != null) {
+            return Result.error(102, "用户名已被占用");
+        }
+        if (redisService.get(phoneNumber) == null) {
+            return Result.error(111, "请发送验证码");
         }
         long uid = snowFlake.nextId();
         userService.register(uid, userName, userPassword, phoneNumber);

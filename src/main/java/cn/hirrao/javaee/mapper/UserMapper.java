@@ -22,6 +22,9 @@ public interface UserMapper extends BaseMapper<User> {
     @Insert("insert into user(uid,userName, userPassword,phoneNumber) values(#{uid},#{userName}, #{userPassword},#{phoneNumber})")
     void addUser(long uid, String userName, String userPassword, String phoneNumber);
 
-    @Update("update user set phoneNumber=#{phoneNumber},userPassword=#{userPassword},sex=#{sex},birthday=#{birthday} where uid=#{uid}")
+    @Update("update user set phoneNumber=#{phoneNumber},sex=#{sex},birthday=#{birthday} where uid=#{uid}")
     void update(User user);
+
+    @Update("update user set userPassword=#{userPassword} where uid=#{uid}")
+    void updatePassword(long uid, String userPassword);
 }

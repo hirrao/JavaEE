@@ -15,4 +15,6 @@ public interface UserService {
     void register(long uid, String userName, String userPassword, String phoneNumber);
 
     void update(User user);
+
+    void updatePassword(long uid, String userPassword);
 }

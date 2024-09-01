@@ -42,4 +42,10 @@ public class UserServiceImpl implements UserService {
     public void update(User user) {
         userMapper.update(user);
     }
+
+    @Override
+    public void updatePassword(long uid, String userPassword) {
+        String password = DigestUtils.md5DigestAsHex(userPassword.getBytes());
+        userMapper.updatePassword(uid, password);
+    }
 }

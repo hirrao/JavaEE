@@ -1,5 +1,18 @@
 <template>
     <div class="login-form">
+      <!-- <el-form ref="form" label-width="80px">
+        <el-form-item label="用户名" prop="username">
+            <el-input v-model="username" placeholder="请输入用户名" required></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+            <el-input v-model="password" type="password" placeholder="密码" required></el-input>
+        </el-form-item>
+        <el-form-item align="center">
+            <el-button type="primary" size="mini" @click="AddRecord">添加</el-button>
+            <el-button type="info" size="mini" @click="CloseDialog">取消</el-button>
+        </el-form-item>
+      </el-form> -->
+
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
           <label for="username">用户名:</label>

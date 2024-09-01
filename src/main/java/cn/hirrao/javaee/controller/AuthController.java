@@ -61,7 +61,7 @@ public class AuthController {
             return Result.error(103, "手机号已被占用");
         }
         String code = MobileMessage.generateCode();
-        switch (MobileMessage.sendMessage(phoneNumber, code)) {
+        switch (MobileMessage.sendMessage(phoneNumber, code, "20")) {
             case -1:
                 return Result.error(110, "验证码发送失败, 请稍后重试");
             case -2:

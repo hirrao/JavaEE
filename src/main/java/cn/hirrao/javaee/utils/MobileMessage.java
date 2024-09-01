@@ -16,10 +16,10 @@ public class MobileMessage {
         return new Client(config);
     }
 
-    public static int sendMessage(String phoneNumber, String code) {
+    public static int sendMessage(String phoneNumber, String code, String time) {
         try {
             Client client = MobileMessage.createClient();
-            SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest().setSignName(System.getenv("SIGN_NAME")).setTemplateCode(System.getenv("TEMPLATE_CODE")).setPhoneNumbers(phoneNumber).setTemplateParam(String.format("{\"code\":\"%s\"}", code));
+            SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest().setSignName(System.getenv("SIGN_NAME")).setTemplateCode(System.getenv("TEMPLATE_CODE")).setPhoneNumbers(phoneNumber).setTemplateParam(String.format("{\"code\":\"%s\",\"time\":\"%s\"}", code, time));
             RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
             var response = client.sendSmsWithOptions(sendSmsRequest, runtime);
             switch (response.getBody().getCode()) {

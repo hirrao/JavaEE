@@ -68,7 +68,7 @@
         },
         initChart(){
             //var chartDom = document.getElementById('main');
-            var myChart = echarts.init(this.$refs.chart);
+            var myChart = echarts.init(this.$refs.chart as HTMLElement);
             var option;
 
             option = {

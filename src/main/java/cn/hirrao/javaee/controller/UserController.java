@@ -8,6 +8,8 @@ import cn.hirrao.javaee.service.UserService;
 import cn.hirrao.javaee.utils.MobileMessage;
 import cn.hirrao.javaee.utils.SnowFlake;
 import cn.hirrao.javaee.utils.ThreadLocalUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +21,7 @@ import static cn.hirrao.javaee.utils.Jwt.createToken;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final SnowFlake snowFlake = new SnowFlake(1, 1);
     private final UserService userService;
     private final RedisService redisService;
@@ -47,6 +49,7 @@ public class UserController {
         }
         long uid = snowFlake.nextId();
         userService.register(uid, userName, userPassword, phoneNumber);
+        logger.info("注册成功 用户名:{} 手机号:{}", userName, phoneNumber);
         return Result.success();
     }
 
@@ -57,11 +60,17 @@ public class UserController {
             return Result.error(103, "手机号已被占用");
         }
         String code = MobileMessage.generateCode();
-        if (!MobileMessage.sendMessage(phoneNumber, code)) {
-            return Result.error(110, "验证码发送失败, 请稍后重试");
-        } else {
-            redisService.set(phoneNumber, code);
-            return Result.success();
+        switch (MobileMessage.sendMessage(phoneNumber, code)) {
+            case -1:
+                return Result.error(110, "验证码发送失败, 请稍后重试");
+            case -2:
+                return Result.error(113, "手机号状态异常, 请检查手机号是否正确与正常使用");
+            case 0:
+                redisService.set(phoneNumber, code);
+                logger.info("发送验证码成功 手机号:{}", phoneNumber);
+                return Result.success();
+            default:
+                return Result.error(110, "未知内部错误");
         }
     }
 

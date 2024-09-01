@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class RedisServiceImpl implements RedisService {
     private final long DEFAULT_TIMEOUT = 20;
     private final TimeUnit DEFAULT_TIMEUNIT = TimeUnit.MINUTES;
-    RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Autowired
     private RedisServiceImpl(RedisTemplate<String, String> redisTemplate) {

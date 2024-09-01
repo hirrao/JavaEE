@@ -38,7 +38,7 @@
   import router from '../router';
   import { ref } from 'vue';
   import axios from '../axios';
-  
+  import md5 from 'crypto-js/md5';
   // 定义响应式数据
   const username = ref('');
   const password = ref('');
@@ -47,18 +47,30 @@
   // 定义提交处理函数
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('/user/login', {
+      const newPwd = md5(password.value).toString();
+      const newPwd2 = md5(newPwd).toString();
+      const response = await axios.post('/user/auth/login', {
         userName: username.value,
-        userPassword: password.value,
+        userPassword: newPwd2,
+      },{
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
       console.log(response.data);
       token.value = response.data;
+      localStorage.setItem('token', token.value);
       console.log(username.value);
       console.log(password.value);
       console.log(token.value);
+      window.location.href = '/';
+
     } catch (error) {
-      console.error(error);
+      alert('用户名或密码错误')
+      username.value = '';
+      password.value = '';
     }
+
   };
 
     const retrievePWD = () => {

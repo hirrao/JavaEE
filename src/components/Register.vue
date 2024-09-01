@@ -9,7 +9,7 @@
         <div class="form-group">
           <label for="phonenumber">手机号:</label>
           <div class="input-container">
-            <input type="phonenumber" id="phonenumber" v-model="phonenumber" required />
+            <input type="text" id="phonenumber" v-model="phonenumber" required />
             <button class="button1" :disabled="isButtonDisabled" @click="sendVerificationCode">
               {{ isButtonDisabled ? `${countdown}秒后重发` : '发送验证码' }}
             </button>
@@ -28,7 +28,7 @@
   <script setup lang="ts">
   import { ref } from 'vue'
   import router from '../router'
-  
+  import axios from 'axios';
   // 定义响应式数据
   const username = ref('')
   const phonenumber = ref('')
@@ -37,11 +37,19 @@
   const countdown = ref(60)
   let timer: ReturnType<typeof setInterval> | undefined
   
-  const sendVerificationCode = () => {
+  const sendVerificationCode = async () => {
     if (isButtonDisabled.value) return
   
-    // 发送验证码的逻辑
-    console.log('发送验证码')
+
+    const response = await axios.post('https://api.javaee.hirrao.cn/user/auth/messageSend', {
+        phoneNumber: phonenumber.value,
+    },{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+    })
+    console.log(phonenumber);
+    alert(`${response.data.message}`)
   
     // 禁用按钮并开始倒计时
     isButtonDisabled.value = true

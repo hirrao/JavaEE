@@ -18,7 +18,7 @@ public class BloodPressureController {
         this.bloodPressureService = bloodPressureService;
     }
 
-    @GetMapping("/getUid")
+    @GetMapping("/record/uid")
     public Result getUid(@RequestBody Map<String, String> map) {
         var result = bloodPressureService.getBloodPressureList(Long.parseLong(map.get("userId")), map.get("date"));
         return Result.success(result);

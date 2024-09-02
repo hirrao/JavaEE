@@ -7,5 +7,5 @@ import java.util.List;
 
 @Service
 public interface BloodPressureService {
-    List<BloodPressure> getBloodPressureList(Long uid);
+    List<BloodPressure> getBloodPressureList(Long uid, String date);
 }

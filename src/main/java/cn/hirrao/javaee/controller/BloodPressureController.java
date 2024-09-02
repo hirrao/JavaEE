@@ -20,7 +20,7 @@ public class BloodPressureController {
 
     @GetMapping("/getUid")
     public Result getUid(@RequestBody Map<String, String> map) {
-        var result = bloodPressureService.getBloodPressureList(Long.parseLong(map.get("userId")));
+        var result = bloodPressureService.getBloodPressureList(Long.parseLong(map.get("userId")), map.get("date"));
         return Result.success(result);
     }
 }

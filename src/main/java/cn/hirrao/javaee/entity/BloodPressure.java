@@ -15,6 +15,4 @@ public class BloodPressure {
     private Float SBP;
     private Float DBP;
     private String recordTime;
-    private String classification;
-    private String riskLevel;
 }

@@ -8,6 +8,7 @@ import cn.hirrao.javaee.service.UserService;
 import cn.hirrao.javaee.utils.MobileMessage;
 import cn.hirrao.javaee.utils.SnowFlake;
 import cn.hirrao.javaee.utils.StringUtil;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,8 +138,15 @@ public class AuthController {
         } else {
             if (userPassword.equals(user.getUserPassword())) {
                 //密码正确，根据用户的uid和用户名生成token
-                String token = createToken(user);
-                return Result.success(token);
+                String tokens = createToken(user);
+                Object data = new Object() {
+                    @Getter
+                    private final int permission = user.getPermission();
+                    @Getter
+                    private final String token = tokens;
+
+                };
+                return Result.success(data);
             } else {
                 return Result.error(104, "用户名密码错误");
             }

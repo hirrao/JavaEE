@@ -95,7 +95,7 @@
   };
 
     const retrievePWD = () => {
-      router.push('/forget-password');
+      router.push('/forgetpassword');
     };
 
     const regis = () => {

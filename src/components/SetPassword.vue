@@ -24,7 +24,7 @@
   let password = ref('')
   let password2 = ref('')
   
-  const next = () => {
+  const next = async() => {
     if (password.value !== password2.value) {
       alert("两次密码不一致，请重新输入")
       return ;
@@ -33,30 +33,49 @@
         alert("密码长度不得小于6位")
         return ;
       }
-      try{
-        const userName = localStorage.getItem('userName')
-        const phoneNumber = localStorage.getItem('phoneNumber')
-        const messageCode = localStorage.getItem('messageCode')
-        let pwd = md5(password.value).toString()
-        let pwd2 = md5(pwd).toString
+      const userName = localStorage.getItem('userName')
+      const phoneNumber = localStorage.getItem('phoneNumber')
+      const messageCode = localStorage.getItem('messageCode')
+      let pwd = md5(password.value).toString()
+      let pwd2 = md5(pwd).toString
+      if(userName != null){
+        try{
         instance.post('user/auth/register', {
           userName: userName,
           phoneNumber: phoneNumber,
           userPassword: pwd2,
           messageCode: messageCode
-        },{
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+        }
+        )
           alert("注册成功")
           localStorage.removeItem('userName')
           localStorage.removeItem('phoneNumber')
+          localStorage.removeItem('messageCode')
           router.push('/login')
       }
       catch(e){
         console.log(e)
       }
+      } else {
+          try{
+            const response = await instance.post('user/auth/resetPassword',{
+              phoneNumber: phoneNumber,
+              userPassword: pwd2,
+              messageCode: messageCode
+            })
+            if(response.data.value == 0){
+              alert("重设成功")
+              localStorage.removeItem('phoneNumber')
+              localStorage.removeItem('messageCode')
+              router.push('/login')
+            } else {
+              alert("失败")
+            }
+          } catch(e){
+            console.log(e)
+          }
+      }
+      
 
     }
   }

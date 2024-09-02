@@ -51,6 +51,7 @@
           'Content-Type': 'application/json',
         },
     })
+    localStorage.setItem('phoneNumber', phonenumber.value)
     console.log(phonenumber);
     alert(`${response.data.message}`)
   
@@ -77,7 +78,7 @@
       return
     }
     try{
-      await instance.post('/user/auth/find',{
+      const response = await instance.post('/user/auth/find',{
         userName: username.value,
         phoneNumber: phonenumber.value,
       },{
@@ -85,6 +86,13 @@
           'Content-Type': 'application/json',
         },
       })
+      if(response.data.code!=0){
+        alert('用户名或手机号已存在')
+        username.value = ''
+        phonenumber.value = ''
+        verificationCode.value = ''
+        return
+      }
     } catch(error){
       alert('用户名或手机号已存在')
       username.value = ''
@@ -102,8 +110,19 @@
           'Content-Type': 'application/json',
         },
       });
+      const code = response.data.code;
+      if(code != 0 ){
+        alert('验证码错误')
+        verificationCode.value = ''
+        return
+      }
+      if(phonenumber.value != localStorage.getItem('phoneNumber')){
+        alert('手机号与验证码不匹配')
+        phonenumber.value = ''
+        verificationCode.value = ''
+        return
+      }
       localStorage.setItem('userName', username.value)
-      localStorage.setItem('phoneNumber', phonenumber.value)
       localStorage.setItem('messageCode', verificationCode.value)
       router.push('/setPassword')
     }

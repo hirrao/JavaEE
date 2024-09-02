@@ -29,15 +29,20 @@
       alert("两次密码不一致，请重新输入")
       return ;
     } else {
+      if(password.value.length < 6){
+        alert("密码长度不得小于6位")
+        return ;
+      }
       try{
         const userName = localStorage.getItem('userName')
         const phoneNumber = localStorage.getItem('phoneNumber')
         const messageCode = localStorage.getItem('messageCode')
         let pwd = md5(password.value).toString()
+        let pwd2 = md5(pwd).toString
         instance.post('user/auth/register', {
           userName: userName,
           phoneNumber: phoneNumber,
-          userPassword: pwd,
+          userPassword: pwd2,
           messageCode: messageCode
         },{
           headers: {

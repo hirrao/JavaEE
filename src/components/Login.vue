@@ -69,9 +69,10 @@
   const handleSubmit = async () => {
     try {
       const newPwd = md5(password.value).toString();
+      const newPwd2 = md5(newPwd).toString();
       const response = await instance.post('/user/auth/login', {
         userName: username.value,
-        userPassword: newPwd,
+        userPassword: newPwd2,
       },{
         headers: {
           'Content-Type': 'application/json',

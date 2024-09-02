@@ -36,6 +36,7 @@ public class AuthController {
 
     @PostMapping("/message")
     public Result message(@RequestBody Map<String, String> map) {
+        logger.debug("/message接受请求{}", map);
         String userName = map.get("userName");
         String phoneNumber = map.get("phoneNumber");
         String messageCode = map.get("messageCode");
@@ -57,6 +58,7 @@ public class AuthController {
 
     @PostMapping("/find")
     public Result find(@RequestBody Map<String, String> map) {
+        logger.debug("/find接受请求{}", map);
         String userName = map.get("userName");
         String phoneNumber = map.get("phoneNumber");
         if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(phoneNumber)) {
@@ -71,6 +73,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public Result register(@RequestBody Map<String, String> map) {
+        logger.debug("/register接受请求{}", map);
         String userName = map.get("userName");
         String userPassword = map.get("userPassword");
         String phoneNumber = map.get("phoneNumber");
@@ -96,6 +99,7 @@ public class AuthController {
 
     @PostMapping("/messageSend")
     public Result messageSend(@RequestBody Map<String, String> map) {
+        logger.debug("/messageSend接受请求{}", map);
         String phoneNumber = map.get("phoneNumber");
         if (StringUtil.isEmpty(phoneNumber) || !phoneNumber.matches("^1[3-9]\\d{9}$")) {
             return Result.error(101, "非法手机号");
@@ -121,6 +125,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public Result login(@RequestBody Map<String, String> map) {
+        logger.debug("/login接受请求{}", map);
         String userName = map.get("userName");
         String userPassword = map.get("userPassword");
         if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(userPassword)) {
@@ -142,6 +147,7 @@ public class AuthController {
 
     @PostMapping("/resetPassword")
     public Result resetPassword(@RequestBody Map<String, String> map) {
+        logger.debug("/resetPassword接受请求{}", map);
         String phoneNumber = map.get("phoneNumber");
         String messageCode = map.get("messageCode");
         String newPassword = map.get("newPassword");

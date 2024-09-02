@@ -5,11 +5,11 @@ import cn.hirrao.javaee.mapper.UserMapper;
 import cn.hirrao.javaee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
+
     @Autowired
     private UserServiceImpl(UserMapper userMapper) {
         this.userMapper = userMapper;
@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(User user) {
-        userMapper.update(user);
+    public void update(long uid, String phoneNumber, String sex, String birthday) {
+        userMapper.update(uid, phoneNumber, sex, birthday);
     }
 
     @Override

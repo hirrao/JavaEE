@@ -7,14 +7,16 @@ import cn.hirrao.javaee.service.RedisService;
 import cn.hirrao.javaee.service.UserService;
 import cn.hirrao.javaee.utils.MobileMessage;
 import cn.hirrao.javaee.utils.SnowFlake;
+import cn.hirrao.javaee.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-import java.util.Objects;
 
 import static cn.hirrao.javaee.utils.Jwt.createToken;
 
@@ -33,18 +35,18 @@ public class AuthController {
     }
 
     @PostMapping("/message")
-    public Result message(@RequestBody Map<String,String> map) {
+    public Result message(@RequestBody Map<String, String> map) {
         String userName = map.get("userName");
         String phoneNumber = map.get("phoneNumber");
         String messageCode = map.get("messageCode");
-        if (userName == null || !userName.matches("^[a-zA-Z0-9_]{3,20}$")) {
+        if (StringUtil.isEmpty(userName) || !userName.matches("^[a-zA-Z0-9_]{3,20}$")) {
             return Result.error(101, "非法用户名或密码");
         }
         User user = userService.findByUsername(userName);
         if (user != null) {
             return Result.error(102, "用户名已被占用");
         }
-        if (redisService.get(phoneNumber) == null) {
+        if (StringUtil.isEmpty(redisService.get(phoneNumber))) {
             return Result.error(111, "请发送验证码");
         }
         if (!redisService.get(phoneNumber).equals(messageCode)) {
@@ -54,29 +56,33 @@ public class AuthController {
     }
 
     @PostMapping("/find")
-    public Result find(@RequestBody Map<String,String> map) {
+    public Result find(@RequestBody Map<String, String> map) {
         String userName = map.get("userName");
         String phoneNumber = map.get("phoneNumber");
+        if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(phoneNumber)) {
+            return Result.error(101, "非法用户名或手机号");
+        }
         User user = userService.findByUsername(userName);
         if (user != null) {
             return Result.error(102, "用户名或手机号已被占用");
         }
         return Result.success();
     }
+
     @PostMapping("/register")
-    public Result register(@RequestBody Map<String,String> map) {
+    public Result register(@RequestBody Map<String, String> map) {
         String userName = map.get("userName");
         String userPassword = map.get("userPassword");
         String phoneNumber = map.get("phoneNumber");
         String messageCode = map.get("messageCode");
-        if (userName == null || userPassword == null || !userName.matches("^[a-zA-Z0-9_]{3,20}$") || !userPassword.matches("^[a-zA-Z0-9_]{6,20}$")) {
+        if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(userPassword) || !userName.matches("^[a-zA-Z0-9_]{3,20}$") || !userPassword.matches("^[a-zA-Z0-9_]{6,20}$")) {
             return Result.error(101, "非法用户名或密码");
         }
         User user = userService.findByUsername(userName);
         if (user != null) {
             return Result.error(102, "用户名已被占用");
         }
-        if (redisService.get(phoneNumber) == null) {
+        if (StringUtil.isEmpty(redisService.get(phoneNumber))) {
             return Result.error(111, "请发送验证码");
         }
         if (!redisService.get(phoneNumber).equals(messageCode)) {
@@ -89,8 +95,11 @@ public class AuthController {
     }
 
     @PostMapping("/messageSend")
-    public Result messageSend(@RequestBody Map<String,String> map) {
+    public Result messageSend(@RequestBody Map<String, String> map) {
         String phoneNumber = map.get("phoneNumber");
+        if (StringUtil.isEmpty(phoneNumber) || !phoneNumber.matches("^1[3-9]\\d{9}$")) {
+            return Result.error(101, "非法手机号");
+        }
         User user = userService.findByPhoneNumber(phoneNumber);
         if (user != null) {
             return Result.error(103, "手机号已被占用");
@@ -111,10 +120,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Result login(@RequestBody Map<String,String> map) {
+    public Result login(@RequestBody Map<String, String> map) {
         String userName = map.get("userName");
         String userPassword = map.get("userPassword");
-        if (Objects.equals(userName, "") || Objects.equals(userPassword, "")) {
+        if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(userPassword)) {
             return Result.error(104, "用户名或密码错误");
         }
         User user = userService.findByUsername(userName);
@@ -132,10 +141,13 @@ public class AuthController {
     }
 
     @PostMapping("/resetPassword")
-    public Result resetPassword(@RequestBody Map<String,String> map) {
+    public Result resetPassword(@RequestBody Map<String, String> map) {
         String phoneNumber = map.get("phoneNumber");
         String messageCode = map.get("messageCode");
         String newPassword = map.get("newPassword");
+        if (StringUtil.isEmpty(phoneNumber) || StringUtil.isEmpty(messageCode) || StringUtil.isEmpty(newPassword)) {
+            return Result.error(101, "非法手机号或验证码或密码");
+        }
         User user = userService.findByPhoneNumber(phoneNumber);
         if (user == null) {
             return Result.error(105, "用户不存在");

@@ -19,6 +19,11 @@ public class BloodPressureServiceImpl implements BloodPressureService {
 
     @Override
     public List<BloodPressure> getBloodPressureList(Long uid, String date) {
-        return BloodPressureMapper.getBloodPressureList(uid,date);
+        return BloodPressureMapper.getBloodPressureList(uid, date);
+    }
+
+    @Override
+    public void insertBloodPressure(long bplId, long userId, String date, float sbp, float dbp) {
+        BloodPressureMapper.insertBloodPressure(bplId, userId, date, sbp, dbp);
     }
 }

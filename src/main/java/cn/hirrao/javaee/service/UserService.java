@@ -2,7 +2,11 @@ package cn.hirrao.javaee.service;
 
 
 import cn.hirrao.javaee.entity.User;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.Map;
 
 @Service
 public interface UserService {
@@ -17,4 +21,6 @@ public interface UserService {
     void update(long uid, String phoneNumber, String sex, String birthday);
 
     void updatePassword(long uid, String userPassword);
+
+    IPage<User> accountsInfo(int curPage,int size);
 }

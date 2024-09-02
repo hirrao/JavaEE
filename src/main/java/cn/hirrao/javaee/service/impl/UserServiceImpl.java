@@ -3,8 +3,14 @@ package cn.hirrao.javaee.service.impl;
 import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.mapper.UserMapper;
 import cn.hirrao.javaee.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -43,5 +49,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePassword(long uid, String userPassword) {
         userMapper.updatePassword(uid, userPassword);
+    }
+
+    @Override
+    public IPage<User> accountsInfo(int curPage,int size){
+        Page<User> page=new Page<>(curPage,size);
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.select("uid","userName","userPassword","sex","birthday","permission");
+        return userMapper.selectPage(page,queryWrapper);
     }
 }

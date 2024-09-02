@@ -4,6 +4,8 @@ import cn.hirrao.javaee.entity.Result;
 import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.service.UserService;
 import cn.hirrao.javaee.utils.ThreadLocalUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +41,12 @@ public class UserController {
         var birthday = map.get("birthday");
         userService.update(uid, phoneNumber, sex, birthday);
         return Result.success();
+    }
+
+    @PostMapping("/accountsInfo")
+    public Result accountsInfo(@RequestBody Map<String, String> map){
+        var curPage=Integer.parseInt(map.get("curPage"));
+        var size=Integer.parseInt(map.get("size"));
+        return Result.success(userService.accountsInfo(curPage,size));
     }
 }

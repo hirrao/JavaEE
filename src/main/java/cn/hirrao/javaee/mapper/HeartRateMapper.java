@@ -13,6 +13,6 @@ public interface HeartRateMapper extends BaseMapper<HeartRate> {
 
     @Select("SELECT * FROM heartRateLog WHERE uid=#{uid}")
     List<HeartRate> searchHeartRateById(Long uid);
-    @Insert("INSERT INTO bloodPressureLog(hrlId, uid, heartRate,recordTime) VALUES(#{hrlId},#{uid}, #{heartRate}, #{recordTime})")
+    @Insert("INSERT INTO heartRateLog(hrlId, uid, heartRate,recordTime) VALUES(#{hrlId},#{uid}, #{heartRate}, #{recordTime})")
     void insertHeartRate(long hrlId, long uid, float heartRate,String recordTime);
 }

@@ -1,11 +1,24 @@
 // src/axios.ts
 import axios from 'axios';
+import JSONbig from 'json-bigint'
+
+const JSONbigToString=JSONbig({storeAsString:true})
 
 const instance = axios.create({
   baseURL: 'https://api.javaee.hirrao.cn', // 你的API基础URL
   timeout: 10000, // 请求超时的时间限制
   headers: { 'Content-Type': 'application/json' },
+  transformResponse:[function(data){
+    try{
+      //转换
+      return JSONbigToString.parse(data)
+    }catch(error){
+      //转换失败按元数据返回
+      return data
+    }
+  }]
 });
+
 
 // // 请求拦截器
 // instance.interceptors.request.use(

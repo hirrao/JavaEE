@@ -20,7 +20,6 @@
 import { ref } from 'vue'
 import router from '../router'
 import instance from '../axios'
-import md5 from 'crypto-js/md5'
 let password = ref('')
 let password2 = ref('')
 
@@ -36,14 +35,12 @@ const next = async () => {
     const userName = localStorage.getItem('userName')
     const phoneNumber = localStorage.getItem('phoneNumber')
     const messageCode = localStorage.getItem('messageCode')
-    let pwd = md5(password.value).toString()
-    let pwd2 = md5(pwd).toString
     if (userName != null) {
       try {
         instance.post('user/auth/register', {
           userName: userName,
           phoneNumber: phoneNumber,
-          userPassword: pwd2,
+          userPassword: password.value,
           messageCode: messageCode
         }
         )
@@ -60,7 +57,7 @@ const next = async () => {
       try {
         const response = await instance.post('user/auth/resetPassword', {
           phoneNumber: phoneNumber,
-          userPassword: pwd2,
+          userPassword: password.value,
           messageCode: messageCode
         })
         if (response.data.value == 0) {

@@ -2,9 +2,7 @@
   <div style="display: flex; flex-direction: column; align-items: center">
     <h2>sDJD</h2>
 
-    <el-button id="dialogVisbleBtn" type="primary" size="mini" @click="DialogVisble"
-      >上传血压数据</el-button
-    >
+    <el-button id="dialogVisbleBtn" type="primary" size="mini" @click="DialogVisble">上传血压数据</el-button>
 
     <el-dialog title="添加血压记录" v-model="addDialogVisble" width="80%">
       <el-form ref="form" :model="addBloodPressure" label-width="80px">
@@ -15,12 +13,8 @@
           <el-input v-model="addBloodPressure.DBP" placeholder="请输入低压（舒张压）"></el-input>
         </el-form-item>
         <el-form-item label="测量时间" prop="" recordTime>
-          <el-date-picker
-            v-model="addBloodPressure.recordTime"
-            type="datetime"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="请选择测量时间"
-          ></el-date-picker>
+          <el-date-picker v-model="addBloodPressure.recordTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
+            placeholder="请选择测量时间"></el-date-picker>
         </el-form-item>
         <el-form-item align="center">
           <el-button type="primary" size="mini" @click="AddRecord">添加</el-button>
@@ -120,6 +114,7 @@ function AddRecord() {
   width: 100px;
   height: 30px;
 }
+
 .blood-pressure-log-chart {
   display: flex;
   justify-content: center;

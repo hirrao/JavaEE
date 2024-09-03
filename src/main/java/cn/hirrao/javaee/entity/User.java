@@ -1,5 +1,6 @@
 package cn.hirrao.javaee.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -14,9 +15,12 @@ import lombok.Setter;
 public class User {
     @TableId(value = "uid")
     private Long uid;
+    @TableField("userName")
     private String userName;
     @JsonIgnore
+    @TableField("userPassword")
     private String phoneNumber;
+    @TableField("userPassword")
     private String userPassword;
     private String sex;
     private String birthday;

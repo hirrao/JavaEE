@@ -70,6 +70,10 @@ public class AuthController {
         if (user != null) {
             return Result.error(102, "用户名或手机号已被占用");
         }
+        User user2 = userService.findByPhoneNumber(phoneNumber);
+        if (user2 != null) {
+            return Result.error(103, "用户名或手机号已被占用");
+        }
         return Result.success();
     }
 

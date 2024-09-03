@@ -1,6 +1,5 @@
 package cn.hirrao.javaee.controller;
 
-import cn.hirrao.javaee.entity.BloodPressure;
 import cn.hirrao.javaee.entity.Result;
 import cn.hirrao.javaee.service.BloodPressureService;
 import cn.hirrao.javaee.utils.SnowFlake;
@@ -9,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,7 +24,7 @@ public class BloodPressureController {
     @GetMapping("/record/uid")
     public Result getUid(@RequestBody Map<String, String> map) {
         logger.debug("/record/uid接受请求{}", map);
-        List<BloodPressure> result = bloodPressureService.getBloodPressureList(Long.parseLong(map.get("userId")), map.get("date"));
+        var result = bloodPressureService.getBloodPressureList(Long.parseLong(map.get("userId")), map.get("date"));
         return Result.success(result);
     }
 

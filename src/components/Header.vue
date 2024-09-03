@@ -5,7 +5,7 @@
     </header>
 
     <el-menu
-      :default-active="this.$route.path"
+      :default-active="currentRoute"
       class="el-menu-demo"
       mode="horizontal"
       :ellipsis="false"

@@ -2,10 +2,7 @@ package cn.hirrao.javaee.mapper;
 
 import cn.hirrao.javaee.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
@@ -27,4 +24,10 @@ public interface UserMapper extends BaseMapper<User> {
 
     @Update("update user set userPassword=#{userPassword} where uid = #{uid}")
     void updatePassword(long uid, String userPassword);
+
+    @Update("update user set uid=#{uid},userName=#{userName},sex=#{sex},birthday=#{birthday},permission=#{permission} where uid=#{uid}")
+    void modifyUserInfo(long uid, String userName, String sex, String birthday,int permission);
+
+    @Delete("delete from user where uid=#{uid}")
+    void deleteUser(long uid);
 }

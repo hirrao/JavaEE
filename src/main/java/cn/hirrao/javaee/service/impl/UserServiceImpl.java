@@ -3,6 +3,7 @@ package cn.hirrao.javaee.service.impl;
 import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.mapper.UserMapper;
 import cn.hirrao.javaee.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,23 @@ public class UserServiceImpl implements UserService {
     public IPage<User> accountsInfo(int curPage, int size) {
         Page<User> page = new Page<>(curPage, size);
         return userMapper.selectPage(page, null);
+    }
+
+    @Override
+    public void modifyUserInfo(long uid, String userName, String sex, String birthday,int permission) {
+        userMapper.modifyUserInfo(uid, userName, sex, birthday,permission);
+    }
+
+    @Override
+    public void deleteUser(long uid){
+        userMapper.deleteUser(uid);
+    }
+
+    @Override
+    public IPage<User> searchUserByCondition(int curPage,int size,String searchCondition,String conditionValue){
+        Page<User> page = new Page<>(curPage, size);
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq(searchCondition,conditionValue);
+        return userMapper.selectPage(page, queryWrapper);
     }
 }

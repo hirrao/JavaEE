@@ -23,4 +23,10 @@ public interface UserService {
     void updatePassword(long uid, String userPassword);
 
     IPage<User> accountsInfo(int curPage,int size);
+
+    void modifyUserInfo(long uid, String userName, String sex, String birthday,int permission);
+
+    void deleteUser(long uid);
+
+    IPage<User> searchUserByCondition(int curPage,int size,String searchCondition,String conditionValue);
 }

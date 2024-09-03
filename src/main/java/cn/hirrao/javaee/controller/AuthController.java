@@ -12,6 +12,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,7 +94,8 @@ public class AuthController {
             return Result.error(112, "验证码错误");
         }
         long uid = snowFlake.nextId();
-        userService.register(uid, userName, userPassword, phoneNumber);
+        String password = DigestUtils.md5DigestAsHex(userPassword.getBytes());
+        userService.register(uid, userName, password, phoneNumber);
         logger.info("注册成功 用户名:{} 手机号:{}", userName, phoneNumber);
         return Result.success();
     }
@@ -159,10 +161,11 @@ public class AuthController {
         String phoneNumber = map.get("phoneNumber");
         String messageCode = map.get("messageCode");
         String newPassword = map.get("newPassword");
-        if (StringUtil.isEmpty(phoneNumber) || StringUtil.isEmpty(messageCode) || StringUtil.isEmpty(newPassword)) {
+        if (StringUtil.isEmpty(phoneNumber) || StringUtil.isEmpty(messageCode) || StringUtil.isEmpty(newPassword) || !newPassword.matches("^[a-zA-Z0-9_]{6,20}$")) {
             return Result.error(101, "非法手机号或验证码或密码");
         }
         User user = userService.findByPhoneNumber(phoneNumber);
+        String password = DigestUtils.md5DigestAsHex(newPassword.getBytes());
         if (user == null) {
             return Result.error(105, "用户不存在");
         }
@@ -172,7 +175,7 @@ public class AuthController {
         if (!redisService.get(phoneNumber).equals(messageCode)) {
             return Result.error(112, "验证码错误");
         }
-        userService.updatePassword(user.getUid(), newPassword);
+        userService.updatePassword(user.getUid(), password);
         logger.info("重置密码成功 用户名:{} 手机号:{}", user.getUserName(), phoneNumber);
         return Result.success();
     }

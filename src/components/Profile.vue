@@ -1,35 +1,37 @@
 <template>
-    <div class="intro">
-        <img src="https://s2.loli.net/2024/04/14/uDARibvM2fJZ5Fx.jpg" alt="Profile Picture">
-        <div class="detail">
-            <h2>用户名</h2>
-            <p>性别：男</p>
-            <p>年龄：55</p>
+    <div class="main-profile">
+        <div class="intro">
+            <img src="https://s2.loli.net/2024/04/14/uDARibvM2fJZ5Fx.jpg" alt="Profile Picture">
+            <div class="detail">
+                <h2>用户名</h2>
+                <p>性别：男</p>
+                <p>年龄：55</p>
+            </div>
         </div>
+        <section class="profile">
+            <div class="sidebar">
+                <button>编辑个人资料</button>
+                <p>所在地：北京</p>
+                <p>个性签名：<br> 关注健康，享受生活。</p>
+            </div>
+    
+            <div class="main-content">
+                <div class="stats">
+                    <h3>我的日志</h3>
+                    <button>增加日志</button>
+                </div>
+                <div class="main">
+                    <div class="editor">      
+                        <quill-editor ref="editorRef" v-model:content="content" :options="options" contentType="html"></quill-editor>
+                    </div>
+                    <div>
+                    <!-- <button @click="print">click me</button> -->
+                    </div>
+                </div>
+                <!-- <div v-html="content" style="width: 100px;"></div> -->
+            </div>
+        </section>
     </div>
-    <section class="profile">
-        <div class="sidebar">
-            <button>编辑个人资料</button>
-            <p>所在地：北京</p>
-            <p>个性签名：<br> 关注健康，享受生活。</p>
-        </div>
-
-        <div class="main-content">
-            <div class="stats">
-                <h3>我的日志</h3>
-                <button>增加日志</button>
-            </div>
-            <div class="main">
-                <div class="editor">      
-                    <quill-editor ref="editorRef" v-model:content="content" :options="options" contentType="html"></quill-editor>
-                </div>
-                <div>
-                <!-- <button @click="print">click me</button> -->
-                </div>
-            </div>
-            <!-- <div v-html="content" style="width: 100px;"></div> -->
-        </div>
-    </section>
 </template>
 
 <script setup lang="ts">
@@ -176,7 +178,7 @@
 </script>
 
 <style>
-    body {
+    .main-profile {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;

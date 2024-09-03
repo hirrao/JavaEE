@@ -64,6 +64,7 @@ import md5 from 'crypto-js/md5';
 const username = ref('');
 const password = ref('');
 const token = ref('');
+const permission=ref('')
 
 // 定义提交处理函数
 const handleSubmit = async () => {
@@ -79,8 +80,10 @@ const handleSubmit = async () => {
       },
     });
     console.log(response.data);
-    token.value = response.data;
+    token.value = response.data.data.token;
+    permission.value=response.data.data.permission;
     localStorage.setItem('token', token.value);
+    localStorage.setItem('permission',permission.value);
     console.log(username.value);
     console.log(password.value);
     console.log(token.value);

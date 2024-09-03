@@ -15,7 +15,7 @@
       <el-menu-item index="/">首页</el-menu-item>
       <template v-if="isAdmin()">
         <el-menu-item index="/accountManagement">账号管理</el-menu-item>
-        <el-menu-item index="/healthAdviceAdmin">健康贴士</el-menu-item>
+        <el-menu-item index="/healthAdviceAdmin">文章管理</el-menu-item>
       </template>
       <template v-else>
         <el-menu-item index="/bloodPressure">血压管理</el-menu-item>

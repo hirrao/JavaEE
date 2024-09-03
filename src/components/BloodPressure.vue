@@ -1,125 +1,177 @@
 <template>
-    <div>
-        <h2> sDJD</h2>
+  <div style="display: flex; flex-direction: column; align-items: center">
+    <h2>sDJD</h2>
 
-        <el-button id="dialogVisbleBtn" type="primary" size="mini" @click="DialogVisble">上传血压数据</el-button>
+    <el-button id="dialogVisbleBtn" type="primary" size="mini" @click="DialogVisble"
+      >上传血压数据</el-button
+    >
 
-        <el-dialog title="添加血压记录" v-model="addDialogVisble" width="80%">
-            <el-form ref="form" :model="addBloodPressure" label-width="80px">
-                <el-form-item label="高压（收缩压）" prop="SBP">
-                    <el-input v-model="addBloodPressure.SBP" placeholder="请输入高压（收缩压）"></el-input>
-                </el-form-item>
-                <el-form-item label="低压（舒张压）" prop="DBP">
-                    <el-input v-model="addBloodPressure.DBP" placeholder="请输入低压（舒张压）"></el-input>
-                </el-form-item>
-                <el-form-item label="测量时间" prop="" recordTime>
-                    <el-date-picker v-model="addBloodPressure.recordTime" type="datetime"
-                        value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择测量时间"></el-date-picker>
-                </el-form-item>
-                <el-form-item align="center">
-                    <el-button type="primary" size="mini" @click="AddRecord">添加</el-button>
-                    <el-button type="info" size="mini" @click="CloseDialog">取消</el-button>
-                </el-form-item>
-            </el-form>
-        </el-dialog>
-
-        <div ref="chart" style="width: 100%;height: 400px;background-color: white;"></div>
+    <el-dialog title="添加血压记录" v-model="addDialogVisble" width="80%">
+      <el-form ref="form" :model="addBloodPressure" label-width="80px">
+        <el-form-item label="高压（收缩压）" prop="SBP">
+          <el-input v-model="addBloodPressure.SBP" placeholder="请输入高压（收缩压）"></el-input>
+        </el-form-item>
+        <el-form-item label="低压（舒张压）" prop="DBP">
+          <el-input v-model="addBloodPressure.DBP" placeholder="请输入低压（舒张压）"></el-input>
+        </el-form-item>
+        <el-form-item label="测量时间" prop="" recordTime>
+          <el-date-picker
+            v-model="addBloodPressure.recordTime"
+            type="datetime"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            placeholder="请选择测量时间"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item align="center">
+          <el-button type="primary" size="mini" @click="AddRecord">添加</el-button>
+          <el-button type="info" size="mini" @click="CloseDialog">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+    <div style="display: flex; align-items: center; width: 99vw">
+      <div class="blood-pressure-log-chart" style="width: 80%">
+        <BPLChart1 />
+      </div>
+      <div class="blood-pressure-log-chart" style="width: 20%">
+        <BPLChart2 />
+      </div>
     </div>
+    <div class="blood-pressure-log-detail-table">
+      <table>
+        <thead>
+          <tr>
+            <th>指标</th>
+            <th>最高</th>
+            <th>最低</th>
+            <th>平均</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>收缩压</td>
+            <td>146/71 <span class="badge badge-moderate">轻度</span></td>
+            <td>115/88 <span class="badge badge-normal">正常高值</span></td>
+            <td>131 <span class="badge badge-normal">正常高值</span></td>
+          </tr>
+          <tr>
+            <td>舒张压</td>
+            <td>88/115 <span class="badge badge-normal">正常高值</span></td>
+            <td>71/146 <span class="badge badge-moderate">轻度</span></td>
+            <td>80</td>
+          </tr>
+          <tr>
+            <td>脉压差</td>
+            <td>75 (146/71) <span class="badge badge-high">偏高</span></td>
+            <td>27 (115/88) <span class="badge badge-normal">正常</span></td>
+            <td>51 <span class="badge badge-normal">正常</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
 
-<script lang="ts">
-import * as echarts from 'echarts';
+<script setup lang="ts">
+import { ref } from 'vue'
+import BPLChart1 from './BPLChart1/index.vue'
+import BPLChart2 from './BPLChart2/index.vue'
 
-export default {
-    name: 'HistoryList',
-    data() {
-        return {
-            addDialogVisble: false,
-            addBloodPressure: {
-                SBP: "",
-                DBP: "",
-                recordTime: ""
-            }
-        };
-    },
-    mounted() {
-        this.initChart();
-    },
-    methods: {
-        DialogVisble() {
-            this.addDialogVisble = true;
-        },
-        CloseDialog() {
-            this.addDialogVisble = false;
-            this.addBloodPressure.SBP = ""
-            this.addBloodPressure.DBP = ""
-            this.addBloodPressure.recordTime = ""
-        },
-        AddRecord() {
-            this.addDialogVisble = false;
-            this.addBloodPressure.SBP = ""
-            this.addBloodPressure.DBP = ""
-            this.addBloodPressure.recordTime = ""
-        },
-        initChart() {
-            //var chartDom = document.getElementById('main');
-            var myChart = echarts.init(this.$refs.chart as HTMLElement);
-            var option;
-
-            option = {
-                title: {
-                    text: '血压变化图'
-                },
-                tooltip: {
-                    trigger: 'axis'
-                },
-                legend: {
-                    data: ['舒张压', '收缩压']
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [
-                    {
-                        name: '舒张压',
-                        type: 'line',
-                        stack: 'Total',
-                        data: [320, 332, 301, 334, 390, 330, 320]
-                    },
-                    {
-                        name: '收缩压',
-                        type: 'line',
-                        stack: 'Total',
-                        data: [820, 932, 901, 934, 1290, 1330, 1320]
-                    }
-                ]
-            };
-
-            option && myChart.setOption(option);
-        }
+let addDialogVisble = ref(false)
+let user = ref({
+  riskLevel: {
+    normal: 1,
+    low: 1,
+    light: 2,
+    middle: 1,
+    high: 2,
+    get all() {
+      return this.normal + this.low + this.light + this.middle + this.high
     }
+  },
+  averageSBP: 131,
+  averageDBP: 88
+})
+
+let addBloodPressure = ref({
+  SBP: '',
+  DBP: '',
+  recordTime: ''
+})
+
+function DialogVisble() {
+  addDialogVisble.value = true
+}
+function CloseDialog() {
+  addDialogVisble.value = false
+  addBloodPressure.value.SBP = ''
+  addBloodPressure.value.DBP = ''
+  addBloodPressure.value.recordTime = ''
+}
+function AddRecord() {
+  addDialogVisble.value = false
+  addBloodPressure.value.SBP = ''
+  addBloodPressure.value.DBP = ''
+  addBloodPressure.value.recordTime = ''
 }
 </script>
 
 <style>
 .el-button {
-    width: 100px;
-    height: 30px;
+  width: 100px;
+  height: 30px;
+}
+.blood-pressure-log-chart {
+  display: flex;
+  justify-content: center;
+  padding: 2%;
+  width: 96vw;
+  height: 30vh;
+  background: white;
+}
+
+.blood-pressure-log-detail-table {
+  display: flex;
+  justify-content: center;
+  width: 99vw;
+  background: white;
+}
+
+table {
+  width: 100%;
+  font-size: 16px;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  width: 25%;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.badge {
+  display: block;
+  padding: 2px 6px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #fff;
+  border-radius: 4px;
+}
+
+.badge-normal {
+  background-color: #4caf50;
+}
+
+.badge-moderate {
+  background-color: #ffc107;
+}
+
+.badge-high {
+  background-color: #f44336;
 }
 </style>

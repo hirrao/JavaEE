@@ -2,7 +2,9 @@
   <div style="display: flex; flex-direction: column; align-items: center">
     <h2>sDJD</h2>
 
-    <el-button id="dialogVisbleBtn" type="primary" size="mini" @click="DialogVisble">上传血压数据</el-button>
+    <el-button id="dialogVisbleBtn" type="primary" size="mini" @click="DialogVisble"
+      >上传血压数据</el-button
+    >
 
     <el-dialog title="添加血压记录" v-model="addDialogVisble" width="80%">
       <el-form ref="form" :model="addBloodPressure" label-width="80px">
@@ -78,10 +80,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import axios from 'axios'
 import BPLChart1 from './BPLChart1/index.vue'
 import BPLChart2 from './BPLChart2/index.vue'
 
 let addDialogVisble = ref(false)
+let uid = localStorage.getItem('uid')
 let user = ref({
   riskLevel: {
     normal: 1,
@@ -142,7 +146,34 @@ function AddRecord() {
   }
   //TODO：向后端传输血压数据的逻辑
 
-  addDialogVisble.value = false
+  if (uid) {
+    let data = ref({
+      userId: '',
+      sbp: null as number | null,
+      dbp: null as number | null,
+      date: ''
+    })
+    data.value.userId = uid
+    data.value.sbp = addBloodPressure.value.SBP
+    data.value.dbp = addBloodPressure.value.DBP
+    data.value.date = addBloodPressure.value.recordTime
+    console.log(data)
+    //上传血压数据
+    axios
+      .post('/bp/record/insert', data)
+      .then((response) => {
+        // 处理成功响应
+        ElMessage.success('血压记录已成功添加')
+        console.log('Response:', response.data)
+
+        addDialogVisble.value = false
+      })
+      .catch((error) => {
+        // 处理错误响应
+        ElMessage.error('血压记录添加失败，请稍后重试')
+        console.error('Error:', error)
+      })
+  }
 }
 </script>
 
@@ -151,7 +182,6 @@ function AddRecord() {
   width: 100px;
   height: 30px;
 }
-
 .blood-pressure-log-chart {
   display: flex;
   justify-content: center;

@@ -39,23 +39,19 @@ public class AuthController {
     @PostMapping("/message")
     public Result message(@RequestBody Map<String, String> map) {
         logger.debug("/message接受请求{}", map);
-        String userName = map.get("userName");
-        String phoneNumber = map.get("phoneNumber");
+        String number = map.get("phoneNumber");
         String messageCode = map.get("messageCode");
-        if (StringUtil.isEmpty(userName) || !userName.matches("^[a-zA-Z0-9_]{3,20}$")) {
-            return Result.error(101, "非法用户名或密码");
-        }
-        User user = userService.findByUsername(userName);
-        if (user != null) {
-            return Result.error(102, "用户名已被占用");
-        }
-        if (StringUtil.isEmpty(redisService.get(phoneNumber))) {
+        if (StringUtil.isEmpty(redisService.get(number))) {
             return Result.error(111, "请发送验证码");
         }
-        if (!redisService.get(phoneNumber).equals(messageCode)) {
+        if (!redisService.get(number).equals(messageCode)) {
             return Result.error(112, "验证码错误");
         }
-        return Result.success();
+        Object data = new Object() {
+            @Getter
+            private final String phoneNumber = number;
+        };
+        return Result.success(data);
     }
 
     @PostMapping("/find")

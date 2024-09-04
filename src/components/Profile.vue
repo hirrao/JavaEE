@@ -34,7 +34,7 @@
                         <template v-slot="scoped">
                             <el-button class="tableButton" type="primary" icon="el-icon-edit" @click="viewBlog(scoped.row)">查看</el-button>
                             <el-button class="tableButton" type="primary" icon="el-icon-edit" @click="(scoped.row)">更改</el-button>
-                            <el-button class="tableButton" type="danger" icon="el-icon-delete" @click="(scoped.row)">删除</el-button>
+                            <el-button class="tableButton" type="danger" icon="el-icon-delete" @click="deleteBlog(scoped.row)">删除</el-button>
                         </template>
                         </el-table-column>
                     </el-table>
@@ -134,6 +134,7 @@ function switch_status() {
 interface Blog {
   title: string;
   content: string;
+  blogId: string;
 }
 
 function viewBlog(blog: Blog) {
@@ -142,9 +143,35 @@ function viewBlog(blog: Blog) {
     console.log('Dialog visible:', dialogVisible.value); // 调试输出
 }
 
+function deleteBlog(blog: Blog) {
+    selectedBlog.value = blog;
+    instance.post('/profile/delete', {
+      blogId: selectedBlog.value.blogId
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log('Dialog visible:', dialogVisible.value); // 调试输出
+    window.location.href = '/profile'
+}
+
+
+
 //提交个人日志
 const handleSubmit = async () => {
   try {
+    console.log(content.value)
+    try {
+        if (content.value.trim() === '' || title.value.trim() === '') {
+            alert('标题或内容不能为空')
+            return
+        }
+    } catch (error) {
+        alert('标题或内容不能为空')
+        return
+    }
+    
     uid = localStorage.getItem('uid')
     const response = await instance.post('/profile/add', {
       uid: uid,

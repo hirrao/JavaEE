@@ -34,15 +34,16 @@
         </el-table>
         
         <el-pagination
-          class="paging"
-          v-model:page-size="pageSize"
-          v-model:current-page="currentPage"
-          :page-sizes="[5,10,15,20]"
-          layout="sizes,prev,pager,next,jumper,->,total"
-          @current-change="handleCurrentChange"
-          @size-change="handleSizeChange"
-          :total="total">
-        </el-pagination>
+        class="paging"
+        :page-size="pageSize"
+        :current-page="currentPage"
+        :page-sizes="[5,10,15,20]"
+        layout="sizes,prev,pager,next,jumper,->,total"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+        :total="total">
+      </el-pagination>
+
       </el-card>
   
       <el-dialog title="修改文章信息" v-model="dialogVisible" width="50%">
@@ -125,8 +126,8 @@
         'Content-Type': 'application/json',
       },
     }).then((response) => {
-      articles.value = response.data.data;
-        total.value = response.data.total;
+        articles.value = response.data.data.records;
+        total.value = response.data.data.total;
     });
   }
   
@@ -162,7 +163,7 @@
   }
   
   async function saveArticle() {
-    await instance.post("/articles/update", {
+    await instance.post("/articles/modifyArticleInfo", {
       id: modifyArticle.value.id,
       title: modifyArticle.value.title,
       description: modifyArticle.value.description,

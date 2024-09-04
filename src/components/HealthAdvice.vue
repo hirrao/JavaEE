@@ -63,7 +63,7 @@
   // 获取文章列表数据
   async function fetchArticles() {
     try {
-      const response = await instance.get('/article');
+      const response = await instance.get('/articles');
       articles.value = response.data;
       console.log(articles.value.length);
     } catch (error) {

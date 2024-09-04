@@ -60,6 +60,7 @@ import router from '../router';
 import { ref } from 'vue';
 import instance from '../axios';
 import md5 from 'crypto-js/md5';
+import { ElMessage } from 'element-plus';
 // 定义响应式数据
 const username = ref('');
 const password = ref('');
@@ -78,18 +79,14 @@ const handleSubmit = async () => {
         'Content-Type': 'application/json',
       },
     });
-    console.log(response.data);
     token.value = response.data.data.token;
     permission.value=response.data.data.permission;
     localStorage.setItem('token', token.value);
     localStorage.setItem('permission',permission.value);
-    console.log(username.value);
-    console.log(password.value);
-    console.log(token.value);
     window.location.href = '/';
 
   } catch (error) {
-    alert('用户名或密码错误')
+    ElMessage.error('用户名或密码错误')
     username.value = '';
     password.value = '';
   }

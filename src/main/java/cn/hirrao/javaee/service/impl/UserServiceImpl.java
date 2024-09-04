@@ -55,8 +55,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void modifyUserInfo(long uid, String userName, String sex, String birthday,int permission) {
-        userMapper.modifyUserInfo(uid, userName, sex, birthday,permission);
+    public void modifyUserInfo(long uid, String userName,String phoneNumber, String sex, String birthday,int permission) {
+        userMapper.modifyUserInfo(uid, userName,phoneNumber, sex, birthday,permission);
     }
 
     @Override

@@ -17,7 +17,6 @@ public class User {
     private Long uid;
     @TableField("userName")
     private String userName;
-    @JsonIgnore
     @TableField("phoneNumber")
     private String phoneNumber;
     @TableField("userPassword")

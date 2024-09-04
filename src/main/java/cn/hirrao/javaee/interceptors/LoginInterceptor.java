@@ -7,6 +7,8 @@ import cn.hirrao.javaee.utils.ThreadLocalUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
     private final UserService userService;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private LoginInterceptor(UserService userService) {
@@ -24,13 +27,13 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) {
-        if("OPTIONS".equals(request.getMethod().toUpperCase())) {
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             return true;
         }
         System.out.println(request.getHeader("Authorization"));
         //获取请求头中的token
         String token = request.getHeader("Authorization");
-
+        logger.debug("token={}", token);
         //先验证token
         try {
             String Uid = Jwt.parseToken(token);

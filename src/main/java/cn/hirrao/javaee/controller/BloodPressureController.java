@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+import static cn.hirrao.javaee.utils.BloodPressureUtil.generateClassification;
+import static cn.hirrao.javaee.utils.BloodPressureUtil.generateRiskLevel;
+
 @RestController
 @RequestMapping("/bp")
 public class BloodPressureController {
@@ -38,7 +41,16 @@ public class BloodPressureController {
         if (StringUtil.isEmpty(userId) || StringUtil.isEmpty(date) || StringUtil.isEmpty(sbp) || StringUtil.isEmpty(dbp)) {
             return Result.error(101, "参数错误");
         }
-        bloodPressureService.insertBloodPressure(snowFlake.nextId(), Long.parseLong(userId), date, Float.parseFloat(sbp), Float.parseFloat(dbp));
+
+        //将string处理为数值进行处理
+        float sbpValue = Float.parseFloat(sbp);
+        float dbpValue = Float.parseFloat(dbp);
+
+        // 生成 classification 和 riskLevel
+        String classification = generateClassification(sbpValue, dbpValue);
+        String riskLevel = generateRiskLevel(sbpValue, dbpValue);
+
+        bloodPressureService.insertBloodPressure(snowFlake.nextId(), Long.parseLong(userId), date, sbpValue, dbpValue, classification, riskLevel);
         return Result.success();
     }
 }

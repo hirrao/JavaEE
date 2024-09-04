@@ -80,7 +80,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import axios from 'axios'
+import instance from '../axios'
 import BPLChart1 from './BPLChart1/index.vue'
 import BPLChart2 from './BPLChart2/index.vue'
 
@@ -159,7 +159,7 @@ function AddRecord() {
     data.value.date = addBloodPressure.value.recordTime
     console.log(data)
     //上传血压数据
-    axios
+    instance
       .post('/bp/record/insert', data)
       .then((response) => {
         // 处理成功响应

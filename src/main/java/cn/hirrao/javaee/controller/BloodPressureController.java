@@ -38,7 +38,44 @@ public class BloodPressureController {
         if (StringUtil.isEmpty(userId) || StringUtil.isEmpty(date) || StringUtil.isEmpty(sbp) || StringUtil.isEmpty(dbp)) {
             return Result.error(101, "参数错误");
         }
-        bloodPressureService.insertBloodPressure(snowFlake.nextId(), Long.parseLong(userId), date, Float.parseFloat(sbp), Float.parseFloat(dbp));
+
+        //将string处理为数值进行处理
+        float sbpValue = Float.parseFloat(sbp);
+        float dbpValue = Float.parseFloat(dbp);
+
+        // 生成 classification 和 riskLevel
+        String classification = generateClassification(sbpValue, dbpValue);
+        String riskLevel = generateRiskLevel(sbpValue, dbpValue);
+
+        bloodPressureService.insertBloodPressure(snowFlake.nextId(), Long.parseLong(userId), date, sbpValue, dbpValue, classification, riskLevel);
         return Result.success();
+    }
+
+    private String generateClassification(float sbp, float dbp) {
+        if (sbp >= 180 || dbp >= 110) {
+            return "3级高血压";
+        } else if (sbp >= 160 || dbp >= 100) {
+            return "2级高血压";
+        } else if (sbp >= 140 || dbp >= 90) {
+            return "1级高血压";
+        } else {
+            return "正常";
+        }
+    }
+
+    private String generateRiskLevel(float sbp, float dbp) {
+        if (sbp >= 180 || dbp >= 110) {
+            return "重度";
+        } else if (sbp >= 160 || dbp >= 100) {
+            return "中度";
+        } else if (sbp >= 140 || dbp >= 90) {
+            return "轻度";
+        } else if (sbp >= 120 || dbp >= 80) {
+            return "正常高值";
+        } else if ((sbp <= 90 && dbp <= 60) || (dbp <= 60 && sbp < 140)) {
+            return "偏低";
+        } else {
+            return "正常";
+        }
     }
 }

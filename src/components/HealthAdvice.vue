@@ -159,10 +159,12 @@ p {
 
 .pagination {
   margin-top: 20px;
-  width: 80%;
+  margin-left: 130px;
+  width: 100%; /* 设置为100%以占满父容器 */
+  text-align: center; /* 确保内容居中 */
   background-color: transparent;
-  text-align: center;
 }
+
 
 
 .dialog-article-image {

@@ -24,9 +24,6 @@
       </div>
     </section>
 
-    <footer>
-      <p> 2024 智慧心康. 版权所有。</p>
-    </footer>
   </div>
 </template>
 
@@ -104,11 +101,4 @@ body {
   font-size: 16px;
 }
 
-footer {
-  background-color: transparent;
-  color: black;
-  text-align: center;
-  padding: 10px 0;
-  margin-top: 10px;
-}
 </style>

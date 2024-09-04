@@ -65,7 +65,8 @@ import { ElMessage } from 'element-plus';
 const username = ref('');
 const password = ref('');
 const token = ref('');
-const permission=ref('')
+const permission = ref('')
+const uid = ref('')
 
 // 定义提交处理函数
 const handleSubmit = async () => {
@@ -79,10 +80,17 @@ const handleSubmit = async () => {
         'Content-Type': 'application/json',
       },
     });
-    token.value = response.data.data.token;
-    permission.value=response.data.data.permission;
+    const data = response.data.data;
+    if (data.token == null) {
+      ElMessage.error('用户名或密码错误')
+      return;
+    }
+    token.value = data.token;
+    permission.value = data.permission;
+    uid.value = data.uid;
     localStorage.setItem('token', token.value);
-    localStorage.setItem('permission',permission.value);
+    localStorage.setItem('permission', permission.value);
+    localStorage.setItem('uid',uid.value);
     window.location.href = '/';
 
   } catch (error) {

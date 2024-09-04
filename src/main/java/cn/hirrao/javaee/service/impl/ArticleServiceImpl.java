@@ -1,10 +1,16 @@
 package cn.hirrao.javaee.service.impl;
 
 import cn.hirrao.javaee.entity.Article;
+import cn.hirrao.javaee.entity.Result;
 import cn.hirrao.javaee.mapper.ArticleMapper;
 import cn.hirrao.javaee.service.ArticleService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.List;
 
@@ -28,17 +34,57 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void addArticle(long id, String title, String description, String image, String content) {
-        articleMapper.addArticle(id, title, description, image, content);
+    public void addArticle(String title, String description, String image, String content) {
+        articleMapper.addArticle(title, description, image, content);
+    }
+
+
+    @Override
+    public void deleteArticle(long id) {
+        articleMapper.deleteById(id);
     }
 
     @Override
-    public void update(long id, String title, String description, String image, String content) {
-        articleMapper.update(id, title, description, image, content);
+    public void modifyArticleInfo(long id, String title, String description, String image, String content) {
+        Article article = new Article();
+        article.setId(id);
+        article.setTitle(title);
+        article.setDescription(description);
+        article.setImage(image);
+        article.setContent(content);
+        articleMapper.updateById(article);
     }
 
     @Override
-    public void delete(long id) {
-        articleMapper.delete(id);
+    public IPage<Article> articlesInfo(int curPage, int size) {
+//        PageHelper.startPage(curPage, size);
+//        List<Article> articles = articleMapper.findAll();
+//        PageInfo<Article> pageInfo = new PageInfo<>(articles);
+        Page<Article> page = new Page<>(curPage, size);
+        return articleMapper.selectPage(page,null);
+    }
+
+    @Override
+    public IPage<Article> searchArticleByCondition(int curPage, int size, String searchCondition, String conditionValue) {
+//        PageHelper.startPage(curPage, size);
+//        List<Article> articles;
+//        switch (searchCondition) {
+//            case "title":
+//                articles = articleMapper.findByTitle(conditionValue);
+//                break;
+//            case "description":
+//                articles = articleMapper.findByDescription(conditionValue);
+//                break;
+//            default:
+//                articles = new ArrayList<>();
+//        }
+//        PageInfo<Article> pageInfo = new PageInfo<>(articles);
+        Page<Article> page = new Page<>(curPage, size);
+        QueryWrapper<Article> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq(searchCondition,conditionValue);
+
+
+        return articleMapper.selectPage(page, queryWrapper);
     }
 }
+

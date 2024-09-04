@@ -1,6 +1,7 @@
 package cn.hirrao.javaee.service;
 
 import cn.hirrao.javaee.entity.Article;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +16,14 @@ public interface ArticleService {
     Article findById(long id);
 
     //添加文章
-    void addArticle(long id, String title, String description, String image, String content);
+    void addArticle(String title, String description, String image, String content);
 
-    //更新文章
-    void update(long id, String title, String description, String image, String content);
 
-    //删除文章
-    void delete(long id);
+    void deleteArticle(long id);
+
+    void modifyArticleInfo(long id, String title, String description, String image, String content);
+
+    IPage<Article> articlesInfo(int curPage, int size);
+
+    IPage<Article> searchArticleByCondition(int curPage, int size, String searchCondition, String conditionValue);
 }

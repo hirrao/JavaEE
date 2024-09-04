@@ -17,12 +17,18 @@ public interface ArticleMapper extends BaseMapper<Article> {
     @Select("SELECT * FROM articles WHERE id = #{id}")
     Article findById(long id);
 
-    @Insert("INSERT INTO articles(id, title, description, image, content) VALUES(#{id}, #{title}, #{description}, #{image}, #{content})")
-    void addArticle(long id, String title, String description, String image, String content);
+    @Select("SELECT * FROM articles WHERE title LIKE CONCAT('%', #{title}, '%')")
+    List<Article> findByTitle(String title);
+
+    @Select("SELECT * FROM articles WHERE description LIKE CONCAT('%', #{description}, '%')")
+    List<Article> findByDescription(String description);
+
+    @Insert("INSERT INTO articles(title, description, image, content) VALUES(#{title}, #{description}, #{image}, #{content})")
+    void addArticle(String title, String description, String image, String content);
 
     @Update("UPDATE articles SET title = #{title}, description = #{description}, image = #{image}, content = #{content} WHERE id = #{id}")
-    void update(long id, String title, String description, String image, String content);
+    int updateById(Article article);
 
     @Delete("DELETE FROM articles WHERE id = #{id}")
-    void delete(long id);
+    void deleteById(long id);
 }

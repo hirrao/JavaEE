@@ -27,14 +27,16 @@ public class LoginInterceptor implements HandlerInterceptor {
         if("OPTIONS".equals(request.getMethod().toUpperCase())) {
             return true;
         }
+        System.out.println(request.getHeader("Authorization"));
         //获取请求头中的token
         String token = request.getHeader("Authorization");
 
         //先验证token
         try {
             String Uid = Jwt.parseToken(token);
-            User user = userService.findByUid(Long.parseLong(Uid));
-            ThreadLocalUtil.set(user);
+//            System.out.println(Uid);
+//            User user = userService.findByUid(Long.parseLong(Uid));
+//            ThreadLocalUtil.set(user);
             return true;
         } catch (Exception e) {
             //响应状态码为401

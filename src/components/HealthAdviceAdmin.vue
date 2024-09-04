@@ -13,7 +13,29 @@
           <el-input class="conditionInput" v-model="conditionValue" placeholder="" size="small" clearable></el-input>
           <el-button type="primary" style="height: 40px;margin-right: 5px;" @click="searchByCondition">搜索</el-button>
           <el-button type="danger" style="height: 40px;" @click="clearSearchCondition">清空</el-button>
+          <el-button type="primary" style="height: 40px;margin-left:50px;" @click="addArticlesDialog">添加文章</el-button>
         </div>
+
+        <el-dialog title="添加文章" v-model="addArticlesDialogVisible" width="50%">
+          <el-form ref="form" :model="addArticle" label-width="150px" style="margin-left: auto;margin-right: auto;">
+            <el-form-item class="dialogInput" label="标题" prop="title">
+              <el-input v-model="addArticle.title" placeholder="请输入标题"></el-input>
+            </el-form-item>
+            <el-form-item class="dialogInput" label="描述" prop="description">
+              <el-input v-model="addArticle.description" placeholder="请输入描述"></el-input>
+            </el-form-item>
+            <el-form-item class="dialogInput" label="图片链接" prop="image">
+              <el-input v-model="addArticle.image" placeholder="请输入图片链接"></el-input>
+            </el-form-item>
+            <el-form-item class="dialogInput" label="内容" prop="content">
+              <el-input v-model="addArticle.content" placeholder="请输入内容"></el-input>
+            </el-form-item>
+            <el-form-item align="center">
+              <el-button type="primary" size="small" @click="saveAddArticle">添加</el-button>
+              <el-button type="info" size="small" @click="closeAddDialog">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
   
         <el-table class="table" :data="articles">
           <el-table-column prop="id" label="ID" width="80" />
@@ -84,8 +106,15 @@
   const dialogVisible = ref(false);
   const searchCondition = ref('');
   const conditionValue = ref('');
+  const addArticlesDialogVisible=ref(false);
   const modifyArticle = ref({
     id: ref(''),
+    title: ref(''),
+    description: ref(''),
+    image: ref(''),
+    content: ref('')
+  });
+  const addArticle=ref({
     title: ref(''),
     description: ref(''),
     image: ref(''),
@@ -100,7 +129,7 @@
   function deleteArticle(id: string) {
     let conf = confirm("是否删除这篇文章？");
     if (conf) {
-      instance.post("/articles/delete", {
+      instance.post("/articles/deleteArticle", {
         id: id,
       }, {
         headers: {
@@ -185,6 +214,37 @@
   function closeDialog() {
     dialogVisible.value = false;
   }
+
+  function addArticlesDialog(){
+    addArticlesDialogVisible.value=true
+  }
+
+  async function saveAddArticle(){
+    await instance.post("/articles/add", {
+      title: addArticle.value.title,
+      description: addArticle.value.description,
+      image: addArticle.value.image,
+      content: addArticle.value.content
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(() => {
+      ElMessage.success('添加成功');
+      searchByPage();
+      dialogVisible.value = false;
+    }).catch((error) => {
+      ElMessage.error(error);
+    });
+  }
+
+  function closeAddDialog(){
+    addArticlesDialogVisible.value=false
+  }
+
+  // function addArticles(){
+
+  // }
   </script>
   
   <style>

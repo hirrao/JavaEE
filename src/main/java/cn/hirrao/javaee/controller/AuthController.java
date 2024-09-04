@@ -61,18 +61,10 @@ public class AuthController {
     @PostMapping("/find")
     public Result find(@RequestBody Map<String, String> map) {
         logger.debug("/find接受请求{}", map);
-        String userName = map.get("userName");
         String phoneNumber = map.get("phoneNumber");
-        if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(phoneNumber)) {
-            return Result.error(101, "非法用户名或手机号");
-        }
-        User user = userService.findByUsername(userName);
-        if (user != null) {
-            return Result.error(102, "用户名或手机号已被占用");
-        }
-        User user2 = userService.findByPhoneNumber(phoneNumber);
-        if (user2 != null) {
-            return Result.error(103, "用户名或手机号已被占用");
+        User user = userService.findByPhoneNumber(phoneNumber);
+        if (user == null) {
+            return Result.error(105, "用户不存在");
         }
         return Result.success();
     }

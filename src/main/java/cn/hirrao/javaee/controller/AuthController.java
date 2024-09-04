@@ -55,9 +55,11 @@ public class AuthController {
         if (!redisService.get(phoneNumber).equals(messageCode)) {
             return Result.error(112, "验证码错误");
         }
-        return Result.success();
+        return Result.success("发送成功！");
     }
 
+
+    //查找手机号或者名字是否已被占用
     @PostMapping("/find")
     public Result find(@RequestBody Map<String, String> map) {
         logger.debug("/find接受请求{}", map);
@@ -110,10 +112,6 @@ public class AuthController {
         String phoneNumber = map.get("phoneNumber");
         if (StringUtil.isEmpty(phoneNumber) || !phoneNumber.matches("^1[3-9]\\d{9}$")) {
             return Result.error(101, "非法手机号");
-        }
-        User user = userService.findByPhoneNumber(phoneNumber);
-        if (user != null) {
-            return Result.error(103, "手机号已被占用");
         }
         String code = MobileMessage.generateCode();
         switch (MobileMessage.sendMessage(phoneNumber, code, "20")) {

@@ -22,7 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/user/auth/*", "/error");//排除登录注册接口
+                .excludePathPatterns("/user/auth/*", "/error","/articles","/articles/*");//排除登录注册接口
     }
 
     @Bean

@@ -37,9 +37,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         //先验证token
         try {
             String Uid = Jwt.parseToken(token);
-//            System.out.println(Uid);
-//            User user = userService.findByUid(Long.parseLong(Uid));
-//            ThreadLocalUtil.set(user);
+            System.out.println(Uid);
+            User user = userService.findByUid(Long.parseLong(Uid));
+            ThreadLocalUtil.set(user);
             return true;
         } catch (Exception e) {
             //响应状态码为401

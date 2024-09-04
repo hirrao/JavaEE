@@ -137,6 +137,7 @@ public class AuthController {
                 class Data {
                     private final int permission = user.getPermission();
                     private final String token = tokens;
+                    private final Long uid = user.getUid();
                 }
                 var data = new Data();
                 if (data.getPermission() == -1) return Result.error(106, "该用户已被封禁");

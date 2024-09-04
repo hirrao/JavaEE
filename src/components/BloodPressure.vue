@@ -7,14 +7,24 @@
     <el-dialog title="添加血压记录" v-model="addDialogVisble" width="80%">
       <el-form ref="form" :model="addBloodPressure" label-width="80px">
         <el-form-item label="高压（收缩压）" prop="SBP">
-          <el-input v-model="addBloodPressure.SBP" placeholder="请输入高压（收缩压）"></el-input>
+          <el-input-number
+            v-model="addBloodPressure.SBP"
+            placeholder="请输入高压（收缩压）"
+          ></el-input-number>
         </el-form-item>
         <el-form-item label="低压（舒张压）" prop="DBP">
-          <el-input v-model="addBloodPressure.DBP" placeholder="请输入低压（舒张压）"></el-input>
+          <el-input-number
+            v-model="addBloodPressure.DBP"
+            placeholder="请输入低压（舒张压）"
+          ></el-input-number>
         </el-form-item>
         <el-form-item label="测量时间" prop="" recordTime>
-          <el-date-picker v-model="addBloodPressure.recordTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="请选择测量时间"></el-date-picker>
+          <el-date-picker
+            v-model="addBloodPressure.recordTime"
+            type="datetime"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            placeholder="请选择测量时间"
+          ></el-date-picker>
         </el-form-item>
         <el-form-item align="center">
           <el-button type="primary" size="mini" @click="AddRecord">添加</el-button>
@@ -67,6 +77,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
 import BPLChart1 from './BPLChart1/index.vue'
 import BPLChart2 from './BPLChart2/index.vue'
 
@@ -87,8 +98,8 @@ let user = ref({
 })
 
 let addBloodPressure = ref({
-  SBP: '',
-  DBP: '',
+  SBP: null as number | null,
+  DBP: null as number | null,
   recordTime: ''
 })
 
@@ -97,15 +108,41 @@ function DialogVisble() {
 }
 function CloseDialog() {
   addDialogVisble.value = false
-  addBloodPressure.value.SBP = ''
-  addBloodPressure.value.DBP = ''
+  addBloodPressure.value.SBP = null
+  addBloodPressure.value.DBP = null
   addBloodPressure.value.recordTime = ''
 }
 function AddRecord() {
+  //校验填写表单中的数据
+  if (!addBloodPressure.value.SBP) {
+    ElMessage.error('请填写高压（收缩压）')
+    return
+  }
+  if (
+    addBloodPressure.value.SBP &&
+    (addBloodPressure.value.SBP < 0 || addBloodPressure.value.SBP > 300)
+  ) {
+    ElMessage.error('请检查您的高压（收缩压）是否填写正确')
+    return
+  }
+  if (!addBloodPressure.value.DBP) {
+    ElMessage.error('请填写低压（舒张压）')
+    return
+  }
+  if (
+    addBloodPressure.value.DBP &&
+    (addBloodPressure.value.DBP < 0 || addBloodPressure.value.DBP > 200)
+  ) {
+    ElMessage.error('请检查您的低压（舒张压）是否填写正确')
+    return
+  }
+  if (!addBloodPressure.value.recordTime || addBloodPressure.value.recordTime == '') {
+    ElMessage.error('请填写您的测量时间')
+    return
+  }
+  //TODO：向后端传输血压数据的逻辑
+
   addDialogVisble.value = false
-  addBloodPressure.value.SBP = ''
-  addBloodPressure.value.DBP = ''
-  addBloodPressure.value.recordTime = ''
 }
 </script>
 

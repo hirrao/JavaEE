@@ -17,7 +17,7 @@
         <el-menu-item index="/healthAdvice">健康一言</el-menu-item>
       </template>
       <template v-if="isLoggedIn">
-        <el-menu-item index="/profile">个人中心</el-menu-item>
+        <el-menu-item index="/profile">{{ userName }}</el-menu-item>
         <el-menu-item @click="logout">登出</el-menu-item>
       </template>
       <template v-else>
@@ -53,6 +53,8 @@ const isLoggedIn = ref<boolean | null>(null);
 
 
 const currentRoute = computed(() => route.path);
+
+let userName = localStorage.getItem('userName')
 
 function handleSelect(index: string) {
   router.push(index);

@@ -36,7 +36,7 @@
 
 <style>
 body {
-  background-image: url('/back.jpg');
+  background-image: url('/back2.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

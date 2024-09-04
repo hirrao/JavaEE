@@ -2,9 +2,7 @@
   <div style="display: flex; flex-direction: column; align-items: center">
     <h2>sDJD</h2>
 
-    <el-button id="dialogVisbleBtn" type="primary" size="mini" @click="DialogVisble"
-      >上传血压数据</el-button
-    >
+    <el-button id="dialogVisbleBtn" type="primary" size="mini" @click="DialogVisble">上传血压数据</el-button>
 
     <el-dialog title="添加血压记录" v-model="addDialogVisble" width="80%">
       <el-form ref="form" :model="addBloodPressure" label-width="80px">
@@ -153,6 +151,7 @@ function AddRecord() {
   width: 100px;
   height: 30px;
 }
+
 .blood-pressure-log-chart {
   display: flex;
   justify-content: center;

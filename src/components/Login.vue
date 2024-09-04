@@ -60,34 +60,41 @@ import router from '../router';
 import { ref } from 'vue';
 import instance from '../axios';
 import md5 from 'crypto-js/md5';
+import { ElMessage } from 'element-plus';
 // 定义响应式数据
 const username = ref('');
 const password = ref('');
 const token = ref('');
+const permission = ref('')
+const uid = ref('')
 
 // 定义提交处理函数
 const handleSubmit = async () => {
   try {
     const newPwd = md5(password.value).toString();
-    const newPwd2 = md5(newPwd).toString();
     const response = await instance.post('/user/auth/login', {
       userName: username.value,
-      userPassword: newPwd2,
+      userPassword: newPwd,
     }, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    console.log(response.data);
-    token.value = response.data;
+    const data = response.data.data;
+    if (data.token == null) {
+      ElMessage.error('用户名或密码错误')
+      return;
+    }
+    token.value = data.token;
+    permission.value = data.permission;
+    uid.value = data.uid;
     localStorage.setItem('token', token.value);
-    console.log(username.value);
-    console.log(password.value);
-    console.log(token.value);
+    localStorage.setItem('permission', permission.value);
+    localStorage.setItem('uid',uid.value);
     window.location.href = '/';
 
   } catch (error) {
-    alert('用户名或密码错误')
+    ElMessage.error('用户名或密码错误')
     username.value = '';
     password.value = '';
   }

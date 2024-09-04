@@ -24,8 +24,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import router from '../router'
-import instance from '../axios';
+import router from '@/router'
+import instance from '@/axios';
+import { ElMessage } from 'element-plus';
 // 定义响应式数据
 const phonenumber = ref('')
 const verificationCode = ref('')
@@ -35,8 +36,9 @@ let timer: ReturnType<typeof setInterval> | undefined
 
 const sendVerificationCode = async () => {
   if (isButtonDisabled.value) return
-  if (phonenumber.value.length != 11 || isNaN(Number(phonenumber.value)) || phonenumber.value[0] != '1') {
-    alert("请输入正确的手机号")
+  const phoneNumberPattern = /^1[3-9]\d{9}$/;
+  if (phoneNumberPattern.test(phonenumber.value)) {
+    ElMessage("请输入正确的手机号")
     return
   }
   try {
@@ -48,12 +50,12 @@ const sendVerificationCode = async () => {
       },
     })
     if (response.data.code != 0) {
-      alert("该手机号还未注册")
+      ElMessage("该手机号还未注册")
       phonenumber.value = ''
       return
     }
   } catch (error) {
-    alert("网络错误")
+    ElMessage("未知错误")
     phonenumber.value = ''
     return
   }
@@ -68,7 +70,7 @@ const sendVerificationCode = async () => {
     })
     localStorage.setItem('phoneNumber', phonenumber.value)
     console.log(phonenumber);
-    alert(`${response.data.message}`)
+    ElMessage(`${response.data.message}`)
 
     // 禁用按钮并开始倒计时
     isButtonDisabled.value = true
@@ -82,17 +84,17 @@ const sendVerificationCode = async () => {
       }
     }, 1000)
   } catch (error) {
-    alert("网络错误")
+    ElMessage("网络错误")
     phonenumber.value = ''
   }
 }
 const next = async () => {
   if (phonenumber.value == "") {
-    alert("请输入手机号")
+    ElMessage("请输入手机号")
     return
   }
   if (verificationCode.value == "") {
-    alert("请输入验证码")
+    ElMessage("请输入验证码")
     return
   }
   try {
@@ -106,12 +108,12 @@ const next = async () => {
     });
     const code = response.data.code;
     if (code != 0) {
-      alert('验证码错误')
+      ElMessage('验证码错误')
       verificationCode.value = ''
       return
     }
-    if (phonenumber.value != localStorage.getItem('phoneNumber')) {
-      alert('手机号与验证码不匹配')
+    if (phonenumber.value === response.data.phoneNumber) {
+      ElMessage('手机号与验证码不匹配')
       phonenumber.value = ''
       verificationCode.value = ''
       return
@@ -120,7 +122,7 @@ const next = async () => {
     router.push('/setPassword')
   }
   catch (error) {
-    alert('网络错误')
+    ElMessage('网络错误')
     verificationCode.value = ''
   }
 }

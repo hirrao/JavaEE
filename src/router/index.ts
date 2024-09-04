@@ -9,6 +9,8 @@ import HealthAdvice from '@/components/HealthAdvice.vue';
 import Medicine from '@/components/Medicine.vue';
 import SetPassword from '@/components/SetPassword.vue';
 import Profile from '@/components/Profile.vue';
+import AccountManagement from '../components/AccountManagement.vue';
+import HealthAdviceAdmin from '@/components/HealthAdviceAdmin.vue';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -54,6 +56,16 @@ const routes: Array<RouteRecordRaw> = [
     path: '/profile',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/accountManagement',
+    name: 'AccountManagement',
+    component: AccountManagement
+  },
+  {
+    path: '/healthAdviceAdmin',
+    name: 'HealthAdviceAdmin',
+    component: HealthAdviceAdmin
   }
 ];
 

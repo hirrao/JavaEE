@@ -10,7 +10,7 @@
         </div>
         <section class="profile">
             <div class="sidebar">
-                <button>编辑个人资料</button>
+                <button @click="editProfile()">编辑个人资料</button>
                 <p>uid：{{ uid }}</p>
                 <p>
                     个性签名：
@@ -18,6 +18,16 @@
                     {{  }}
                 </p>
             </div>
+
+            <el-dialog title="" v-model="confirm" width="30%" style="">
+                <div style="text-align: center;">
+                    <h1>确认删除吗</h1>
+                </div>
+                <div v-if="selectedBlog" style="display: flex; justify-content: center; gap: 10px;">
+                    <button @click="confirm = false">取消</button>
+                    <button @click="deleteBlog(selectedBlog)">确认</button>
+                </div>
+            </el-dialog>
 
             <div v-if="status_" class="main-content">
                 <div class="stats">
@@ -33,8 +43,8 @@
                         <el-table-column header-align="center" align="center" label="操作">
                         <template v-slot="scoped">
                             <el-button class="tableButton" type="primary" icon="el-icon-edit" @click="viewBlog(scoped.row)">查看</el-button>
-                            <el-button class="tableButton" type="primary" icon="el-icon-edit" @click="(scoped.row)">更改</el-button>
-                            <el-button class="tableButton" type="danger" icon="el-icon-delete" @click="deleteBlog(scoped.row)">删除</el-button>
+                            <el-button class="tableButton" type="primary" icon="el-icon-edit" @click="updateBlog(scoped.row)">更改</el-button>
+                            <el-button class="tableButton" type="danger" icon="el-icon-delete" @click="confirm = true,setBlog(scoped.row)">删除</el-button>
                         </template>
                         </el-table-column>
                     </el-table>
@@ -53,6 +63,15 @@
                         <div v-if="selectedBlog" style=" align-items: center;">
                             <h1 style=" padding-left: 40%;padding-right: 40%;">{{ selectedBlog.title }}</h1>
                             <div v-html="selectedBlog.content" style=" padding-left: 5%; padding-right: 5%;"></div>
+                        </div>
+                    </el-dialog>
+                    <el-dialog title="" v-model="confirm" width="30%" style="">
+                        <div style="text-align: center;">
+                            <h1>确认删除吗</h1>
+                        </div>
+                        <div v-if="selectedBlog" style="display: flex; justify-content: center; gap: 10px;">
+                            <button @click="confirm = false">取消</button>
+                            <button @click="deleteBlog(selectedBlog)">确认</button>
                         </div>
                     </el-dialog>
                 </div>
@@ -126,21 +145,39 @@ const currentPage=ref(1);
 const total=ref(0);
 const dialogVisible=ref(false);
 const selectedBlog = ref<Blog | null>(null);
+const confirm = ref(false)
+const ok = ref(false)
+const blogId = ref()
 
 function switch_status() {
     status_.value = !status_.value
 }
+function editProfile() {
 
+}
 interface Blog {
   title: string;
   content: string;
   blogId: string;
 }
 
+function setBlog(blog: Blog) {
+    selectedBlog.value = blog;
+}
+
 function viewBlog(blog: Blog) {
     selectedBlog.value = blog;
     dialogVisible.value = true;
     console.log('Dialog visible:', dialogVisible.value); // 调试输出
+}
+
+function updateBlog(blog: Blog) {
+    selectedBlog.value = blog;
+    switch_status()
+    ok.value = true
+    content.value = blog.content
+    title.value = blog.title
+    blogId.value = blog.blogId
 }
 
 function deleteBlog(blog: Blog) {
@@ -157,7 +194,6 @@ function deleteBlog(blog: Blog) {
 }
 
 
-
 //提交个人日志
 const handleSubmit = async () => {
   try {
@@ -171,19 +207,33 @@ const handleSubmit = async () => {
         alert('标题或内容不能为空')
         return
     }
-    
-    uid = localStorage.getItem('uid')
-    const response = await instance.post('/profile/add', {
-      uid: uid,
-      content: content.value,
-      title: title.value
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    alert('提交成功')
-    window.location.href = '/profile'
+    if (ok.value) {
+        instance.post('/profile/update', {
+            blogId: blogId.value,
+            content: content.value,
+            title: title.value
+            }, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        alert('提交成功')
+        ok.value = false
+        window.location.href = '/profile'
+    } else {
+        uid = localStorage.getItem('uid')
+        const response = await instance.post('/profile/add', {
+        uid: uid,
+        content: content.value,
+        title: title.value
+        }, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        });
+        alert('提交成功')
+        window.location.href = '/profile'
+    }
   } catch (error) {
     alert('提交失败')
   }

@@ -24,7 +24,7 @@ public interface UserService {
 
     IPage<User> accountsInfo(int curPage,int size);
 
-    void modifyUserInfo(long uid, String userName, String sex, String birthday,int permission);
+    void modifyUserInfo(long uid, String userName,String phoneNumber, String sex, String birthday,int permission);
 
     void deleteUser(long uid);
 

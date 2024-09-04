@@ -25,8 +25,8 @@ public interface UserMapper extends BaseMapper<User> {
     @Update("update user set userPassword=#{userPassword} where uid = #{uid}")
     void updatePassword(long uid, String userPassword);
 
-    @Update("update user set uid=#{uid},userName=#{userName},sex=#{sex},birthday=#{birthday},permission=#{permission} where uid=#{uid}")
-    void modifyUserInfo(long uid, String userName, String sex, String birthday,int permission);
+    @Update("update user set uid=#{uid},userName=#{userName},phoneNumber=#{phoneNumber},sex=#{sex},birthday=#{birthday},permission=#{permission} where uid=#{uid}")
+    void modifyUserInfo(long uid, String userName,String phoneNumber, String sex, String birthday,int permission);
 
     @Delete("delete from user where uid=#{uid}")
     void deleteUser(long uid);

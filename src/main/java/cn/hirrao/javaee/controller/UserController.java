@@ -54,6 +54,7 @@ public class UserController {
     public Result modifyUserInfo(@RequestBody Map<String, String> map) {
         var uid = Long.parseLong(map.get("uid"));
         var userName = map.get("userName");
+        var phoneNumber=map.get("phoneNumber");
         var sex = map.get("sex");
         var birthday = map.get("birthday");
         var permission = Integer.parseInt(map.get("permission"));
@@ -63,7 +64,7 @@ public class UserController {
         System.out.println("modifyUserInfo birthday:"+birthday);
         System.out.println("modifyUserInfo permission:"+permission);
 
-        userService.modifyUserInfo(uid, userName, sex, birthday,permission);
+        userService.modifyUserInfo(uid, userName,phoneNumber, sex, birthday,permission);
         return Result.success();
     }
 

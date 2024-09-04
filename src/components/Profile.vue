@@ -27,11 +27,14 @@
                 <div>
                     <el-card class="card">
                     <el-table class="table" :data="Blog">
-                        <el-table-column prop="uid" label="uid" width="200" />
-
+                        <el-table-column prop="title" label="标题" width="200" />
+                        <el-table-column prop="createTime" label="发布时间" width="180" />
+                        <el-table-column prop="updateTime" label="最后更改" width="180" />
                         <el-table-column header-align="center" align="center" label="操作">
                         <template v-slot="scoped">
-                            <el-button class="tableButton" type="primary" icon="el-icon-edit" @click="(scoped.row)">查看</el-button>
+                            <el-button class="tableButton" type="primary" icon="el-icon-edit" @click="viewBlog(scoped.row)">查看</el-button>
+                            <el-button class="tableButton" type="primary" icon="el-icon-edit" @click="(scoped.row)">更改</el-button>
+                            <el-button class="tableButton" type="danger" icon="el-icon-delete" @click="(scoped.row)">删除</el-button>
                         </template>
                         </el-table-column>
                     </el-table>
@@ -46,8 +49,11 @@
                         v-model:total="total">
                     </el-pagination>
                     </el-card>
-                    <el-dialog title="修改账号信息" v-model="dialogVisble" width="50%">
-                        
+                    <el-dialog title="" v-model="dialogVisible" width="80%" append-to-body>
+                        <div v-if="selectedBlog" style=" align-items: center;">
+                            <h1 style=" padding-left: 40%;padding-right: 40%;">{{ selectedBlog.title }}</h1>
+                            <div v-html="selectedBlog.content" style=" padding-left: 5%; padding-right: 5%;"></div>
+                        </div>
                     </el-dialog>
                 </div>
             </div>
@@ -118,10 +124,22 @@ let Blog=ref([]);
 const pageSize=ref(5);
 const currentPage=ref(1);
 const total=ref(0);
-const dialogVisble=ref(false);
+const dialogVisible=ref(false);
+const selectedBlog = ref<Blog | null>(null);
 
 function switch_status() {
     status_.value = !status_.value
+}
+
+interface Blog {
+  title: string;
+  content: string;
+}
+
+function viewBlog(blog: Blog) {
+    selectedBlog.value = blog;
+    dialogVisible.value = true;
+    console.log('Dialog visible:', dialogVisible.value); // 调试输出
 }
 
 //提交个人日志
@@ -138,6 +156,7 @@ const handleSubmit = async () => {
       },
     });
     alert('提交成功')
+    window.location.href = '/profile'
   } catch (error) {
     alert('提交失败')
   }

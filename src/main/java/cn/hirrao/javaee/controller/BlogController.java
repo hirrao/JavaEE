@@ -73,4 +73,23 @@ public class BlogController {
         Long uid = Long.parseLong(map.get("uid"));
         return Result.success(blogService.search(curPage, size, uid));
     }
+
+    @PostMapping("/delete")
+    public Result delete(@RequestBody Map<String, String> map) {
+        Long blogId = Long.parseLong(map.get("blogId"));
+        blogService.delete(blogId);
+        return Result.success();
+    }
+
+    @PostMapping("/update")
+    public Result update(@RequestBody Map<String, String> map) {
+        Long blogId = Long.parseLong(map.get("blogId"));
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String time = now.format(formatter);
+        String content = map.get("content");
+        String title = map.get("title");
+        blogService.update(blogId, content, time, title);
+        return Result.success();
+    }
 }

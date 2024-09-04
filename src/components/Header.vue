@@ -4,14 +4,8 @@
       <h2>智慧心康</h2>
     </header>
 
-    <el-menu
-      :default-active="currentRoute"
-      class="el-menu-demo"
-      mode="horizontal"
-      :ellipsis="false"
-      @select="handleSelect"
-      unique-opened
-      router>
+    <el-menu :default-active="currentRoute" class="el-menu-demo" mode="horizontal" :ellipsis="false"
+      @select="handleSelect" unique-opened router>
       <el-menu-item index="/">首页</el-menu-item>
       <template v-if="isAdmin()">
         <el-menu-item index="/accountManagement">账号管理</el-menu-item>
@@ -53,11 +47,26 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import instance from '@/axios';
 
 const router = useRouter();
 const route = useRoute();
 
-const isLoggedIn = ref(!!localStorage.getItem('token'));
+const isLoggedIn = ref<boolean | null>(null);
+
+(async () => {
+  try {
+    const response = await instance.get('/user/userInfo', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    isLoggedIn.value = response.status === 200;
+  } catch (error) {
+    isLoggedIn.value = false;
+  }
+})();
+
 
 const currentRoute = computed(() => route.path);
 
@@ -68,29 +77,28 @@ function handleSelect(index: string) {
 function logout() {
   // 删除 token 并更新登录状态
   localStorage.removeItem('token');
-  localStorage.removeItem('permission') 
-  isLoggedIn.value = false;
+  localStorage.removeItem('permission')
   router.push('/');
 }
 
-function isAdmin(){
-    // localStorage.clear()
-    // console.log(localStorage)
-    //localStorage.setItem('permission','1')
-    console.log("permission"+localStorage.getItem('permission'))
-    console.log("token"+localStorage.getItem('token'))
-    if(localStorage.getItem('permission')==null){
-      console.log("localStorage.getItem('permission')==null")
-      return false
-    }
-    let temp=localStorage.getItem('permission')
-    console.log(temp)
-    if(temp==='1'){
-      console.log("temp==='1'")
-      return true
-    }
+function isAdmin() {
+  // localStorage.clear()
+  // console.log(localStorage)
+  //localStorage.setItem('permission','1')
+  console.log("permission" + localStorage.getItem('permission'))
+  console.log("token" + localStorage.getItem('token'))
+  if (localStorage.getItem('permission') == null) {
+    console.log("localStorage.getItem('permission')==null")
     return false
   }
+  let temp = localStorage.getItem('permission')
+  console.log(temp)
+  if (temp === '1') {
+    console.log("temp==='1'")
+    return true
+  }
+  return false
+}
 </script>
 
 <style>

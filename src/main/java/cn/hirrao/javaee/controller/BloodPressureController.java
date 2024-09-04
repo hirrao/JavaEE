@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+import static cn.hirrao.javaee.utils.BloodPressureUtil.generateClassification;
+import static cn.hirrao.javaee.utils.BloodPressureUtil.generateRiskLevel;
+
 @RestController
 @RequestMapping("/bp")
 public class BloodPressureController {
@@ -49,33 +52,5 @@ public class BloodPressureController {
 
         bloodPressureService.insertBloodPressure(snowFlake.nextId(), Long.parseLong(userId), date, sbpValue, dbpValue, classification, riskLevel);
         return Result.success();
-    }
-
-    private String generateClassification(float sbp, float dbp) {
-        if (sbp >= 180 || dbp >= 110) {
-            return "3级高血压";
-        } else if (sbp >= 160 || dbp >= 100) {
-            return "2级高血压";
-        } else if (sbp >= 140 || dbp >= 90) {
-            return "1级高血压";
-        } else {
-            return "正常";
-        }
-    }
-
-    private String generateRiskLevel(float sbp, float dbp) {
-        if (sbp >= 180 || dbp >= 110) {
-            return "重度";
-        } else if (sbp >= 160 || dbp >= 100) {
-            return "中度";
-        } else if (sbp >= 140 || dbp >= 90) {
-            return "轻度";
-        } else if (sbp >= 120 || dbp >= 80) {
-            return "正常高值";
-        } else if ((sbp <= 90 && dbp <= 60) || (dbp <= 60 && sbp < 140)) {
-            return "偏低";
-        } else {
-            return "正常";
-        }
     }
 }

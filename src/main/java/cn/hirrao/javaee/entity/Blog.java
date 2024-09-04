@@ -1,5 +1,6 @@
 package cn.hirrao.javaee.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -13,8 +14,11 @@ import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 public class Blog {
     @TableId(value = "blogId")
     private Long blogId;
+    @TableField("content")
     private String content;
+    @TableField("createTime")
     private String createTime;
+    @TableField("updateTime")
     private String updateTime;
     private Long uid;
     private String title;

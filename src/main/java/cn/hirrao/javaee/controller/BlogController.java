@@ -66,4 +66,11 @@ public class BlogController {
         return Result.success();
     }
 
+    @PostMapping("/search")
+    public Result searchUserByCondition(@RequestBody Map<String, String> map){
+        int curPage=Integer.parseInt(map.get("curPage"));
+        int size=Integer.parseInt(map.get("size"));
+        Long uid = Long.parseLong(map.get("uid"));
+        return Result.success(blogService.search(curPage, size, uid));
+    }
 }

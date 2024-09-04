@@ -1,6 +1,7 @@
 package cn.hirrao.javaee.service;
 
 import cn.hirrao.javaee.entity.Blog;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface BlogService {
     void update(Long blogId, String content, String updateTime, String title);
 
     void delete(Long blogId);
+
+    IPage<Blog> search(int curPage,int size, Long uid);
 }

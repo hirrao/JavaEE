@@ -35,6 +35,7 @@ const next = async () => {
     const userName = localStorage.getItem('userName')
     const phoneNumber = localStorage.getItem('phoneNumber')
     const messageCode = localStorage.getItem('messageCode')
+    //通过用户名是否为空判断当前是注册还是重设密码
     if (userName != null) {
       try {
         instance.post('user/auth/register', {
@@ -61,7 +62,7 @@ const next = async () => {
           messageCode: messageCode
         })
         if (response.data.value == 0) {
-          alert("重设成功")
+          alert("重设密码成功")
           localStorage.removeItem('phoneNumber')
           localStorage.removeItem('messageCode')
           router.push('/login')

@@ -37,19 +37,20 @@ let timer: ReturnType<typeof setInterval> | undefined
 const sendVerificationCode = async () => {
   if (isButtonDisabled.value) return
   const phoneNumberPattern = /^1[3-9]\d{9}$/;
-  if (phoneNumberPattern.test(phonenumber.value)) {
+  if (!phoneNumberPattern.test(phonenumber.value)) {
     ElMessage("请输入正确的手机号")
     return
   }
   try {
     const response = await instance.post('user/auth/find', {
+      userName: "test",
       phoneNumber: phonenumber.value,
     }, {
       headers: {
         'Content-Type': 'application/json',
       },
     })
-    if (response.data.code != 0) {
+    if (response.data.code == 0) {
       ElMessage("该手机号还未注册")
       phonenumber.value = ''
       return

@@ -38,6 +38,8 @@ const isButtonDisabled = ref(false)
 const countdown = ref(60)
 let timer: ReturnType<typeof setInterval> | undefined
 
+
+//发送验证码事件
 const sendVerificationCode = async () => {
   if (isButtonDisabled.value) return
   const phoneNumberPattern = /^1[3-9]\d{9}$/;
@@ -70,9 +72,15 @@ const sendVerificationCode = async () => {
   }, 1000)
 }
 
+
+//验证完手机号的下一步触发事件
 const next = async () => {
   if (username.value == "") {
-    ElMessage("请输入用户名")
+    ElMessage.error("请输入用户名")
+    return
+  }
+  if (username.value.length<3) {
+    ElMessage.error('用户名不得小于3位！')
     return
   }
   if (verificationCode.value == "") {
@@ -96,13 +104,17 @@ const next = async () => {
       return
     }
   } catch (error) {
-    ElMessage('用户名或手机号已存在')
+    ElMessage('网络错误')
     username.value = ''
     phonenumber.value = ''
     verificationCode.value = ''
     return
   }
   try {
+    if(localStorage.getItem('phoneNumber')!=phonenumber.value){
+      ElMessage('请勿更改手机号！');
+      return;
+    }
     const response = await instance.post('/user/auth/message', {
       userName: username.value,
       phoneNumber: phonenumber.value,
@@ -118,18 +130,12 @@ const next = async () => {
       verificationCode.value = ''
       return
     }
-    if (phonenumber.value != response.data.data.phoneNumber) {
-      ElMessage('手机号与验证码不匹配')
-      phonenumber.value = ''
-      verificationCode.value = ''
-      return
-    }
     localStorage.setItem('userName', username.value)
     localStorage.setItem('messageCode', verificationCode.value)
     router.push('/setPassword')
   }
   catch (error) {
-    ElMessage('验证码错误')
+    ElMessage('网络错误')
     verificationCode.value = ''
   }
 }

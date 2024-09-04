@@ -81,7 +81,11 @@ const handleSubmit = async () => {
       },
     });
     const data = response.data.data;
-    if (data.token == null) {
+    if(response.data.code==106){
+      ElMessage.error('该账号已被封禁！')
+      return;
+    }
+    else if (data.token == null) {
       ElMessage.error('用户名或密码错误')
       return;
     }
@@ -94,11 +98,10 @@ const handleSubmit = async () => {
     window.location.href = '/';
 
   } catch (error) {
-    ElMessage.error('用户名或密码错误')
+    ElMessage.error('网络错误！')
     username.value = '';
     password.value = '';
   }
-
 };
 
 const retrievePWD = () => {

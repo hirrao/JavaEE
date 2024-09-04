@@ -20,7 +20,7 @@
       <template v-else>
         <el-menu-item index="/bloodPressure">血压管理</el-menu-item>
         <el-menu-item index="/medicine">药物管理</el-menu-item>
-        <el-menu-item index="/healthAdvice">健康贴士</el-menu-item>
+        <el-menu-item index="/healthAdvice">健康一言</el-menu-item>
       </template>
       <template v-if="isLoggedIn">
         <el-menu-item index="/profile">个人中心</el-menu-item>

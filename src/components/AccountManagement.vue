@@ -216,6 +216,7 @@
       await instance.post("/user/modifyUserInfo",{
           uid: modifyAccount.value.uid.toString(),
           userName:modifyAccount.value.userName,
+          phoneNumber:modifyAccount.value.phoneNumber,
           sex:modifyAccount.value.sex,
           birthday:modifyAccount.value.birthday,
           permission:modifyAccount.value.permission

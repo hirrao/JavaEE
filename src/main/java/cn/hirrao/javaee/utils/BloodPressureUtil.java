@@ -22,7 +22,7 @@ public class BloodPressureUtil {
             return "轻度";
         } else if (sbp >= 120 || dbp >= 80) {
             return "正常高值";
-        } else if ((sbp <= 90 && dbp <= 60) || (dbp <= 60 && sbp < 140)) {
+        } else if (sbp <= 90 || dbp <= 60) {
             return "偏低";
         } else {
             return "正常";

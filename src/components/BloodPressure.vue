@@ -94,11 +94,11 @@ let addDialogVisble = ref(false)
 let uid = localStorage.getItem('uid')
 
 let riskLevel = ref({
-  重度: 1,
-  中度: 1,
-  轻度: 2,
-  正常高值: 1,
-  偏低: 2
+  重度: 0,
+  中度: 0,
+  轻度: 0,
+  正常高值: 0,
+  偏低: 0
 })
 
 let addBloodPressure = ref({

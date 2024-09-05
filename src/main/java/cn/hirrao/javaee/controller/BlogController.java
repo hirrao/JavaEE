@@ -64,7 +64,8 @@ public class BlogController {
     public Result searchUserByCondition(@RequestBody Map<String, String> map) {
         int curPage = Integer.parseInt(map.get("curPage"));
         int size = Integer.parseInt(map.get("size"));
-        Long uid = Long.parseLong(map.get("uid"));
+        User user = ThreadLocalUtil.get();
+        var uid = user.getUid();
         return Result.success(blogService.search(curPage, size, uid));
     }
 

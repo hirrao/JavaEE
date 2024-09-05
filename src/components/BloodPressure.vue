@@ -45,7 +45,7 @@
         <BPLChart1 :chartData="chartData1" />
       </div>
       <div class="blood-pressure-log-chart" style="width: 20%">
-        <BPLChart2 />
+        <BPLChart2 :chartData="riskLevel" />
       </div>
     </div>
     <div class="blood-pressure-log-detail-table">
@@ -92,19 +92,13 @@ import BPLChart2 from './BPLChart2/index.vue'
 
 let addDialogVisble = ref(false)
 let uid = localStorage.getItem('uid')
-let user = ref({
-  riskLevel: {
-    normal: 1,
-    low: 1,
-    light: 2,
-    middle: 1,
-    high: 2,
-    get all() {
-      return this.normal + this.low + this.light + this.middle + this.high
-    }
-  },
-  averageSBP: 131,
-  averageDBP: 88
+
+let riskLevel = ref({
+  重度: 1,
+  中度: 1,
+  轻度: 2,
+  正常高值: 1,
+  偏低: 2
 })
 
 let addBloodPressure = ref({
@@ -250,8 +244,6 @@ function getChartData1() {
   instance
     .post('/bp/record/uid', { date: now })
     .then((res: any) => {
-      console.log(res)
-      console.log(res.data.data)
       let data = mapBackendDataToChart(res.data.data, categories)
       console.log(data)
       chartData1.value.data = data
@@ -261,6 +253,39 @@ function getChartData1() {
       ElMessage.error('血压记录图表数据加载失败，请检查网络')
     })
   chartData1.value.categories = categories
+}
+
+function getChartData2() {
+  let date = new Date()
+  let year = date.getFullYear()
+  let month = (date.getMonth() + 1).toString().padStart(2, '0') // 月份补零
+  let day = date.getDate().toString().padStart(2, '0') // 日期补零
+  let now = year + '-' + month + '-' + day
+  instance.post('/bp/record/riskLevel', { date: now }).then((res: any) => {
+    console.log(res)
+    // 初始化风险级别计数对象
+    let riskLevelCounts = {
+      重度: 0,
+      中度: 0,
+      轻度: 0,
+      正常高值: 0,
+      偏低: 0
+    }
+
+    // 遍历后端返回的data数组，统计每个风险级别的数量
+    if (res.data.data && Array.isArray(res.data.data)) {
+      res.data.data.forEach((level: string) => {
+        if (riskLevelCounts.hasOwnProperty(level)) {
+          riskLevelCounts[level] += 1
+        }
+      })
+    }
+
+    // 覆盖riskLevel对象的值
+    riskLevel.value = { ...riskLevelCounts }
+
+    console.log('现在的风险次数统计是', riskLevel.value)
+  })
 }
 
 function getTableData() {
@@ -286,6 +311,7 @@ function getTableData() {
 }
 onMounted(() => {
   getChartData1()
+  getChartData2()
   console.log('更新图数据')
   getTableData()
 })

@@ -139,9 +139,9 @@
               'Content-Type': 'application/json',
               },
           }).catch((error)=>{
-            alert(error)
+            ElMessage.error(error)
           })
-          alert("删除成功")
+          ElMessage("删除成功")
           searchByPage()
         }
     }

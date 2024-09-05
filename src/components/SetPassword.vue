@@ -20,16 +20,17 @@
 import { ref } from 'vue'
 import router from '../router'
 import instance from '../axios'
+import { ElMain, ElMessage } from 'element-plus';
 let password = ref('')
 let password2 = ref('')
 
 const next = async () => {
   if (password.value !== password2.value) {
-    alert("两次密码不一致，请重新输入")
+    ElMessage.error("两次密码不一致，请重新输入")
     return;
   } else {
     if (password.value.length < 6) {
-      alert("密码长度不得小于6位")
+      ElMessage.error("密码长度不得小于6位")
       return;
     }
     const userName = localStorage.getItem('userName')
@@ -45,7 +46,7 @@ const next = async () => {
           messageCode: messageCode
         }
         )
-        alert("注册成功")
+        ElMessage("注册成功")
         localStorage.removeItem('userName')
         localStorage.removeItem('phoneNumber')
         localStorage.removeItem('messageCode')
@@ -62,12 +63,12 @@ const next = async () => {
           messageCode: messageCode
         })
         if (response.data.value == 0) {
-          alert("重设密码成功")
+          ElMessage("重设密码成功")
           localStorage.removeItem('phoneNumber')
           localStorage.removeItem('messageCode')
           router.push('/login')
         } else {
-          alert("失败")
+          ElMessage.error("失败")
         }
       } catch (e) {
         console.log(e)

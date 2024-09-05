@@ -1,21 +1,18 @@
 <template>
     <div class="main-profile">
-        <div class="intro">
-            <img src="https://s2.loli.net/2024/04/14/uDARibvM2fJZ5Fx.jpg" alt="Profile Picture">
-            <div class="detail">
-                <h2>{{ userName }}</h2>
-                <p>性别：{{ sex }}</p>
-                <p>生日：{{ birthday }}</p>
-            </div>
-        </div>
         <section class="profile">
             <div class="sidebar">
-                <button @click="editProfile()">编辑个人资料</button>
+                <button @click="edit = true">编辑个人资料</button>
+                <div class="detail">
+                <h2>{{ userName }}</h2>
+                <p>性别：{{ sex }}</p>
+                <p>出生日期：{{ birthday }}</p>
+            </div>
                 <p>uid：{{ uid }}</p>
                 <p>
                     个性签名：
                     <br>
-                    {{  }}
+                    {{ intro }}
                 </p>
             </div>
 
@@ -24,9 +21,37 @@
                     <h1>确认删除吗</h1>
                 </div>
                 <div v-if="selectedBlog" style="display: flex; justify-content: center; gap: 10px;">
-                    <button @click="confirm = false">取消</button>
+                    <button @click="cancle">取消</button>
                     <button @click="deleteBlog(selectedBlog)">确认</button>
                 </div>
+            </el-dialog>
+
+            <el-dialog title="修改个人资料" v-model="edit" width="50%">
+                <el-form ref="form" :model="edit" label-width="150px" style="margin-left: auto;margin-right: auto;">
+                    <el-form-item class="dialogInput" label="用户名" prop="userName">
+                        <el-input v-model="userName" placeholder="请输入用户名"></el-input>
+                    </el-form-item>
+                    <el-form-item class="dialogInput" label="个性签名" prop="phoneNumber">
+                        <el-input v-model="intro" placeholder="请输入个性签名"></el-input>
+                    </el-form-item>     
+                    <el-form-item label="性别" prop="sex">
+                        <el-radio-group v-model="sex">
+                        <el-radio value="男" size="large" label="男">男</el-radio>
+                        <el-radio value="女" size="large" label="女">女</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="生日" prop="birthday">
+                        <el-date-picker v-model="birthday"
+                                        default-value="2022-01-30"
+                                        type="datetime"
+                                        value-format="YYYY-MM-DD"
+                                        placeholder="请选择生日"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item align="center">
+                        <el-button type="primary" size="small" @click="editProfile">更改</el-button>
+                        <el-button type="info" size="small" @click="edit = false">取消</el-button>
+                    </el-form-item>
+                </el-form>
             </el-dialog>
 
             <div v-if="status_" class="main-content">
@@ -119,18 +144,20 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import axios from 'axios';
 
 let uid = localStorage.getItem('uid')
-const userName = localStorage.getItem('userName')
-const sex = localStorage.getItem('sex')
-const birthday = localStorage.getItem('birthday')
+const userName = ref(localStorage.getItem('userName'))
+const sex = ref(localStorage.getItem('sex'))
+const birthday = ref(localStorage.getItem('birthday'))
+const intro = ref('')
 onMounted(async () => {
-  const user = await instance.post('/profile/userInfo', {
+  const user = await instance.post('/intro/get', {
     'uid': uid
   }, {
     headers: {
       'Content-Type': 'application/json',
     },
   });
-  console.log(user.data.data)
+  intro.value = user.data.data.intro
+  console.log(user.data)
   searchByPage()
 });
 
@@ -148,11 +175,65 @@ const selectedBlog = ref<Blog | null>(null);
 const confirm = ref(false)
 const ok = ref(false)
 const blogId = ref()
+const edit = ref(false)
+
 
 function switch_status() {
     status_.value = !status_.value
 }
-function editProfile() {
+function cancle() {
+    window.location.href = '/profile'
+}
+const editProfile = async () =>{
+    try {
+        const res = await instance.post('/user/updateUserName', {
+            uid: uid,
+            userName: userName.value
+        }, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        });
+        console.log(res.data)
+        if (res.data.code){
+            ElMessage.error("用户名已存在")
+            window.location.href = '/profile'
+            return
+        }
+        instance.post('/user/updateSex', {
+            uid: uid,
+            sex: sex.value =='男' ? 1 : 0
+        }, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        });
+        instance.post('/user/updateBirthday', {
+            uid: uid,
+            birthday: birthday.value
+        }, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        });
+        instance.post('/intro/update', {
+            uid: uid,
+            intro: intro.value
+        }, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        });
+        if (userName.value != null) localStorage.setItem('userName', userName.value)
+        if (sex.value != null) localStorage.setItem('sex', sex.value)
+        if (birthday.value != null) localStorage.setItem('birthday', birthday.value)
+        ElMessage("修改成功")
+        window.location.href = '/profile'
+    } catch(error) {
+        ElMessage.error("修改失败")
+        window.location.href = '/profile'
+    }
+    
 
 }
 interface Blog {
@@ -200,11 +281,11 @@ const handleSubmit = async () => {
     console.log(content.value)
     try {
         if (content.value.trim() === '' || title.value.trim() === '') {
-            alert('标题或内容不能为空')
+            ElMessage.error('标题或内容不能为空')
             return
         }
     } catch (error) {
-        alert('标题或内容不能为空')
+        ElMessage.error('标题或内容不能为空')
         return
     }
     if (ok.value) {
@@ -217,7 +298,7 @@ const handleSubmit = async () => {
                 'Content-Type': 'application/json',
             },
         });
-        alert('提交成功')
+        ElMessage('提交成功')
         ok.value = false
         window.location.href = '/profile'
     } else {
@@ -231,11 +312,11 @@ const handleSubmit = async () => {
             'Content-Type': 'application/json',
         },
         });
-        alert('提交成功')
+        ElMessage('提交成功')
         window.location.href = '/profile'
     }
   } catch (error) {
-    alert('提交失败')
+    ElMessage.error('提交失败')
   }
 };
 
@@ -366,7 +447,7 @@ onMounted(async () => {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #1e1e1e;
+    background-color: transparent;
     color: #ffffff;
 }
 

@@ -35,10 +35,10 @@ public class BloodPressureController {
     public Result insert(@RequestBody Map<String, String> map) {
         logger.debug("/record/insert接受请求{}", map);
         var userId = map.get("userId");
-        var date = map.get("date");
+        var recordTime = map.get("date");
         var sbp = map.get("sbp");
         var dbp = map.get("dbp");
-        if (StringUtil.isEmpty(userId) || StringUtil.isEmpty(date) || StringUtil.isEmpty(sbp) || StringUtil.isEmpty(dbp)) {
+        if (StringUtil.isEmpty(userId) || StringUtil.isEmpty(recordTime) || StringUtil.isEmpty(sbp) || StringUtil.isEmpty(dbp)) {
             return Result.error(101, "参数错误");
         }
 
@@ -50,7 +50,13 @@ public class BloodPressureController {
         String classification = generateClassification(sbpValue, dbpValue);
         String riskLevel = generateRiskLevel(sbpValue, dbpValue);
 
-        bloodPressureService.insertBloodPressure(snowFlake.nextId(), Long.parseLong(userId), date, sbpValue, dbpValue, classification, riskLevel);
+        bloodPressureService.insertBloodPressure(snowFlake.nextId(),
+                Long.parseLong(userId),
+                sbpValue,
+                dbpValue,
+                recordTime,
+                classification,
+                riskLevel);
         return Result.success();
     }
 }

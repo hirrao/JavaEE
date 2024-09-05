@@ -23,7 +23,7 @@ public class BloodPressureServiceImpl implements BloodPressureService {
     }
 
     @Override
-    public void insertBloodPressure(long bplId, long userId, String date, float sbp, float dbp, String classification, String riskLevel) {
-        BloodPressureMapper.insertBloodPressure(bplId, userId, date, sbp, dbp, classification, riskLevel);
+    public void insertBloodPressure(long bplId, long userId,  float sbp, float dbp,String recordTime, String classification, String riskLevel) {
+        BloodPressureMapper.insertBloodPressure(bplId, userId, sbp, dbp, recordTime, classification, riskLevel);
     }
 }

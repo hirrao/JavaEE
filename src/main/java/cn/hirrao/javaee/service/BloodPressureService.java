@@ -9,5 +9,5 @@ import java.util.List;
 public interface BloodPressureService {
     List<BloodPressure> getBloodPressureList(Long uid, String date);
 
-    void insertBloodPressure(long bplId, long userId, String date, float sbp, float dbp, String classification, String riskLevel);
+    void insertBloodPressure(long bplId, long userId,  float sbp, float dbp, String recordTime, String classification, String riskLevel);
 }

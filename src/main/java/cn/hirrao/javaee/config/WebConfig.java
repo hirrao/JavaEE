@@ -20,9 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(loginInterceptor)
-//                .addPathPatterns("/**")
-//                .excludePathPatterns("/user/auth/*", "/error","/articles","/articles/*");//排除登录注册接口
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/user/auth/*", "/error", "/articles", "/articles/*");//排除登录注册接口
     }
 
     @Bean
@@ -30,11 +28,8 @@ public class WebConfig implements WebMvcConfigurer {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8080","https://javaee.hirrao.cn") // 前端应用的地址
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
+                registry.addMapping("/**").allowedOrigins("http://localhost:8080", "https://javaee.hirrao.cn") // 前端应用的地址
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*").allowCredentials(true);
             }
         };
     }

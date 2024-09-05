@@ -143,13 +143,13 @@ public class AuthController {
             if (userPassword.equals(user.getUserPassword())) {
                 //密码正确，根据用户的uid和用户名生成token
                 String tokens = createToken(user);
-                Object data = new Object() {
-                    @Getter
+                @Getter
+                class Data {
                     private final int permission = user.getPermission();
-                    @Getter
                     private final String token = tokens;
-
-                };
+                }
+                var data = new Data();
+                if (data.getPermission() == -1) return Result.error(106, "该用户已被封禁");
                 return Result.success(data);
             } else {
                 return Result.error(104, "用户名密码错误");

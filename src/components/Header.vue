@@ -62,7 +62,8 @@ function handleSelect(index: string) {
 
 function logout() {
   localStorage.clear();
-  window.location.href='/';
+  isLoggedIn.value=false;
+  router.push("/");
 }
 
 function isAdmin() {

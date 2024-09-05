@@ -69,9 +69,10 @@ const handleSubmit = async () => {
     localStorage.setItem('userName', response2.data.data.userName)
     localStorage.setItem('sex', (response2.data.data.sex == '0' ? '女' : '男')) 
     localStorage.setItem('birthday', response2.data.data.birthday)
-    window.location.href = '/';
+    router.push('/');
 
   } catch (error) {
+    console.log(error);
     ElMessage.error('网络错误！')
     username.value = '';
     password.value = '';

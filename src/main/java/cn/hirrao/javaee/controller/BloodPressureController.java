@@ -1,13 +1,19 @@
 package cn.hirrao.javaee.controller;
 
 import cn.hirrao.javaee.entity.Result;
+import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.service.BloodPressureService;
 import cn.hirrao.javaee.utils.SnowFlake;
 import cn.hirrao.javaee.utils.StringUtil;
+import cn.hirrao.javaee.utils.ThreadLocalUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 import static cn.hirrao.javaee.utils.BloodPressureUtil.generateClassification;
@@ -24,10 +30,12 @@ public class BloodPressureController {
         this.bloodPressureService = bloodPressureService;
     }
 
-    @GetMapping("/record/uid")
+    @PostMapping("/record/uid")
     public Result getUid(@RequestBody Map<String, String> map) {
         logger.debug("/record/uid接受请求{}", map);
-        var result = bloodPressureService.getBloodPressureList(Long.parseLong(map.get("userId")), map.get("date"));
+        User user = ThreadLocalUtil.get();
+        LocalDate date = LocalDate.parse(map.get("date"));
+        var result = bloodPressureService.getBloodPressureList(user.getUid(), date);
         return Result.success(result);
     }
 
@@ -50,13 +58,7 @@ public class BloodPressureController {
         String classification = generateClassification(sbpValue, dbpValue);
         String riskLevel = generateRiskLevel(sbpValue, dbpValue);
 
-        bloodPressureService.insertBloodPressure(snowFlake.nextId(),
-                Long.parseLong(userId),
-                sbpValue,
-                dbpValue,
-                recordTime,
-                classification,
-                riskLevel);
+        bloodPressureService.insertBloodPressure(snowFlake.nextId(), Long.parseLong(userId), sbpValue, dbpValue, recordTime, classification, riskLevel);
         return Result.success();
     }
 }

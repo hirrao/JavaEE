@@ -6,6 +6,7 @@ import cn.hirrao.javaee.service.BloodPressureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,7 +19,7 @@ public class BloodPressureServiceImpl implements BloodPressureService {
     }
 
     @Override
-    public List<BloodPressure> getBloodPressureList(Long uid, String date) {
+    public List<BloodPressure> getBloodPressureList(Long uid, LocalDate date) {
         return BloodPressureMapper.getBloodPressureList(uid, date);
     }
 

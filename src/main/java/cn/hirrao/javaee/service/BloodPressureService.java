@@ -14,4 +14,6 @@ public interface BloodPressureService {
     void insertBloodPressure(long bplId, long userId, float sbp, float dbp, String recordTime, String classification, String riskLevel);
 
     BloodPressureTable getBloodPressureTable(LocalDate date, Long uid);
+
+    List<String> getRiskLevel(Long uid, LocalDate date);
 }

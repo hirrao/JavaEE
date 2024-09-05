@@ -36,4 +36,9 @@ public class BloodPressureServiceImpl implements BloodPressureService {
     public BloodPressureTable getBloodPressureTable(LocalDate date, Long uid) {
         return BloodPressureTableMapper.getBloodPressureTable(date, uid);
     }
+
+    @Override
+    public List<String> getRiskLevel(Long uid, LocalDate date) {
+        return BloodPressureMapper.getRiskLevel(uid, date);
+    }
 }

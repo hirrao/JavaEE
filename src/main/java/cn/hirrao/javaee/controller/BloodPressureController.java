@@ -48,6 +48,15 @@ public class BloodPressureController {
         return Result.success(result);
     }
 
+    @PostMapping("/record/riskLevel")
+    public Result getRiskLevel(@RequestBody Map<String, String> map) {
+        logger.debug("/record/riskLevel接受请求{}", map);
+        User user = ThreadLocalUtil.get();
+        LocalDate date = LocalDate.parse(map.get("date"));
+        var result = bloodPressureService.getRiskLevel(user.getUid(), date);
+        return Result.success(result);
+    }
+
     @PostMapping("/record/insert")
     public Result insert(@RequestBody Map<String, String> map) {
         logger.debug("/record/insert接受请求{}", map);

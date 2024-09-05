@@ -17,7 +17,7 @@ public interface DrugAlertMapper extends BaseMapper<DrugAlert> {
     @Insert("INSERT INTO drugAlert VALUES (#{alertId},#{uid},#{drugId}, #{alertTime},#{eatTime})")
     void insertDrugAlert(long alertId,long uid,long drugId,Time alertTime,Date eatTime);
 
-    @Update("UPDATE drugAlert SET isActive=#{isActive} WHERE alertId=#{alertId}")
+    @Update("UPDATE drug SET isActive=#{isActive} WHERE alertId=#{alertId}")
     void updateDrugAlertIsActiveById(long alertId,int isActive);
 
     @Update("UPDATE drugAlert SET eatTime=#{eatTime} WHERE alertId=#{alertId}")

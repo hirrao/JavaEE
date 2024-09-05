@@ -194,7 +194,7 @@ const editProfile = async () =>{
             window.location.href = '/profile'
             return
         }
-        instance.post('/user/updateSex', {
+        await instance.post('/user/updateSex', {
             uid: uid,
             sex: sex.value =='男' ? 1 : 0
         }, {
@@ -202,7 +202,7 @@ const editProfile = async () =>{
             'Content-Type': 'application/json',
         },
         });
-        instance.post('/user/updateBirthday', {
+        await instance.post('/user/updateBirthday', {
             uid: uid,
             birthday: birthday.value
         }, {
@@ -210,7 +210,7 @@ const editProfile = async () =>{
             'Content-Type': 'application/json',
         },
         });
-        instance.post('/intro/update', {
+        await instance.post('/intro/update', {
             uid: uid,
             intro: intro.value
         }, {
@@ -557,13 +557,6 @@ button {
     cursor: pointer;
     width: 20%;
     margin-top: 10px;
-}
-
-.footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #2c2c2c;
-    margin-top: 20px;
 }
 
 .fav {

@@ -147,16 +147,16 @@ function AddRecord() {
   //TODO：向后端传输血压数据的逻辑
 
   if (uid) {
-    let data = ref({
+    let data = {
       userId: '',
       sbp: null as number | null,
       dbp: null as number | null,
       date: ''
-    })
-    data.value.userId = uid
-    data.value.sbp = addBloodPressure.value.SBP
-    data.value.dbp = addBloodPressure.value.DBP
-    data.value.date = addBloodPressure.value.recordTime
+    }
+    data.userId = uid
+    data.sbp = addBloodPressure.value.SBP
+    data.dbp = addBloodPressure.value.DBP
+    data.date = addBloodPressure.value.recordTime
     console.log(data)
     //上传血压数据
     instance
@@ -165,7 +165,6 @@ function AddRecord() {
         // 处理成功响应
         ElMessage.success('血压记录已成功添加')
         console.log('Response:', response.data)
-
         addDialogVisble.value = false
       })
       .catch((error) => {

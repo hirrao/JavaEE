@@ -203,7 +203,7 @@ function mapBackendDataToChart(backendData: any, categories: any) {
   let data = categories.map(() => [0, 0])
 
   // 遍历后端返回的数据
-  backendData.forEach((record) => {
+  backendData.forEach((record: any) => {
     // 找到当前 record 的 recordTime 在 categories 中的位置
     let index = categories.indexOf(record.recordTime)
 

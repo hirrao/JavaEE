@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import instance from '../axios'
 import BPLChart1 from './BPLChart1/index.vue'
@@ -168,6 +168,16 @@ function AddRecord() {
       })
   }
 }
+
+function getChartData1() {
+  let date = new Date()
+  let now = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()
+  console.log(now)
+}
+
+onMounted(() => {
+  getChartData1()
+})
 </script>
 
 <style>

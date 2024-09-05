@@ -99,8 +99,8 @@ function viewArticle(article: Article) {
 
 <style scoped>
 .article-list-container {
-  max-width: 900px;
-  margin-left: 450px;
+  max-width: 450px;
+  margin-left: 600px;
   margin-right: auto;
   padding: 30px;
   background-color: transparent;
@@ -159,7 +159,7 @@ p {
 
 .pagination {
   margin-top: 20px;
-  margin-left: 130px;
+  margin-left: 100px;
   width: 100%; /* 设置为100%以占满父容器 */
   text-align: center; /* 确保内容居中 */
   background-color: transparent;

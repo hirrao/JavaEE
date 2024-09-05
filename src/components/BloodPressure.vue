@@ -61,21 +61,21 @@
         <tbody>
           <tr>
             <td>收缩压</td>
-            <td>146/71 <span class="badge badge-moderate">轻度</span></td>
-            <td>115/88 <span class="badge badge-normal">正常高值</span></td>
-            <td>131 <span class="badge badge-normal">正常高值</span></td>
+            <td>{{ maxSBP }}</td>
+            <td>{{ minSBP }}</td>
+            <td>{{ avgSBP }}</td>
           </tr>
           <tr>
             <td>舒张压</td>
-            <td>88/115 <span class="badge badge-normal">正常高值</span></td>
-            <td>71/146 <span class="badge badge-moderate">轻度</span></td>
-            <td>80</td>
+            <td>{{ maxDBP }}</td>
+            <td>{{ minDBP }}</td>
+            <td>{{ avgDBP }}</td>
           </tr>
           <tr>
             <td>脉压差</td>
-            <td>75 (146/71) <span class="badge badge-high">偏高</span></td>
-            <td>27 (115/88) <span class="badge badge-normal">正常</span></td>
-            <td>51 <span class="badge badge-normal">正常</span></td>
+            <td>{{ maxPP }}</td>
+            <td>{{ minPP }}</td>
+            <td>{{ avgPP }}</td>
           </tr>
         </tbody>
       </table>
@@ -133,6 +133,15 @@ let chartData1 = ref({
     [140, 90] // 高压，低压
   ]
 })
+let maxSBP = ref(140)
+let minSBP = ref(90)
+let avgSBP = ref(90)
+let maxDBP = ref(90)
+let minDBP = ref(60)
+let avgDBP = ref(60)
+let maxPP = ref(50)
+let minPP = ref(30)
+let avgPP = ref(30)
 
 function DialogVisble() {
   addDialogVisble.value = true
@@ -261,9 +270,20 @@ function getTableData() {
   let day = date.getDate().toString().padStart(2, '0') // 日期补零
   let now = year + '-' + month + '-' + day
   //TODO:图表后端逻辑
-  instance.post('')
+  instance.post('/bp/record/table', { date: now }).then((res: any) => {
+    console.log('图表的数据是:', res)
+    let data = res.data.data
+    maxSBP.value = data.maxSBP
+    minSBP.value = data.minSBP
+    avgSBP.value = data.avgSBP
+    maxDBP.value = data.maxDBP
+    minDBP.value = data.minDBP
+    avgDBP.value = data.avgDBP
+    maxPP.value = data.maxPP
+    minPP.value = data.minPP
+    avgPP.value = data.avgPP
+  })
 }
-
 onMounted(() => {
   getChartData1()
   console.log('更新图数据')

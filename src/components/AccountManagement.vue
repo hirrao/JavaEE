@@ -6,15 +6,15 @@
 
       <div class="searchConditionDiv">
         <p style="margin-top: auto;margin-bottom: auto;">查询条件：</p>
-        <el-select class="selectCon" v-model="searchCondition" placeholder="查询条件" size="large" style="width: 10%" clearable>
+        <el-select class="selectCon" v-model="searchCondition" placeholder="查询条件" size="large" style="width: 10%;margin-top: auto;margin-bottom: auto;" clearable>
           <el-option value="uid" label="uid"/>
           <el-option value="userName" label="用户名"/>
           <el-option value="sex" label="性别"/>
           <el-option value="permission" label="权限"/>
         </el-select>
-        <el-input class="conditionInput" v-model="conditionValue" placeholder="" size="small" clearable></el-input>
-        <el-button type="primary" style="height: 40px;margin-right: 5px;" @click="searchByCondition">搜索</el-button>
-        <el-button type="danger" style="height: 40px;" @click="claerSearchCondition">清空</el-button>
+        <el-input class="conditionInput" v-model="conditionValue" placeholder="" size="small" style="margin-top: auto;margin-bottom: auto;" clearable></el-input>
+        <el-button type="primary" style="height: 40px;margin-right: 5px;margin-top: auto;margin-bottom: auto;" @click="searchByCondition">搜索</el-button>
+        <el-button type="danger" style="height: 40px;margin-top: auto;margin-bottom: auto;" @click="claerSearchCondition">清空</el-button>
       </div>
 
       <el-table class="table" :data="Account">
@@ -45,8 +45,8 @@
 
     <el-dialog title="修改账号信息" v-model="dialogVisble" width="50%">
       <el-form ref="form" :model="modifyAccount" label-width="150px" style="margin-left: auto;margin-right: auto;">
-          <el-form-item class="dialogInput" label="id" prop="uid" disabled>
-              <el-input v-model="modifyAccount.uid" placeholder="请输入id" ></el-input>
+          <el-form-item class="dialogInput" label="id" prop="uid">
+              <el-input v-model="modifyAccount.uid" placeholder="请输入id" disabled></el-input>
           </el-form-item>
           <el-form-item class="dialogInput" label="姓名" prop="userName">
               <el-input v-model="modifyAccount.userName" placeholder="请输入姓名"></el-input>

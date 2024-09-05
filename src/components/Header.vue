@@ -46,8 +46,10 @@ const isLoggedIn = ref<boolean | null>(null);
       },
     });
     isLoggedIn.value = response.status === 200;
+    if(!isLoggedIn) localStorage.clear();
   } catch (error) {
     isLoggedIn.value = false;
+    localStorage.clear();
   }
 })();
 

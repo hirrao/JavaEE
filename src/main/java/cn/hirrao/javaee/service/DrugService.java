@@ -28,5 +28,7 @@ public interface DrugService {
 
     int getPageDrugAlertInfoTotalByDrugName(long uid,String drugName);
 
+    void updateDrugIsActiveById(long drugId,long uid,int isActive);
+
     void deleteDrugById(long uid,long drugId);
 }

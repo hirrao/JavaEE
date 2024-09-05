@@ -65,6 +65,11 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
+    public void updateDrugIsActiveById(long drugId,long uid,int isActive){
+        drugMapper.updateDrugIsActiveById(drugId, uid, isActive);
+    }
+
+    @Override
     public void deleteDrugById(long uid,long drugId){
         drugMapper.deleteDrugById(uid, drugId);
     }

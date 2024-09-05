@@ -42,9 +42,9 @@
                     </el-form-item>
                     <el-form-item label="生日" prop="birthday">
                         <el-date-picker v-model="birthday"
-                                        default-value="2022-01-30 12:45:30"
+                                        default-value="2022-01-30"
                                         type="datetime"
-                                        value-format="YYYY-MM-DD HH:mm:ss"
+                                        value-format="YYYY-MM-DD"
                                         placeholder="请选择生日"></el-date-picker>
                     </el-form-item>
                     <el-form-item align="center">
@@ -196,7 +196,7 @@ const editProfile = async () =>{
         });
         console.log(res.data)
         if (res.data.code){
-            alert("用户名已存在")
+            ElMessage.error("用户名已存在")
             window.location.href = '/profile'
             return
         }
@@ -227,10 +227,10 @@ const editProfile = async () =>{
         if (userName.value != null) localStorage.setItem('userName', userName.value)
         if (sex.value != null) localStorage.setItem('sex', sex.value)
         if (birthday.value != null) localStorage.setItem('birthday', birthday.value)
-        alert("修改成功")
+        ElMessage("修改成功")
         window.location.href = '/profile'
     } catch(error) {
-        alert("修改失败")
+        ElMessage.error("修改失败")
         window.location.href = '/profile'
     }
     
@@ -281,11 +281,11 @@ const handleSubmit = async () => {
     console.log(content.value)
     try {
         if (content.value.trim() === '' || title.value.trim() === '') {
-            alert('标题或内容不能为空')
+            ElMessage.error('标题或内容不能为空')
             return
         }
     } catch (error) {
-        alert('标题或内容不能为空')
+        ElMessage.error('标题或内容不能为空')
         return
     }
     if (ok.value) {
@@ -298,7 +298,7 @@ const handleSubmit = async () => {
                 'Content-Type': 'application/json',
             },
         });
-        alert('提交成功')
+        ElMessage('提交成功')
         ok.value = false
         window.location.href = '/profile'
     } else {
@@ -312,11 +312,11 @@ const handleSubmit = async () => {
             'Content-Type': 'application/json',
         },
         });
-        alert('提交成功')
+        ElMessage('提交成功')
         window.location.href = '/profile'
     }
   } catch (error) {
-    alert('提交失败')
+    ElMessage.error('提交失败')
   }
 };
 

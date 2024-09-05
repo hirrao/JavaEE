@@ -14,5 +14,5 @@ public interface BloodPressureMapper extends BaseMapper<BloodPressure> {
     List<BloodPressure> getBloodPressureList(Long uid, String date);
 
     @Insert("INSERT INTO bloodPressureLog(bplId, uid, SBP, DBP, recordTime, classification, riskLevel) VALUES(#{bplId},#{uid}, #{SBP}, #{DBP}, #{recordTime}, #{classification}, #{riskLevel})")
-    void insertBloodPressure(long bplId, long uid, String date, float sbp, float dbp, String classification, String riskLevel);
+    void insertBloodPressure(long bplId, long uid,  float sbp, float dbp, String recordTime, String classification, String riskLevel);
 }

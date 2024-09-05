@@ -1,15 +1,14 @@
 package cn.hirrao.javaee.controller;
 
 import cn.hirrao.javaee.entity.Result;
+import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.entity.UserIntro;
 import cn.hirrao.javaee.service.UserIntroService;
+import cn.hirrao.javaee.utils.ThreadLocalUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -24,10 +23,10 @@ public class UserIntroController {
         this.userIntroService = userIntroService;
     }
 
-    @PostMapping("/get")
-    public Result get(@RequestBody Map<String, String> map) {
-        logger.debug("{}", map);
-        Long uid = Long.parseLong(map.get("uid"));
+    @GetMapping("/get")
+    public Result get() {
+        User user = ThreadLocalUtil.get();
+        long uid = user.getUid();
         UserIntro userIntro = userIntroService.findUserIntro(uid);
         if (userIntro == null) userIntroService.setUserIntro(uid, "");
         userIntro = userIntroService.findUserIntro(uid);

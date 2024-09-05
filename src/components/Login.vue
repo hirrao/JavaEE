@@ -1,6 +1,5 @@
 <template>
   <div class="login-form">
-    <!--el-form版-->
     <el-form ref="form" label-width="80px" @submit.prevent="handleSubmit">
       <el-form-item label="用户名" prop="username">
         <el-input v-model="username" type="text" placeholder="请输入用户名" required></el-input>
@@ -65,7 +64,6 @@ const handleSubmit = async () => {
     localStorage.setItem('uid',uid.value);
     const response2 = await instance.get('/user/userInfo');
     console.log(response2)
-    localStorage.setItem('uid', response2.data.data.uid)
     localStorage.setItem('userName', response2.data.data.userName)
     localStorage.setItem('sex', (response2.data.data.sex == '0' ? '女' : '男')) 
     localStorage.setItem('birthday', response2.data.data.birthday)

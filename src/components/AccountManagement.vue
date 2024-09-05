@@ -45,8 +45,8 @@
 
     <el-dialog title="修改账号信息" v-model="dialogVisble" width="50%">
       <el-form ref="form" :model="modifyAccount" label-width="150px" style="margin-left: auto;margin-right: auto;">
-          <el-form-item class="dialogInput" label="id" prop="uid">
-              <el-input v-model="modifyAccount.uid" placeholder="请输入id"></el-input>
+          <el-form-item class="dialogInput" label="id" prop="uid" disabled>
+              <el-input v-model="modifyAccount.uid" placeholder="请输入id" ></el-input>
           </el-form-item>
           <el-form-item class="dialogInput" label="姓名" prop="userName">
               <el-input v-model="modifyAccount.userName" placeholder="请输入姓名"></el-input>
@@ -88,14 +88,6 @@
     import instance from '../axios';
     import { onMounted, ref } from 'vue';
 
-    // const Account=[{ id: 1, date: '2024-08-29', dosage: 120, eat: true },
-    //     { id: 2, date: '2024-08-28', dosage: 125, eat: true },
-    //     { id: 3, date: '2024-08-29', dosage: 120, eat: true },
-    //     { id: 4, date: '2024-08-28', dosage: 125, eat: true },
-    //     { id: 5, date: '2024-08-29', dosage: 120, eat: true },
-    //     { id: 6, date: '2024-08-28', dosage: 125, eat: true },
-    //     { id: 7, date: '2024-08-29', dosage: 120, eat: true },
-    //     { id: 8, date: '2024-08-28', dosage: 125, eat: true }];
     let Account=ref([]);
     const pageSize=ref(5);
     const currentPage=ref(1);
@@ -103,20 +95,11 @@
     const dialogVisble=ref(false);
     const searchCondition=ref('');
     const conditionValue=ref('');
-    // const modifyAccount={
-      // uid:"",
-      // userName:"",
-      // phoneNumber:"",
-      // sex:"",
-      // birthday:"",
-      // permission:""
-    // }
     const modifyAccount=ref({
       uid:ref(''),
       userName:ref(''),
       phoneNumber:ref(''),
       sex:ref(''),
-      // birthday:ref(new Date()),
       birthday:ref(''),
       permission:ref('')
     });
@@ -126,7 +109,6 @@
       modifyAccount.value=row;
       console.log(modifyAccount.value);
       console.log(modifyAccount.value.permission);
-      //modifyAccount.value.birthday=new Date(row.birthday)
     }
 
     function deleteAccount(id: any){

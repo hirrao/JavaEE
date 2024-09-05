@@ -31,7 +31,7 @@
                     <el-form-item class="dialogInput" label="用户名" prop="userName">
                         <el-input v-model="userName" placeholder="请输入用户名"></el-input>
                     </el-form-item>
-                    <el-form-item class="dialogInput" label="个性签名" prop="phoneNumber">
+                    <el-form-item class="dialogInput" label="个性签名" prop="intro">
                         <el-input v-model="intro" placeholder="请输入个性签名"></el-input>
                     </el-form-item>     
                     <el-form-item label="性别" prop="sex">
@@ -136,7 +136,6 @@
 <script setup lang="ts">
 import router from '../router';
 import { onMounted, ref, toRaw, nextTick } from 'vue'
-//   import filesApi from '@/api/files';
 import { ElMessage } from 'element-plus'
 import instance from '../axios';
 import { Quill, QuillEditor } from '@vueup/vue-quill'
@@ -243,7 +242,7 @@ function setBlog(blog: Blog) {
 function viewBlog(blog: Blog) {
     selectedBlog.value = blog;
     dialogVisible.value = true;
-    console.log('Dialog visible:', dialogVisible.value); // 调试输出
+    console.log('Dialog visible:', dialogVisible.value); 
 }
 
 function updateBlog(blog: Blog) {
@@ -264,7 +263,7 @@ function deleteBlog(blog: Blog) {
         'Content-Type': 'application/json',
       },
     });
-    console.log('Dialog visible:', dialogVisible.value); // 调试输出
+    console.log('Dialog visible:', dialogVisible.value);
     window.location.href = '/profile'
 }
 
@@ -331,13 +330,11 @@ async function searchByPage(){
         })
     }
     function handleSizeChange(newSize: number) {
-      // handle the size change logic here
       currentPage.value=1
       searchByPage()
     }
     
     function handleCurrentChange(newPage: number) {
-      // handle the current change logic here
       searchByPage()
     }
 

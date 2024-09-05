@@ -51,18 +51,18 @@
         <el-input class="conditionInput" v-model="conditionValue" placeholder="" size="small" clearable></el-input>
         <el-button class="drugAlertBtn" type="primary" style="height: 40px;margin-right: 5px;" @click="searchByConditionAlert">搜索</el-button>
         <el-button class="drugAlertBtn" type="danger" style="height: 40px;" @click="clearSearchConditionAlert">清空</el-button>
-        <el-button class="drugAlertBtn" type="primary" style="height: 40px;margin-left:50px;" @click="addDrugAlertsDialog">添加用药提醒</el-button>
+        <el-button class="drugAlertBtn" type="primary" style="height: 40px;margin-left:auto;" @click="addDrugAlertsDialog">添加用药提醒</el-button>
       </div>
 
       <el-table class="table" :data="drugAlerts">
         <el-table-column type="expand">
           <template #default="props">
             <div m="4">
-              <p m="t-0 b-2">提醒id: {{ props.row.alertId }}</p>
-              <p m="t-0 b-2">药物id: {{ props.row.drugId }}</p>
-              <p m="t-0 b-2">频率: {{ props.row.frequency }}</p>
-              <p m="t-0 b-2">剂量: {{ props.row.dosage }} {{ props.row.unit }}</p>
-              <el-button m="t-0 b-2" type="danger" @click="deleteDrugAlert(props.row)">删除</el-button>
+              <p m="t-0 b-2" style="margin-left: 20px;">提醒id: {{ props.row.alertId }}</p>
+              <p m="t-0 b-2" style="margin-left: 20px;">药物id: {{ props.row.drugId }}</p>
+              <p m="t-0 b-2" style="margin-left: 20px;">频率: {{ props.row.frequency }}</p>
+              <p m="t-0 b-2" style="margin-left: 20px;">剂量: {{ props.row.dosage }} {{ props.row.unit }}</p>
+              <el-button m="t-0 b-2" style="margin-left: 20px;" type="danger" @click="deleteDrugAlert(props.row)">删除</el-button>
             </div>
           </template>
         </el-table-column>

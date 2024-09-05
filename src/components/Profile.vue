@@ -85,7 +85,7 @@
                     </el-pagination>
                     </el-card>
                     <el-dialog title="" v-model="dialogVisible" width="80%" append-to-body>
-                        <div v-if="selectedBlog" style=" align-items: center;">
+                        <div v-if="selectedBlog" style=" text-align: center;">
                             <h1 style=" padding-left: 40%;padding-right: 40%;">{{ selectedBlog.title }}</h1>
                             <div v-html="selectedBlog.content" style=" padding-left: 5%; padding-right: 5%;"></div>
                         </div>
@@ -195,7 +195,7 @@ const editProfile = async () =>{
         }
         await instance.post('/user/updateSex', {
             uid: uid,
-            sex: sex.value =='男' ? 1 : 0
+            sex: sex.value
         }, {
         headers: {
             'Content-Type': 'application/json',
@@ -254,9 +254,9 @@ function updateBlog(blog: Blog) {
     blogId.value = blog.blogId
 }
 
-function deleteBlog(blog: Blog) {
+async function deleteBlog(blog: Blog) {
     selectedBlog.value = blog;
-    instance.post('/profile/delete', {
+    await instance.post('/profile/delete', {
       blogId: selectedBlog.value.blogId
     }, {
       headers: {

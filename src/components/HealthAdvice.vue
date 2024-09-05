@@ -14,7 +14,7 @@
       </el-col>
     </el-row>
 
-    <!-- 分页控件 -->
+
     <el-pagination
       v-model="currentPage"
       :page-size="pageSize"
@@ -26,7 +26,6 @@
       class="pagination"
     />
 
-    <!-- 弹窗展示文章详情 -->
     <el-dialog
       v-model="dialogVisible"
       width="50%"
@@ -47,13 +46,7 @@
 import { ref, computed, onMounted } from 'vue';
 import instance from '../axios';
 
-interface Article {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  content: string;
-}
+
 
 const articles = ref<Article[]>([]); // 文章数据数组
 const currentPage = ref(1); // 当前页码
@@ -72,9 +65,9 @@ const paginatedArticles = computed(() => {
 async function fetchArticles() {
   try {
     const response = await instance.get('/articles');
-    articles.value = response.data;
+    articles.value = response.data.reverse();
   } catch (error) {
-    console.error('Error fetching articles:', error);
+    console.error('获取文章失败', error);
   }
 }
 
@@ -159,7 +152,7 @@ p {
 
 .pagination {
   margin-top: 20px;
-  margin-left: 100px;
+  margin-left: 80px;
   width: 100%; /* 设置为100%以占满父容器 */
   text-align: center; /* 确保内容居中 */
   background-color: transparent;

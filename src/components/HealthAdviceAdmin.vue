@@ -242,9 +242,6 @@
     addArticlesDialogVisible.value=false
   }
 
-  // function addArticles(){
-
-  // }
   </script>
   
   <style>

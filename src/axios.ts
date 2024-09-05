@@ -5,8 +5,8 @@ import JSONbig from 'json-bigint'
 const JSONbigToString = JSONbig({ storeAsString: true })
 
 const instance = axios.create({
-  baseURL: 'https://api.javaee.hirrao.cn', // 你的API`基础URL
-  // baseURL: 'http://localhost:8088', // 你的API基础URL
+  // baseURL: 'https://api.javaee.hirrao.cn', // 你的API`基础URL
+  baseURL: 'http://localhost:8088', // 你的API基础URL
   timeout: 10000, // 请求超时的时间限制
   headers: { 'Content-Type': 'application/json' },
   transformResponse: [
@@ -38,16 +38,5 @@ instance.interceptors.request.use(
     return Promise.reject(error)
   }
 )
-
-// 响应拦截器
-// instance.interceptors.response.use(
-//   response => {
-//     return response.data;
-//   },
-//   error => {
-//     // 处理响应错误
-//     return Promise.reject(error);
-//   }
-// );
 
 export default instance

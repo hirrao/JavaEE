@@ -1,6 +1,6 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center">
-    <div style="background: white; width: 99vw; text-align: center; margin-top: 10%">
+    <div style="background: white; width: 99vw; text-align: center; margin-top: 2.5%">
       <h2>这是您最近七天的血压数据</h2>
       <el-button
         id="dialogVisbleBtn"
@@ -171,7 +171,6 @@ function AddRecord() {
     ElMessage.error('请填写您的测量时间')
     return
   }
-  //TODO：向后端传输血压数据的逻辑
 
   if (uid) {
     let userId = uid
@@ -223,6 +222,7 @@ function getChartData1() {
   ]
   chartData1.value.categories = categories
   chartData1.value.data = data
+  //TODO：更新图表数据
 }
 
 onMounted(() => {

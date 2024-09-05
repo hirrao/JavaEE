@@ -147,20 +147,14 @@ function AddRecord() {
   //TODO：向后端传输血压数据的逻辑
 
   if (uid) {
-    let data = {
-      userId: '',
-      sbp: null as number | null,
-      dbp: null as number | null,
-      date: ''
-    }
-    data.userId = uid
-    data.sbp = addBloodPressure.value.SBP
-    data.dbp = addBloodPressure.value.DBP
-    data.date = addBloodPressure.value.recordTime
-    console.log(data)
+    let userId = uid
+    let sbp = addBloodPressure.value.SBP
+    let dbp = addBloodPressure.value.DBP
+    let date = addBloodPressure.value.recordTime
+
     //上传血压数据
     instance
-      .post('/bp/record/insert', data)
+      .post('/bp/record/insert', { userId: userId, sbp: sbp, dbp: dbp, date: date })
       .then((response) => {
         // 处理成功响应
         ElMessage.success('血压记录已成功添加')

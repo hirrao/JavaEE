@@ -36,8 +36,8 @@
                     </el-form-item>     
                     <el-form-item label="性别" prop="sex">
                         <el-radio-group v-model="sex">
-                        <el-radio value="1" size="large" label="男">男</el-radio>
-                        <el-radio value="0" size="large" label="女">女</el-radio>
+                        <el-radio value="男" size="large" label="男">男</el-radio>
+                        <el-radio value="女" size="large" label="女">女</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="生日" prop="birthday">
@@ -202,7 +202,7 @@ const editProfile = async () =>{
         }
         instance.post('/user/updateSex', {
             uid: uid,
-            sex: sex.value
+            sex: sex.value =='男' ? 1 : 0
         }, {
         headers: {
             'Content-Type': 'application/json',
@@ -437,7 +437,6 @@ onMounted(async () => {
     await nextTick();
     // 初始化工具栏的中文提示
     initTitle();
-    sex.value = sex.value == '0' ? '女' : '男'
 })
 
 

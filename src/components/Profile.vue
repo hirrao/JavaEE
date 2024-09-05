@@ -437,7 +437,7 @@ onMounted(async () => {
     await nextTick();
     // 初始化工具栏的中文提示
     initTitle();
-    sex.value = sex.value == '0' ? '男' : '女'
+    sex.value = sex.value == '0' ? '女' : '男'
 })
 
 

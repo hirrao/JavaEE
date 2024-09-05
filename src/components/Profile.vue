@@ -149,13 +149,7 @@ const sex = ref(localStorage.getItem('sex'))
 const birthday = ref(localStorage.getItem('birthday'))
 const intro = ref('')
 onMounted(async () => {
-  const user = await instance.post('/intro/get', {
-    'uid': uid
-  }, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  const user = await instance.get('/intro/get');
   intro.value = user.data.data.intro
   console.log(user.data)
   searchByPage()

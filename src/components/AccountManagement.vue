@@ -13,8 +13,8 @@
           <el-option value="permission" label="权限"/>
         </el-select>
         <el-input class="conditionInput" v-model="conditionValue" placeholder="" size="small" style="margin-top: auto;margin-bottom: auto;" clearable></el-input>
-        <el-button type="primary" style="height: 40px;margin-right: 5px;" @click="searchByCondition">搜索</el-button>
-        <el-button type="danger" style="height: 40px;" @click="claerSearchCondition">清空</el-button>
+        <el-button type="primary" style="height: 40px;margin-right: 5px;margin-top: auto;margin-bottom: auto;" @click="searchByCondition">搜索</el-button>
+        <el-button type="danger" style="height: 40px;margin-top: auto;margin-bottom: auto;" @click="claerSearchCondition">清空</el-button>
       </div>
 
       <el-table class="table" :data="Account">

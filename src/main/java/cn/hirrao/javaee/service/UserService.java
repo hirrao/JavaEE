@@ -26,6 +26,10 @@ public interface UserService {
 
     void modifyUserInfo(long uid, String userName,String phoneNumber, String sex, String birthday,int permission);
 
+    void updateUserName(long uid, String userName);
+    void updateSex(long uid, String sex);
+    void updateBirthday(long uid, String birthday);
+
     void deleteUser(long uid);
 
     IPage<User> searchUserByCondition(int curPage,int size,String searchCondition,String conditionValue);

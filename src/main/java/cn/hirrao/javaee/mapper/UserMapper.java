@@ -30,4 +30,13 @@ public interface UserMapper extends BaseMapper<User> {
 
     @Delete("delete from user where uid=#{uid}")
     void deleteUser(long uid);
+
+    @Update("update user set userName=#{userName} where uid=#{uid}")
+    void updateUserName(long uid, String userName);
+
+    @Update("update user set sex=#{sex} where uid=#{uid}")
+    void updateSex(long uid, String sex);
+
+    @Update("update user set birthday=#{birthday} where uid=#{uid}")
+    void updateBirthday(long uid, String birthday);
 }

@@ -71,4 +71,22 @@ public class UserServiceImpl implements UserService {
         queryWrapper.eq(searchCondition,conditionValue);
         return userMapper.selectPage(page, queryWrapper);
     }
+
+    @Override
+    public void updateUserName(long uid, String userName) {
+        userMapper.updateUserName(uid, userName);
+        return;
+    }
+
+    @Override
+    public void updateBirthday(long uid, String birthday) {
+        userMapper.updateBirthday(uid, birthday);
+        return;
+    }
+
+    @Override
+    public void updateSex(long uid, String sex) {
+        userMapper.updateSex(uid, sex);
+        return;
+    }
 }

@@ -68,6 +68,34 @@ public class UserController {
         return Result.success();
     }
 
+    @PostMapping("/updateUserName")
+    public Result updateUserName(@RequestBody Map<String, String> map) {
+        long uid = Long.parseLong(map.get("uid"));
+        String userName = map.get("userName");
+        User user = userService.findByUid(uid);
+        if ((user != null && uid != user.getUid()) || userName.trim().equals("")) {
+            return Result.error(104, "用户名已存在或为空");
+        }
+        userService.updateUserName(uid, userName);
+        return Result.success();
+    }
+
+    @PostMapping("/updateSex")
+    public Result updateSex(@RequestBody Map<String, String> map) {
+        long uid = Long.parseLong(map.get("uid"));
+        String sex = map.get("sex");
+        userService.updateSex(uid, sex);
+        return Result.success();
+    }
+
+    @PostMapping("/updateBirthday")
+    public Result updateBirthday(@RequestBody Map<String, String> map) {
+        long uid = Long.parseLong(map.get("uid"));
+        String birthday = map.get("birthday");
+        userService.updateBirthday(uid, birthday);
+        return Result.success();
+    }
+
     @PostMapping("/deleteUser")
     public Result deleteUser(@RequestBody Map<String, String> map){
         System.out.println(map.size());

@@ -4,12 +4,8 @@ import cn.hirrao.javaee.entity.Blog;
 import cn.hirrao.javaee.entity.Result;
 import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.service.BlogService;
-import cn.hirrao.javaee.service.UserService;
 import cn.hirrao.javaee.utils.SnowFlake;
-import lombok.extern.slf4j.Slf4j;
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.hirrao.javaee.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,20 +17,18 @@ import java.util.Map;
 @RestController
 @RequestMapping("/profile")
 public class BlogController {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final SnowFlake snowFlake = new SnowFlake(1, 1);
     private final BlogService blogService;
-    private final UserService userService;
 
     @Autowired
-    private BlogController(BlogService blogService, UserService userService) {
+    private BlogController(BlogService blogService) {
         this.blogService = blogService;
-        this.userService = userService;
     }
 
-    @PostMapping("/userBlogInfo")
-    public Result userBlogInfo(@RequestBody Map<String, String> map) {
-        long uid = Long.parseLong(map.get("uid"));
+    @GetMapping("/userBlogInfo")
+    public Result userBlogInfo() {
+        User user = ThreadLocalUtil.get();
+        var uid = user.getUid();
         List<Blog> blog = blogService.findByUid(uid);
         return Result.success(blog);
     }
@@ -46,16 +40,16 @@ public class BlogController {
         return Result.success(blog);
     }
 
-    @PostMapping("/userInfo")
-    public Result userInfo(@RequestBody Map<String, String> map) {
-        long uid = Long.parseLong(map.get("uid"));
-        User user = userService.findByUid(uid);
+    @GetMapping("/userInfo")
+    public Result userInfo() {
+        User user = ThreadLocalUtil.get();
         return Result.success(user);
     }
 
     @PostMapping("/add")
     public Result add(@RequestBody Map<String, String> map) {
-        long uid = Long.parseLong(map.get("uid"));
+        User user = ThreadLocalUtil.get();
+        var uid = user.getUid();
         long blogId = snowFlake.nextId();
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -67,9 +61,9 @@ public class BlogController {
     }
 
     @PostMapping("/search")
-    public Result searchUserByCondition(@RequestBody Map<String, String> map){
-        int curPage=Integer.parseInt(map.get("curPage"));
-        int size=Integer.parseInt(map.get("size"));
+    public Result searchUserByCondition(@RequestBody Map<String, String> map) {
+        int curPage = Integer.parseInt(map.get("curPage"));
+        int size = Integer.parseInt(map.get("size"));
         Long uid = Long.parseLong(map.get("uid"));
         return Result.success(blogService.search(curPage, size, uid));
     }

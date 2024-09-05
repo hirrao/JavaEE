@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class HeartRate {
-    @TableId(value = "hrlld")
-    private Long hrlld;
+    @TableId(value = "hrlId")
+    private Long hrlId;
     private Long uid;
     private Float heartRate;
     private String recordTime;

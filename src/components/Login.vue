@@ -69,7 +69,7 @@ const handleSubmit = async () => {
     localStorage.setItem('userName', response2.data.data.userName)
     localStorage.setItem('sex', (response2.data.data.sex == '0' ? '女' : '男')) 
     localStorage.setItem('birthday', response2.data.data.birthday)
-    router.push('/');
+    window.location.href = '/';
 
   } catch (error) {
     console.log(error);

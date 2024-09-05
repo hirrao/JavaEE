@@ -36,7 +36,7 @@ import instance from '@/axios';
 const router = useRouter();
 const route = useRoute();
 
-const isLoggedIn = ref<boolean | null>(null);
+const isLoggedIn = ref(false);
 
 (async () => {
   try {

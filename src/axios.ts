@@ -39,15 +39,4 @@ instance.interceptors.request.use(
   }
 )
 
-// 响应拦截器
-// instance.interceptors.response.use(
-//   response => {
-//     return response.data;
-//   },
-//   error => {
-//     // 处理响应错误
-//     return Promise.reject(error);
-//   }
-// );
-
 export default instance

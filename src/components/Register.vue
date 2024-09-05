@@ -55,13 +55,14 @@ const sendVerificationCode = async () => {
       'Content-Type': 'application/json',
     },
   })
-  localStorage.setItem('phoneNumber', phonenumber.value)
-  console.log(phonenumber);
-  ElMessage(`${response.data.message}`)
-
+  if(response.data.code==0)ElMessage.success(`${response.data.message}`)
+  else {
+    ElMessage.error(`${response.data.message}`)
+    return
+  }
   // 禁用按钮并开始倒计时
   isButtonDisabled.value = true
-  countdown.value = 60
+  countdown.value = 30
   timer = setInterval(() => {
     if (countdown.value > 0) {
       countdown.value--
@@ -79,8 +80,8 @@ const next = async () => {
     ElMessage.error("请输入用户名")
     return
   }
-  if (username.value.length<3) {
-    ElMessage.error('用户名不得小于3位！')
+  if (username.value.length<2) {
+    ElMessage.error('用户名不得小于2位！')
     return
   }
   if (verificationCode.value == "") {
@@ -111,10 +112,6 @@ const next = async () => {
     return
   }
   try {
-    if(localStorage.getItem('phoneNumber')!=phonenumber.value){
-      ElMessage('请勿更改手机号！');
-      return;
-    }
     const response = await instance.post('/user/auth/message', {
       userName: username.value,
       phoneNumber: phonenumber.value,
@@ -126,10 +123,11 @@ const next = async () => {
     });
     const code = response.data.code;
     if (code != 0) {
-      ElMessage('验证码错误')
+      ElMessage('验证码或手机号错误')
       verificationCode.value = ''
       return
     }
+    localStorage.setItem('phoneNumber', phonenumber.value)
     localStorage.setItem('userName', username.value)
     localStorage.setItem('messageCode', verificationCode.value)
     router.push('/setPassword')

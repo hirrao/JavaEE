@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch, PropType } from 'vue'
+import { onMounted, ref, watch, type PropType } from 'vue'
 import * as echarts from 'echarts'
 
 // 接收来自父组件的 chartData prop

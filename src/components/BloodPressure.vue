@@ -189,6 +189,9 @@ function AddRecord() {
         ElMessage.success('血压记录已成功添加')
         console.log('Response:', response.data)
         addDialogVisble.value = false
+        getChartData1()
+        getChartData2()
+        getTableData()
       })
       .catch((error) => {
         // 处理错误响应
@@ -264,7 +267,13 @@ function getChartData2() {
   instance.post('/bp/record/riskLevel', { date: now }).then((res: any) => {
     console.log(res)
     // 初始化风险级别计数对象
-    let riskLevelCounts = {
+    let riskLevelCounts: {
+      重度: number
+      中度: number
+      轻度: number
+      正常高值: number
+      偏低: number
+    } = {
       重度: 0,
       中度: 0,
       轻度: 0,
@@ -272,11 +281,12 @@ function getChartData2() {
       偏低: 0
     }
 
-    // 遍历后端返回的data数组，统计每个风险级别的数量
+    // 遍历后端返回的 data 数组，统计每个风险级别的数量
     if (res.data.data && Array.isArray(res.data.data)) {
       res.data.data.forEach((level: string) => {
-        if (riskLevelCounts.hasOwnProperty(level)) {
-          riskLevelCounts[level] += 1
+        if (level in riskLevelCounts) {
+          // 直接访问特定的属性
+          riskLevelCounts[level as keyof typeof riskLevelCounts] += 1
         }
       })
     }

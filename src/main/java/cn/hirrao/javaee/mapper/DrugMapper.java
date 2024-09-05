@@ -39,7 +39,7 @@ public interface DrugMapper extends BaseMapper<Drug> {
     @Select("SELECT COUNT(*) FROM drug d JOIN drugAlert da ON d.drugId=da.drugId AND d.uid=da.uid WHERE d.uid=#{uid} AND d.drugName LIKE CONCAT('%',#{drugName},'%')")
     int getPageDrugAlertInfoTotalByDrugName(long uid,String drugName);
 
-    @Update("UPDATE drugAlert SET isActive=#{isActive} WHERE drugId=#{drugId} AND uid=#{uid}")
+    @Update("UPDATE drug SET isActive=#{isActive} WHERE drugId=#{drugId} AND uid=#{uid}")
     void updateDrugIsActiveById(long drugId,long uid,int isActive);
 
     @Delete("DELETE FROM drug WHERE uid=#{uid} AND drugId=#{drugId}")

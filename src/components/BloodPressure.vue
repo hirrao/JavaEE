@@ -195,6 +195,25 @@ function AddRecord() {
   }
 }
 
+function mapBackendDataToChart(backendData: any, categories: any) {
+  // 初始化 data 数组，将每个元素都设为 [null, null]，表示高压和低压的数据
+  let data = categories.map(() => [0, 0])
+
+  // 遍历后端返回的数据
+  backendData.forEach((record) => {
+    // 找到当前 record 的 recordTime 在 categories 中的位置
+    let index = categories.indexOf(record.recordTime)
+
+    // 如果找到了对应的日期
+    if (index !== -1) {
+      // 将该日期的高压（SBP）和低压（DBP）存储到 data 数组中对应的位置
+      data[index] = [record.sbp, record.dbp]
+    }
+  })
+
+  return data
+}
+
 function getChartData1() {
   let date = new Date()
   let year = date.getFullYear()
@@ -202,32 +221,53 @@ function getChartData1() {
   let day = date.getDate().toString().padStart(2, '0') // 日期补零
   let now = year + '-' + month + '-' + day
   console.log(now)
-  let categories = [
-    '2024-08-15',
-    '2024-08-16',
-    '2024-08-17',
-    '2024-08-18',
-    '2024-08-19',
-    '2024-08-20',
-    '2024-09-21'
-  ]
-  let data = [
-    [140, 90], // 高压，低压
-    [136, 88], // 高压，低压
-    [144, 92], // 高压，低压
-    [136, 90], // 高压，低压
-    [130, 84], // 高压，低压
-    [135, 90], // 高压，低压
-    [140, 90] // 高压，低压
-  ]
+  // 计算7天前的日期
+  let pastDate = new Date(date) // 复制当前日期对象
+  pastDate.setDate(pastDate.getDate() - 6) // 将日期设为7天前
+  let categories = []
+
+  // 使用循环填充past到now之间的日期
+  while (pastDate <= date) {
+    let tempYear = pastDate.getFullYear()
+    let tempMonth = (pastDate.getMonth() + 1).toString().padStart(2, '0') // 月份补零
+    let tempDay = pastDate.getDate().toString().padStart(2, '0') // 日期补零
+
+    // 将格式化后的日期加入categories数组
+    categories.push(tempYear + '-' + tempMonth + '-' + tempDay)
+
+    // 将日期递增一天
+    pastDate.setDate(pastDate.getDate() + 1)
+  }
+  instance
+    .post('/bp/record/uid', { date: now })
+    .then((res: any) => {
+      console.log(res)
+      console.log(res.data.data)
+      let data = mapBackendDataToChart(res.data.data, categories)
+      console.log(data)
+      chartData1.value.data = data
+    })
+    .catch((err: any) => {
+      console.log('请求血压记录图数据失败', err)
+      ElMessage.error('血压记录图表数据加载失败，请检查网络')
+    })
   chartData1.value.categories = categories
-  chartData1.value.data = data
-  //TODO：更新图表数据
+}
+
+function getTableData() {
+  let date = new Date()
+  let year = date.getFullYear()
+  let month = (date.getMonth() + 1).toString().padStart(2, '0') // 月份补零
+  let day = date.getDate().toString().padStart(2, '0') // 日期补零
+  let now = year + '-' + month + '-' + day
+  //TODO:图表后端逻辑
+  instance.post('')
 }
 
 onMounted(() => {
   getChartData1()
   console.log('更新图数据')
+  getTableData()
 })
 </script>
 

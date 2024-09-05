@@ -52,7 +52,7 @@ onMounted(() => {
 
       const option = {
         grid: {
-          x: 20, // 左
+          x: 40, // 左
           y: 20, // 上
           x2: 20, // 右
           y2: 20 // 下

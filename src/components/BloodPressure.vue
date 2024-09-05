@@ -1,42 +1,48 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center">
-    <h2>sDJD</h2>
+    <div style="background: white; width: 99vw; text-align: center; margin-top: 10%">
+      <h2>这是您最近七天的血压数据</h2>
+      <el-button
+        id="dialogVisbleBtn"
+        type="primary"
+        size="large"
+        style="width: 10%"
+        @click="DialogVisble"
+        >上传新的血压数据</el-button
+      >
+      <el-dialog title="添加血压记录" v-model="addDialogVisble" width="80%">
+        <el-form ref="form" :model="addBloodPressure" label-width="80px">
+          <el-form-item label="高压（收缩压）" prop="SBP">
+            <el-input-number
+              v-model="addBloodPressure.SBP"
+              placeholder="请输入高压（收缩压）"
+            ></el-input-number>
+          </el-form-item>
+          <el-form-item label="低压（舒张压）" prop="DBP">
+            <el-input-number
+              v-model="addBloodPressure.DBP"
+              placeholder="请输入低压（舒张压）"
+            ></el-input-number>
+          </el-form-item>
+          <el-form-item label="测量时间" prop="" recordTime>
+            <el-date-picker
+              v-model="addBloodPressure.recordTime"
+              type="datetime"
+              value-format="YYYY-MM-DD HH:mm:ss"
+              placeholder="请选择测量时间"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item align="center">
+            <el-button type="primary" size="mini" @click="AddRecord">添加</el-button>
+            <el-button type="info" size="mini" @click="CloseDialog">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
 
-    <el-button id="dialogVisbleBtn" type="primary" size="mini" @click="DialogVisble"
-      >上传血压数据</el-button
-    >
-
-    <el-dialog title="添加血压记录" v-model="addDialogVisble" width="80%">
-      <el-form ref="form" :model="addBloodPressure" label-width="80px">
-        <el-form-item label="高压（收缩压）" prop="SBP">
-          <el-input-number
-            v-model="addBloodPressure.SBP"
-            placeholder="请输入高压（收缩压）"
-          ></el-input-number>
-        </el-form-item>
-        <el-form-item label="低压（舒张压）" prop="DBP">
-          <el-input-number
-            v-model="addBloodPressure.DBP"
-            placeholder="请输入低压（舒张压）"
-          ></el-input-number>
-        </el-form-item>
-        <el-form-item label="测量时间" prop="" recordTime>
-          <el-date-picker
-            v-model="addBloodPressure.recordTime"
-            type="datetime"
-            value-format="YYYY-MM-DD HH:mm:ss"
-            placeholder="请选择测量时间"
-          ></el-date-picker>
-        </el-form-item>
-        <el-form-item align="center">
-          <el-button type="primary" size="mini" @click="AddRecord">添加</el-button>
-          <el-button type="info" size="mini" @click="CloseDialog">取消</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
     <div style="display: flex; align-items: center; width: 99vw">
       <div class="blood-pressure-log-chart" style="width: 80%">
-        <BPLChart1 />
+        <BPLChart1 :chartData="chartData1" />
       </div>
       <div class="blood-pressure-log-chart" style="width: 20%">
         <BPLChart2 />
@@ -107,6 +113,27 @@ let addBloodPressure = ref({
   recordTime: ''
 })
 
+let chartData1 = ref({
+  categories: [
+    '2024-07-15',
+    '2024-07-16',
+    '2024-07-17',
+    '2024-07-18',
+    '2024-07-19',
+    '2024-07-20',
+    '2024-07-21'
+  ],
+  data: [
+    [140, 90], // 高压，低压
+    [136, 88], // 高压，低压
+    [144, 92], // 高压，低压
+    [136, 90], // 高压，低压
+    [130, 84], // 高压，低压
+    [135, 90], // 高压，低压
+    [140, 90] // 高压，低压
+  ]
+})
+
 function DialogVisble() {
   addDialogVisble.value = true
 }
@@ -171,12 +198,36 @@ function AddRecord() {
 
 function getChartData1() {
   let date = new Date()
-  let now = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()
+  let year = date.getFullYear()
+  let month = (date.getMonth() + 1).toString().padStart(2, '0') // 月份补零
+  let day = date.getDate().toString().padStart(2, '0') // 日期补零
+  let now = year + '-' + month + '-' + day
   console.log(now)
+  let categories = [
+    '2024-08-15',
+    '2024-08-16',
+    '2024-08-17',
+    '2024-08-18',
+    '2024-08-19',
+    '2024-08-20',
+    '2024-09-21'
+  ]
+  let data = [
+    [140, 90], // 高压，低压
+    [136, 88], // 高压，低压
+    [144, 92], // 高压，低压
+    [136, 90], // 高压，低压
+    [130, 84], // 高压，低压
+    [135, 90], // 高压，低压
+    [140, 90] // 高压，低压
+  ]
+  chartData1.value.categories = categories
+  chartData1.value.data = data
 }
 
 onMounted(() => {
   getChartData1()
+  console.log('更新图数据')
 })
 </script>
 

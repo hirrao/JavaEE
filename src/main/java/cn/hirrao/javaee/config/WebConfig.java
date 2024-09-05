@@ -20,9 +20,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/user/auth/*", "/error","/articles","/articles/*");//排除登录注册接口
+//        registry.addInterceptor(loginInterceptor)
+//                .addPathPatterns("/**")
+//                .excludePathPatterns("/user/auth/*", "/error","/articles","/articles/*");//排除登录注册接口
     }
 
     @Bean

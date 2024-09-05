@@ -150,11 +150,30 @@ public class DrugController {
         return Result.success();
     }
 
+    @PostMapping("/updateDrugIsActiveById")
+    public Result updateDrugIsActiveById(@RequestBody Map<String, String> map){
+        var drugId=Long.parseLong(map.get("drugId"));
+        var uid=Long.parseLong(map.get("uid"));
+        var isActive=Integer.parseInt(map.get("isActive"));
+        drugService.updateDrugIsActiveById(drugId, uid, isActive);
+        return Result.success();
+    }
+
     @PostMapping("/deleteDrugById")
     public Result deleteDrugById(@RequestBody Map<String, String> map){
         var uid=Long.parseLong(map.get("uid"));
         var drugId=Long.parseLong(map.get("drugId"));
         drugService.deleteDrugById(uid, drugId);
+        return Result.success();
+    }
+
+    @PostMapping("/deleteDrugAndDrugAlertById")
+    public Result deleteDrugAndDrugAlertById(@RequestBody Map<String, String> map){
+        var alertId=Long.parseLong(map.get("alertId"));
+        var uid=Long.parseLong(map.get("uid"));
+        var drugId=Long.parseLong(map.get("drugId"));
+        drugService.deleteDrugById(uid, drugId);
+        drugAlertService.deleteDrugAlertById(alertId,uid,drugId);
         return Result.success();
     }
 }

@@ -4,11 +4,9 @@ import cn.hirrao.javaee.entity.Drug;
 import cn.hirrao.javaee.entity.DrugManageResult;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
+import java.sql.Date;
 import java.util.List;
 @Mapper
 public interface DrugMapper extends BaseMapper<Drug> {
@@ -40,6 +38,9 @@ public interface DrugMapper extends BaseMapper<Drug> {
 
     @Select("SELECT COUNT(*) FROM drug d JOIN drugAlert da ON d.drugId=da.drugId AND d.uid=da.uid WHERE d.uid=#{uid} AND d.drugName LIKE CONCAT('%',#{drugName},'%')")
     int getPageDrugAlertInfoTotalByDrugName(long uid,String drugName);
+
+    @Update("UPDATE drugAlert SET isActive=#{isActive} WHERE drugId=#{drugId} AND uid=#{uid}")
+    void updateDrugIsActiveById(long drugId,long uid,int isActive);
 
     @Delete("DELETE FROM drug WHERE uid=#{uid} AND drugId=#{drugId}")
     void deleteDrugById(long uid,long drugId);

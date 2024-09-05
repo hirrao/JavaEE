@@ -61,9 +61,9 @@ const handleSubmit = async () => {
     uid.value = data.uid;
     localStorage.setItem('token', token.value);
     localStorage.setItem('permission', permission.value);
-    localStorage.setItem('uid',uid.value);
     const response2 = await instance.get('/user/userInfo');
     console.log(response2)
+    localStorage.setItem('uid', response2.data.data.uid)
     localStorage.setItem('userName', response2.data.data.userName)
     localStorage.setItem('sex', (response2.data.data.sex == '0' ? '女' : '男')) 
     localStorage.setItem('birthday', response2.data.data.birthday)

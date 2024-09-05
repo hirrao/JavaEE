@@ -152,7 +152,7 @@ p {
 
 .pagination {
   margin-top: 20px;
-  margin-left: 100px;
+  margin-left: 80px;
   width: 100%; /* 设置为100%以占满父容器 */
   text-align: center; /* 确保内容居中 */
   background-color: transparent;

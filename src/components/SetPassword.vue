@@ -59,10 +59,10 @@ const next = async () => {
       try {
         const response = await instance.post('user/auth/resetPassword', {
           phoneNumber: phoneNumber,
-          userPassword: password.value,
+          newPassword: password.value,
           messageCode: messageCode
         })
-        if (response.data.value == 0) {
+        if (response.data.code == 0) {
           ElMessage("重设密码成功")
           localStorage.removeItem('phoneNumber')
           localStorage.removeItem('messageCode')

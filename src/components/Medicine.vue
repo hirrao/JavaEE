@@ -57,13 +57,13 @@
 
       <el-table class="table" :data="drugAlerts">
         <el-table-column type="expand">
-          <template #default="props">
-            <div m="4">
-              <p m="t-0 b-2" style="margin-left: 20px;">提醒id: {{ props.row.alertId }}</p>
-              <p m="t-0 b-2" style="margin-left: 20px;">药物id: {{ props.row.drugId }}</p>
-              <p m="t-0 b-2" style="margin-left: 20px;">频率: {{ props.row.frequency }}</p>
-              <p m="t-0 b-2" style="margin-left: 20px;">剂量: {{ props.row.dosage }} {{ props.row.unit }}</p>
-              <el-button m="t-0 b-2" style="margin-left: 20px;" type="danger" @click="deleteDrugAlert(props.row)">删除</el-button>
+          <template v-slot="props">
+            <div>
+              <p style="margin-left: 20px;">提醒id: {{ props.row.alertId }}</p>
+              <p style="margin-left: 20px;">药物id: {{ props.row.drugId }}</p>
+              <p style="margin-left: 20px;">频率: {{ props.row.frequency }}</p>
+              <p style="margin-left: 20px;">剂量: {{ props.row.dosage }} {{ props.row.unit }}</p>
+              <el-button style="margin-left: 20px;" type="danger" @click="deleteDrugAlert(props.row)">删除</el-button>
             </div>
           </template>
         </el-table-column>

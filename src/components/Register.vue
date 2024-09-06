@@ -89,6 +89,7 @@ const next = async () => {
     return
   }
   try {
+    //检测用户名和手机号是否已存在
     const response = await instance.post('/user/auth/find', {
       userName: username.value,
       phoneNumber: phonenumber.value,
@@ -112,6 +113,7 @@ const next = async () => {
     return
   }
   try {
+    //验证验证码
     const response = await instance.post('/user/auth/message', {
       userName: username.value,
       phoneNumber: phonenumber.value,

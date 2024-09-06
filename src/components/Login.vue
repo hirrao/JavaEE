@@ -52,7 +52,7 @@ const handleSubmit = async () => {
       ElMessage.error('该账号已被封禁！')
       return;
     }
-    else if (data.token == null) {
+    else if (response.data.code==104) {
       ElMessage.error('用户名或密码错误')
       return;
     }
@@ -68,7 +68,6 @@ const handleSubmit = async () => {
     localStorage.setItem('sex', (response2.data.data.sex == '0' ? '女' : '男')) 
     localStorage.setItem('birthday', response2.data.data.birthday)
     window.location.href = '/';
-
   } catch (error) {
     console.log(error);
     ElMessage.error('网络错误！')

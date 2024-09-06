@@ -185,12 +185,17 @@
     console.log(alertTime)
     const eatDate=alertTime.split(':');
     const date=new Date();
-    if(date.getHours()-parseInt(eatDate[0])>0)
+    const delHour=date.getHours()-parseInt(eatDate[0])
+    const delMinute=date.getMinutes()-parseInt(eatDate[1])
+    const delSecond=date.getSeconds()-parseInt(eatDate[2])
+    if(delHour>0)
       return true
-    if(date.getMinutes()+1-parseInt(eatDate[1])>0)
-      return true
-    if(date.getSeconds()+1-parseInt(eatDate[2])>0)
-      return true
+    else  if(delHour==0)
+      if(delMinute>0)
+        return true
+      else if(delMinute==0)
+        if(delSecond>0)
+          return true
     return false
   }
 

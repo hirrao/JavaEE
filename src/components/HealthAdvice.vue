@@ -46,7 +46,13 @@
 import { ref, computed, onMounted } from 'vue';
 import instance from '../axios';
 
-
+interface Article {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  content: string;
+}
 
 const articles = ref<Article[]>([]); // 文章数据数组
 const currentPage = ref(1); // 当前页码

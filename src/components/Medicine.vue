@@ -8,6 +8,7 @@
         <el-input class="conditionInput" v-model="conditionValue" placeholder="" size="small" clearable></el-input>
         <el-button type="primary" style="height: 40px;margin-right: 5px;margin-top: auto;margin-bottom: auto;" @click="searchByCondition">搜索</el-button>
         <el-button type="danger" style="height: 40px;margin-top: auto;margin-bottom: auto;" @click="clearSearchCondition">清空</el-button>
+        <el-button type="primary" style="height: 40px;margin-left: auto;margin-top: auto;margin-bottom: auto;" @click="showDrugManage">用药管理</el-button>
       </div>
 
       <el-table class="table" :data="drugs" row-key="drugId">
@@ -43,7 +44,7 @@
     <br/>
     <br/>
 
-    <el-card class="card">
+    <el-card class="card" v-show="drugManageVisible">
       <h2 class="tital">提醒管理</h2>
 
       <div class="searchConditionDiv">
@@ -178,6 +179,12 @@
     isActive:ref(''),
     alertTime:ref('')
   });
+  const drugManageVisible=ref(false)
+
+  function showDrugManage(){
+    console.log(drugManageVisible.value)
+    drugManageVisible.value=!drugManageVisible.value
+  }
 
   function checkIsEat(eatTime:String){
     console.log(eatTime)

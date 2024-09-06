@@ -28,7 +28,7 @@ import { ref } from 'vue';
 import instance from '../axios';
 import md5 from 'crypto-js/md5';
 import { ElMessage } from 'element-plus';
-// 定义响应式数据
+
 const username = ref('');
 const password = ref('');
 const token = ref('');

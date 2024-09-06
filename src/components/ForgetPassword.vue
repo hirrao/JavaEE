@@ -69,9 +69,9 @@ const sendVerificationCode = async () => {
         'Content-Type': 'application/json',
       },
     })
-    localStorage.setItem('phoneNumber', phonenumber.value)
+
     console.log(phonenumber);
-    ElMessage(`${response.data.message}`)
+    ElMessage.success(`${response.data.message}`)
 
     // 禁用按钮并开始倒计时
     isButtonDisabled.value = true
@@ -113,12 +113,7 @@ const next = async () => {
       verificationCode.value = ''
       return
     }
-    if (phonenumber.value === response.data.phoneNumber) {
-      ElMessage('手机号与验证码不匹配')
-      phonenumber.value = ''
-      verificationCode.value = ''
-      return
-    }
+    localStorage.setItem('phoneNumber', phonenumber.value)
     localStorage.setItem('messageCode', verificationCode.value)
     router.push('/setPassword')
   }

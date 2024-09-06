@@ -41,14 +41,14 @@ onMounted(() => {
       { deep: true } // 深度监听，以捕获对象内部的变化
     )
 
-    function updateChart(chartData) {
+    function updateChart(chartData: any) {
       if (!chartData || chartData.categories.length === 0 || chartData.data.length === 0) {
         return
       }
 
       const categories = chartData.categories
-      const sbpData = chartData.data.map((item) => item[0]) // 提取高压数据
-      const dbpData = chartData.data.map((item) => item[1]) // 提取低压数据
+      const sbpData = chartData.data.map((item: any) => item[0]) // 提取高压数据
+      const dbpData = chartData.data.map((item: any) => item[1]) // 提取低压数据
 
       const option = {
         grid: {

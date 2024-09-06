@@ -51,8 +51,9 @@ public class UserController {
 
     @PostMapping("/modifyUserInfo")
     public Result modifyUserInfo(@RequestBody Map<String, String> map) {
-        User user = ThreadLocalUtil.get();
-        var uid = user.getUid();
+//        User user = ThreadLocalUtil.get();
+//        var uid = user.getUid();
+        var uid = Long.parseLong(map.get("uid"));
         var userName = map.get("userName");
         var phoneNumber = map.get("phoneNumber");
         var sex = map.get("sex");
@@ -97,9 +98,9 @@ public class UserController {
 
     @PostMapping("/deleteUser")
     public Result deleteUser(@RequestBody Map<String, String> map) {
-        System.out.println(map.size());
-        User user = ThreadLocalUtil.get();
-        var uid = user.getUid();
+//        System.out.println(map.size());
+//        User user = ThreadLocalUtil.get();
+        var uid = Long.parseLong(map.get("uid"));
         userService.deleteUser(uid);
         System.out.println("delete uid:" + uid);
         return Result.success();

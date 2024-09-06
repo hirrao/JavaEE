@@ -111,10 +111,10 @@
       console.log(modifyAccount.value.permission);
     }
 
-    function deleteAccount(id: any){
+    async function deleteAccount(id: any){
         let conf=confirm("是否删除")
         if(conf){
-          instance.post("/user/deleteUser",{
+          await instance.post("/user/deleteUser",{
               uid: id.toString(),
           },{
               headers: {
@@ -184,13 +184,11 @@
     })
 
     function handleSizeChange(newSize: number) {
-      // handle the size change logic here
       currentPage.value=1
       searchByPage()
     }
     
     function handleCurrentChange(newPage: number) {
-      // handle the current change logic here
       searchByPage()
     }
 

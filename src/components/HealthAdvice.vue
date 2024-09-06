@@ -39,7 +39,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import instance from '../axios'
-import { number } from 'echarts'
 
 interface Article {
   id: number
@@ -94,7 +93,7 @@ function viewArticle(article: Article) {
 <style scoped>
 .article-list-container {
   max-width: 450px;
-  margin-left: 600px;
+  margin-left: auto;
   margin-right: auto;
   padding: 30px;
   background-color: transparent;
@@ -155,7 +154,8 @@ p {
 
 .pagination {
   margin-top: 20px;
-  margin-left: 80px;
+  margin-left: auto;
+  margin-right: auto;
   width: 100%; /* 设置为100%以占满父容器 */
   text-align: center; /* 确保内容居中 */
   background-color: transparent;

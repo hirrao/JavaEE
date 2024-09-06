@@ -11,7 +11,7 @@
         <el-button type="primary" style="height: 40px;margin-left: auto;margin-top: auto;margin-bottom: auto;" @click="showDrugManage">用药管理</el-button>
       </div>
 
-      <el-table class="table" :data="drugs" row-key="drugId">
+      <el-table class="table" :data="drugs" row-key="drugId" :row-class-name="tableRowClassName">
         <el-table-column prop="drugId" label="Id" width="200" />
         <el-table-column prop="drugName" label="药物名" width="250" />
         <el-table-column prop="alertTime" label="用药时间" width="150" />
@@ -180,6 +180,34 @@
     alertTime:ref('')
   });
   const drugManageVisible=ref(false)
+
+  function checkIsForget(alertTime:String){
+    console.log(alertTime)
+    const eatDate=alertTime.split(':');
+    const date=new Date();
+    if(date.getHours()-parseInt(eatDate[0])>0)
+      return true
+    if(date.getMinutes()+1-parseInt(eatDate[1])>0)
+      return true
+    if(date.getSeconds()+1-parseInt(eatDate[2])>0)
+      return true
+    return false
+  }
+
+  const tableRowClassName = ({
+    row,
+    rowIndex,
+  }: {
+    row: drug
+    rowIndex: number
+  }) => {
+    if ((row.isEat === false) &&checkIsForget(row.alertTime)) {
+      return 'warning-row'
+    } else if (row.isEat === true) {
+      return 'success-row'
+    }
+    return ''
+  }
 
   function showDrugManage(){
     console.log(drugManageVisible.value)
@@ -500,5 +528,11 @@
   .drugAlertBtn{
     margin-top: auto;
     margin-bottom: auto;
+  }
+  .el-table .warning-row {
+    --el-table-tr-bg-color: var(--el-color-warning-light-9);
+  }
+  .el-table .success-row {
+    --el-table-tr-bg-color: var(--el-color-success-light-9);
   }
 </style>

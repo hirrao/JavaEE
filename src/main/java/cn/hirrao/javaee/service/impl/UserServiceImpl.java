@@ -9,8 +9,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
 @Service
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
@@ -57,38 +55,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void modifyUserInfo(long uid, String userName,String phoneNumber, String sex, String birthday,int permission) {
-        userMapper.modifyUserInfo(uid, userName,phoneNumber, sex, birthday,permission);
+    public void modifyUserInfo(long uid, String userName, String phoneNumber, String sex, String birthday, int permission) {
+        userMapper.modifyUserInfo(uid, userName, phoneNumber, sex, birthday, permission);
     }
 
     @Override
-    public void deleteUser(long uid){
+    public void deleteUser(long uid) {
         userMapper.deleteUser(uid);
     }
 
     @Override
-    public IPage<User> searchUserByCondition(int curPage,int size,String searchCondition,String conditionValue){
+    public IPage<User> searchUserByCondition(int curPage, int size, String searchCondition, String conditionValue) {
         Page<User> page = new Page<>(curPage, size);
-        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq(searchCondition,conditionValue);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(searchCondition, conditionValue);
         return userMapper.selectPage(page, queryWrapper);
     }
 
     @Override
     public void updateUserName(long uid, String userName) {
         userMapper.updateUserName(uid, userName);
-        return;
     }
 
     @Override
     public void updateBirthday(long uid, String birthday) {
         userMapper.updateBirthday(uid, birthday);
-        return;
     }
 
     @Override
     public void updateSex(long uid, String sex) {
         userMapper.updateSex(uid, sex);
-        return;
     }
 }

@@ -23,13 +23,11 @@ public class UserIntroServiceImpl implements UserIntroService {
     @Override
     public void updateUserIntro(Long uid, String intro) {
         userIntroMapper.updateUserIntro(uid, intro);
-        return;
     }
 
     @Override
     public void setUserIntro(Long uid, String intro) {
         userIntroMapper.setUserIntro(uid, intro);
-        return;
     }
 
 }

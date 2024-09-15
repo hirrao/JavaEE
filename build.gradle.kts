@@ -27,6 +27,7 @@ dependencies {
     implementation("com.alibaba:druid-spring-boot-3-starter:1.2.18")
     implementation("com.aliyun:dysmsapi20170525:3.0.0")
     implementation("org.springframework.data:spring-data-redis:3.3.3")
+    implementation("com.github.pagehelper:pagehelper-spring-boot-starter:1.3.1")
 
     testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

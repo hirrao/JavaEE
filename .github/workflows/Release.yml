@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Release Api
-      - uses: ./.github/workflows/ReleaseApi.yml
+        uses: ./.github/workflows/ReleaseApi.yml
 
       - name: Release Web
-      - uses: ./.github/workflows/ReleaseWeb.yml
+        uses: ./.github/workflows/ReleaseWeb.yml

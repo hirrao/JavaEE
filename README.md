@@ -1,7 +1,9 @@
-# JavaEEBack
+# JavaEE
 
-原为JavaEE课程的后端项目, fork源仓库至github, 并继续进行维护
+JavaEE课程相关代码, fork至github并合并为一个仓库, 可能继续进行开发
+后端使用SpringBoot3, 前端使用Vue3
 
 ## TODO
+- [ ] 使用Github Actions自动化
 - [ ] 切换至SQLite
-- [ ] 重构部分代码结构(将部分不合理的POST请求修改为GET请求, DELETE请求与PUT请求)
+- [ ] 重构部分代码结构(修改部分请求格式)

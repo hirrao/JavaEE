@@ -1,10 +1,6 @@
-name: Build and Release Workflow
+name: Build and Release Workflow For Api
 
-on:
-  release:
-    types:
-      - published
-      
+
 permissions:
   contents: write
   

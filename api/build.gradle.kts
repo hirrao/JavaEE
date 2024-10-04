@@ -34,8 +34,8 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok")
 
-    runtimeOnly("com.mysql:mysql-connector-j")
-    
+    runtimeOnly("org.xerial:sqlite-jdbc:3.46.1.3")
+
     annotationProcessor("org.projectlombok:lombok")
 }
 

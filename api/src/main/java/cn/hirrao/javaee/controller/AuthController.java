@@ -38,6 +38,7 @@ public class AuthController {
 
     @PostMapping("/message")
     public Result message(@RequestBody Map<String, String> map) {
+        /*
         logger.debug("/message接受请求{}", map);
         String userName = map.get("userName");
         String phoneNumber = map.get("phoneNumber");
@@ -56,6 +57,8 @@ public class AuthController {
             return Result.error(112, "验证码错误");
         }
         return Result.success("发送成功！");
+         */
+        return Result.success();
     }
 
 
@@ -93,12 +96,14 @@ public class AuthController {
         if (user != null) {
             return Result.error(102, "用户名已被占用");
         }
+        /*
         if (StringUtil.isEmpty(redisService.get(phoneNumber))) {
             return Result.error(111, "请发送验证码");
         }
         if (!redisService.get(phoneNumber).equals(messageCode)) {
             return Result.error(112, "验证码错误");
         }
+         */
         long uid = snowFlake.nextId();
         String password = DigestUtils.md5DigestAsHex(userPassword.getBytes());
         userService.register(uid, userName, password, phoneNumber);
@@ -108,6 +113,7 @@ public class AuthController {
 
     @PostMapping("/messageSend")
     public Result messageSend(@RequestBody Map<String, String> map) {
+        /* 发送短信验证码, 服务关闭后展示禁用
         logger.debug("/messageSend接受请求{}", map);
         String phoneNumber = map.get("phoneNumber");
         if (StringUtil.isEmpty(phoneNumber) || !phoneNumber.matches("^1[3-9]\\d{9}$")) {
@@ -126,6 +132,8 @@ public class AuthController {
             default:
                 return Result.error(110, "未知内部错误");
         }
+         */
+        return Result.success();
     }
 
     @PostMapping("/login")
@@ -171,12 +179,14 @@ public class AuthController {
         if (user == null) {
             return Result.error(105, "用户不存在");
         }
+        /*
         if (redisService.get(phoneNumber) == null) {
             return Result.error(111, "请发送验证码");
         }
         if (!redisService.get(phoneNumber).equals(messageCode)) {
             return Result.error(112, "验证码错误");
         }
+         */
         userService.updatePassword(user.getUid(), password);
         logger.info("重置密码成功 用户名:{} 手机号:{}", user.getUserName(), phoneNumber);
         return Result.success();

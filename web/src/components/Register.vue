@@ -8,8 +8,18 @@
       <el-form-item label="手机号" prop="phonenumber">
         <div class="form-group">
           <div class="input-container">
-            <el-input id="phonenumber" v-model="phonenumber" type="text" placeholder="请输入手机号"></el-input>
-            <el-button class="button1" type="primary" :disabled="isButtonDisabled" @click="sendVerificationCode">
+            <el-input
+              id="phonenumber"
+              v-model="phonenumber"
+              type="text"
+              placeholder="请输入手机号"
+            ></el-input>
+            <el-button
+              class="button1"
+              type="primary"
+              :disabled="isButtonDisabled"
+              @click="sendVerificationCode"
+            >
               {{ isButtonDisabled ? `${countdown}秒后重发` : '发送验证码' }}
             </el-button>
           </div>
@@ -27,9 +37,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import router from '../router'
-import instance from '../axios';
-import { ElMessage } from 'element-plus';
+import router from '@/router'
+import instance from '@/utils/axios'
+import { ElMessage } from 'element-plus'
 // 定义响应式数据
 const username = ref('')
 const phonenumber = ref('')
@@ -38,24 +48,27 @@ const isButtonDisabled = ref(false)
 const countdown = ref(60)
 let timer: ReturnType<typeof setInterval> | undefined
 
-
 //发送验证码事件
 const sendVerificationCode = async () => {
   if (isButtonDisabled.value) return
-  const phoneNumberPattern = /^1[3-9]\d{9}$/;
+  const phoneNumberPattern = /^1[3-9]\d{9}$/
   if (!phoneNumberPattern.test(phonenumber.value)) {
-    ElMessage("请输入正确的手机号")
+    ElMessage('请输入正确的手机号')
     return
   }
 
-  const response = await instance.post('user/auth/messageSend', {
-    phoneNumber: phonenumber.value,
-  }, {
-    headers: {
-      'Content-Type': 'application/json',
+  const response = await instance.post(
+    'user/auth/messageSend',
+    {
+      phoneNumber: phonenumber.value
     },
-  })
-  if(response.data.code==0)ElMessage.success(`${response.data.message}`)
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+  if (response.data.code == 0) ElMessage.success(`${response.data.message}`)
   else {
     ElMessage.error(`${response.data.message}`)
     return
@@ -73,31 +86,34 @@ const sendVerificationCode = async () => {
   }, 1000)
 }
 
-
 //验证完手机号的下一步触发事件
 const next = async () => {
-  if (username.value == "") {
-    ElMessage.error("请输入用户名")
+  if (username.value == '') {
+    ElMessage.error('请输入用户名')
     return
   }
-  if (username.value.length<2) {
+  if (username.value.length < 2) {
     ElMessage.error('用户名不得小于2位！')
     return
   }
-  if (verificationCode.value == "") {
-    ElMessage("请输入验证码")
+  if (verificationCode.value == '') {
+    ElMessage('请输入验证码')
     return
   }
   try {
     //检测用户名和手机号是否已存在
-    const response = await instance.post('/user/auth/find', {
-      userName: username.value,
-      phoneNumber: phonenumber.value,
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await instance.post(
+      '/user/auth/find',
+      {
+        userName: username.value,
+        phoneNumber: phonenumber.value
       },
-    })
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
     if (response.data.code != 0) {
       ElMessage('用户名或手机号已存在')
       username.value = ''
@@ -114,16 +130,20 @@ const next = async () => {
   }
   try {
     //验证验证码
-    const response = await instance.post('/user/auth/message', {
-      userName: username.value,
-      phoneNumber: phonenumber.value,
-      messageCode: verificationCode.value,
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await instance.post(
+      '/user/auth/message',
+      {
+        userName: username.value,
+        phoneNumber: phonenumber.value,
+        messageCode: verificationCode.value
       },
-    });
-    const code = response.data.code;
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    const code = response.data.code
     if (code != 0) {
       ElMessage('验证码或手机号错误')
       verificationCode.value = ''
@@ -133,8 +153,7 @@ const next = async () => {
     localStorage.setItem('userName', username.value)
     localStorage.setItem('messageCode', verificationCode.value)
     router.push('/setPassword')
-  }
-  catch (error) {
+  } catch (error) {
     ElMessage('网络错误')
     verificationCode.value = ''
   }

@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import instance from '../axios'
+import instance from '@/utils/axios'
 
 interface Article {
   id: number

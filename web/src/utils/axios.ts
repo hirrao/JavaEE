@@ -5,8 +5,8 @@ import JSONbig from 'json-bigint'
 const JSONbigToString = JSONbig({ storeAsString: true })
 
 const instance = axios.create({
-  baseURL: 'https://api.javaee.hirrao.cn', // 你的API`基础URL
-  //baseURL: 'http://localhost:8088', // 你的API基础URL
+  //baseURL: 'https://api.javaee.hirrao.cn', // 你的API`基础URL
+  baseURL: 'http://localhost:8088', // 你的API基础URL
   timeout: 10000, // 请求超时的时间限制
   headers: { 'Content-Type': 'application/json' },
   transformResponse: [

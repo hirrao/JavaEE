@@ -86,9 +86,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
-import instance from '../axios'
-import BPLChart1 from './BPLChart1/index.vue'
-import BPLChart2 from './BPLChart2/index.vue'
+import instance from '@/utils/axios'
+import BPLChart1 from '@/components/BPLChart1/index.vue'
+import BPLChart2 from '@/components/BPLChart2/index.vue'
 
 let addDialogVisble = ref(false)
 let uid = localStorage.getItem('uid')

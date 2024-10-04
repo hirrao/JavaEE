@@ -6,7 +6,7 @@ import vue from '@vitejs/plugin-vue'
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
-    outDir: 'javaee-front'
+    outDir: 'web'
   },
   plugins: [vue()],
   resolve: {
@@ -15,7 +15,7 @@ export default defineConfig({
     }
   },
   server: {
-    port: 8080,
+    port: 5173,
     open: true
   }
 })

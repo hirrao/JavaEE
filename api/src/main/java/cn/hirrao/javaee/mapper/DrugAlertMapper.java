@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -20,7 +19,7 @@ public interface DrugAlertMapper extends BaseMapper<DrugAlert> {
     void updateDrugAlertIsActiveById(long alertId, int isActive);
 
     @Update("UPDATE drugAlert SET eatTime=#{eatTime} WHERE alertId=#{alertId}")
-    void updateDrugAlertEatTimeById(long alertId, Date eatTime);
+    void updateDrugAlertEatTimeById(long alertId, LocalDate eatTime);
 
     @Delete("DELETE FROM drugAlert WHERE alertId=#{alertId} AND uid=#{uid} AND drugId=#{drugId}")
     void deleteDrugAlertById(long alertId, long uid, long drugId);

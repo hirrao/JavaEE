@@ -1,16 +1,13 @@
 package cn.hirrao.javaee.service.impl;
 
 import cn.hirrao.javaee.entity.Article;
-import cn.hirrao.javaee.entity.Result;
 import cn.hirrao.javaee.mapper.ArticleMapper;
 import cn.hirrao.javaee.service.ArticleService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -28,6 +25,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<Article> findAll() {
         return articleMapper.findAll();
     }
+
     @Override
     public Article findById(long id) {
         return articleMapper.findById(id);
@@ -46,7 +44,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void modifyArticleInfo(long id, String title, String description, String image, String content) {
-        Article article = new Article();
+        var article = new Article();
         article.setId(id);
         article.setTitle(title);
         article.setDescription(description);
@@ -60,8 +58,8 @@ public class ArticleServiceImpl implements ArticleService {
 //        PageHelper.startPage(curPage, size);
 //        List<Article> articles = articleMapper.findAll();
 //        PageInfo<Article> pageInfo = new PageInfo<>(articles);
-        Page<Article> page = new Page<>(curPage, size);
-        return articleMapper.selectPage(page,null);
+        var page = new Page<Article>(curPage, size);
+        return articleMapper.selectPage(page, null);
     }
 
     @Override
@@ -79,9 +77,9 @@ public class ArticleServiceImpl implements ArticleService {
 //                articles = new ArrayList<>();
 //        }
 //        PageInfo<Article> pageInfo = new PageInfo<>(articles);
-        Page<Article> page = new Page<>(curPage, size);
-        QueryWrapper<Article> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq(searchCondition,conditionValue);
+        var page = new Page<Article>(curPage, size);
+        var queryWrapper = new QueryWrapper<Article>();
+        queryWrapper.eq(searchCondition, conditionValue);
 
 
         return articleMapper.selectPage(page, queryWrapper);

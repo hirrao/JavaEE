@@ -1,7 +1,6 @@
 package cn.hirrao.javaee.controller;
 
 import cn.hirrao.javaee.entity.Result;
-import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.service.DrugAlertService;
 import cn.hirrao.javaee.service.DrugService;
 import cn.hirrao.javaee.utils.SnowFlake;
@@ -35,7 +34,7 @@ public class DrugController {
 
     @PostMapping("/getPageDrugsInfo")
     public Result getPageDrugsInfo(@RequestBody Map<String, String> map) {
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var curPage = Integer.parseInt(map.get("curPage"));
         var size = Integer.parseInt(map.get("size"));
@@ -44,7 +43,7 @@ public class DrugController {
 
     @PostMapping("/getPageDrugsInfoByDrugName")
     public Result getPageDrugsInfoByDrugName(@RequestBody Map<String, String> map) {
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var curPage = Integer.parseInt(map.get("curPage"));
         var size = Integer.parseInt(map.get("size"));
@@ -60,14 +59,14 @@ public class DrugController {
 
     @GetMapping("/getPageDrugInfoTotal")
     public Result getPageDrugInfoTotal() {
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         return Result.success(drugService.getPageDrugInfoTotal(uid));
     }
 
     @PostMapping("/getPageDrugInfoTotalByDrugName")
     public Result getPageDrugInfoTotalByDrugName(@RequestBody Map<String, String> map) {
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var drugName = map.get("drugName");
         if (!drugName.isEmpty()) {
@@ -79,7 +78,7 @@ public class DrugController {
 
     @PostMapping("/getPageDrugsAlertInfo")
     public Result getPageDrugsAlertInfo(@RequestBody Map<String, String> map) {
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var curPage = Integer.parseInt(map.get("curPage"));
         var size = Integer.parseInt(map.get("size"));
@@ -88,7 +87,7 @@ public class DrugController {
 
     @PostMapping("/getPageDrugsAlertInfoByDrugName")
     public Result getPageDrugsAlertInfoByDrugName(@RequestBody Map<String, String> map) {
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var curPage = Integer.parseInt(map.get("curPage"));
         var size = Integer.parseInt(map.get("size"));
@@ -104,14 +103,14 @@ public class DrugController {
 
     @GetMapping("/getPageDrugAlertInfoTotal")
     public Result getPageDrugAlertInfoTotal() {
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         return Result.success(drugService.getPageDrugAlertInfoTotal(uid));
     }
 
     @PostMapping("/getPageDrugAlertInfoTotalByDrugName")
     public Result getPageDrugAlertInfoTotalByDrugName(@RequestBody Map<String, String> map) {
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var drugName = map.get("drugName");
         if (!drugName.isEmpty()) {
@@ -123,8 +122,8 @@ public class DrugController {
 
     @PostMapping("/insertDrug")
     public Result insertDrug(@RequestBody Map<String, String> map) {
-        long drugId = snowFlakeDrug.nextId();
-        User user = ThreadLocalUtil.get();
+        var drugId = snowFlakeDrug.nextId();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var drugName = map.get("drugName");
         var frequency = map.get("frequency");
@@ -137,8 +136,8 @@ public class DrugController {
 
     @PostMapping("/insertDrugAndAlert")
     public Result insertDrugAndAlert(@RequestBody Map<String, String> map) {
-        long drugId = snowFlakeDrug.nextId();
-        User user = ThreadLocalUtil.get();
+        var drugId = snowFlakeDrug.nextId();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var drugName = map.get("drugName");
         var frequency = map.get("frequency");
@@ -157,7 +156,7 @@ public class DrugController {
     @PostMapping("/updateDrugIsActiveById")
     public Result updateDrugIsActiveById(@RequestBody Map<String, String> map) {
         var drugId = Long.parseLong(map.get("drugId"));
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var isActive = Integer.parseInt(map.get("isActive"));
         drugService.updateDrugIsActiveById(drugId, uid, isActive);
@@ -166,7 +165,7 @@ public class DrugController {
 
     @PostMapping("/deleteDrugById")
     public Result deleteDrugById(@RequestBody Map<String, String> map) {
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var drugId = Long.parseLong(map.get("drugId"));
         drugService.deleteDrugById(uid, drugId);
@@ -176,7 +175,7 @@ public class DrugController {
     @PostMapping("/deleteDrugAndDrugAlertById")
     public Result deleteDrugAndDrugAlertById(@RequestBody Map<String, String> map) {
         var alertId = Long.parseLong(map.get("alertId"));
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var drugId = Long.parseLong(map.get("drugId"));
         drugService.deleteDrugById(uid, drugId);

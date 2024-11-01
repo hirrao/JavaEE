@@ -1,6 +1,5 @@
 package cn.hirrao.javaee.controller;
 
-import cn.hirrao.javaee.entity.HeartRate;
 import cn.hirrao.javaee.entity.Result;
 import cn.hirrao.javaee.service.HeartRateService;
 import cn.hirrao.javaee.utils.SnowFlake;
@@ -9,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,17 +24,17 @@ public class HeartRateController {
     @GetMapping("/searchHRById")
     public Result searchHRById(@RequestBody Map<String, String> map) {
         logger.debug("通过id查找心率信息{}", map);
-        Long userId = Long.parseLong(map.get("userId"));
-        List<HeartRate> result = heartRateService.searchHeartRateById(userId);
+        var userId = Long.parseLong(map.get("userId"));
+        var result = heartRateService.searchHeartRateById(userId);
         return Result.success(result);
     }
 
     @PostMapping("/insertHR")
     public Result insertHR(@RequestBody Map<String, String> map) {
         logger.debug("插入心率信息{}", map);
-        String userId = map.get("userId");
-        String heartRate = map.get("heartRate");
-        String date = map.get("date");
+        var userId = map.get("userId");
+        var heartRate = map.get("heartRate");
+        var date = map.get("date");
         if (StringUtil.isEmpty(userId) || StringUtil.isEmpty(heartRate) || StringUtil.isEmpty(date)) {
             return Result.error(101, "错误输入");
         }

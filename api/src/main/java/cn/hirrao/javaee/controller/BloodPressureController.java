@@ -1,7 +1,6 @@
 package cn.hirrao.javaee.controller;
 
 import cn.hirrao.javaee.entity.Result;
-import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.service.BloodPressureService;
 import cn.hirrao.javaee.utils.SnowFlake;
 import cn.hirrao.javaee.utils.StringUtil;
@@ -33,8 +32,8 @@ public class BloodPressureController {
     @PostMapping("/record/uid")
     public Result getUid(@RequestBody Map<String, String> map) {
         logger.debug("/record/uid接受请求{}", map);
-        User user = ThreadLocalUtil.get();
-        LocalDate date = LocalDate.parse(map.get("date"));
+        var user = ThreadLocalUtil.get();
+        var date = LocalDate.parse(map.get("date"));
         var result = bloodPressureService.getBloodPressureList(user.getUid(), date);
         return Result.success(result);
     }
@@ -42,8 +41,8 @@ public class BloodPressureController {
     @PostMapping("/record/table")
     public Result getTable(@RequestBody Map<String, String> map) {
         logger.debug("/record/table接受请求{}", map);
-        User user = ThreadLocalUtil.get();
-        LocalDate date = LocalDate.parse(map.get("date"));
+        var user = ThreadLocalUtil.get();
+        var date = LocalDate.parse(map.get("date"));
         var result = bloodPressureService.getBloodPressureTable(date, user.getUid());
         return Result.success(result);
     }
@@ -51,8 +50,8 @@ public class BloodPressureController {
     @PostMapping("/record/riskLevel")
     public Result getRiskLevel(@RequestBody Map<String, String> map) {
         logger.debug("/record/riskLevel接受请求{}", map);
-        User user = ThreadLocalUtil.get();
-        LocalDate date = LocalDate.parse(map.get("date"));
+        var user = ThreadLocalUtil.get();
+        var date = LocalDate.parse(map.get("date"));
         var result = bloodPressureService.getRiskLevel(user.getUid(), date);
         return Result.success(result);
     }
@@ -60,7 +59,7 @@ public class BloodPressureController {
     @PostMapping("/record/insert")
     public Result insert(@RequestBody Map<String, String> map) {
         logger.debug("/record/insert接受请求{}", map);
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var userId = user.getUid();
         var recordTime = map.get("date");
         var sbp = map.get("sbp");
@@ -70,12 +69,12 @@ public class BloodPressureController {
         }
 
         //将string处理为数值进行处理
-        float sbpValue = Float.parseFloat(sbp);
-        float dbpValue = Float.parseFloat(dbp);
+        var sbpValue = Float.parseFloat(sbp);
+        var dbpValue = Float.parseFloat(dbp);
 
         // 生成 classification 和 riskLevel
-        String classification = generateClassification(sbpValue, dbpValue);
-        String riskLevel = generateRiskLevel(sbpValue, dbpValue);
+        var classification = generateClassification(sbpValue, dbpValue);
+        var riskLevel = generateRiskLevel(sbpValue, dbpValue);
 
         bloodPressureService.insertBloodPressure(snowFlake.nextId(), userId, sbpValue, dbpValue, recordTime, classification, riskLevel);
         return Result.success();

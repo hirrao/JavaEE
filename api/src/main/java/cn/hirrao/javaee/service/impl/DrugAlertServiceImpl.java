@@ -5,7 +5,6 @@ import cn.hirrao.javaee.service.DrugAlertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -29,7 +28,7 @@ public class DrugAlertServiceImpl implements DrugAlertService {
     }
 
     @Override
-    public void updateDrugAlertEatTimeById(long alertId,Date eatTime){
+    public void updateDrugAlertEatTimeById(long alertId, LocalDate eatTime) {
         drugAlertMapper.updateDrugAlertEatTimeById(alertId, eatTime);
     }
 

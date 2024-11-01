@@ -2,10 +2,8 @@ package cn.hirrao.javaee.controller;
 
 
 import cn.hirrao.javaee.entity.Result;
-import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.service.RedisService;
 import cn.hirrao.javaee.service.UserService;
-import cn.hirrao.javaee.utils.MobileMessage;
 import cn.hirrao.javaee.utils.SnowFlake;
 import cn.hirrao.javaee.utils.StringUtil;
 import lombok.Getter;
@@ -66,16 +64,16 @@ public class AuthController {
     @PostMapping("/find")
     public Result find(@RequestBody Map<String, String> map) {
         logger.debug("/find接受请求{}", map);
-        String userName = map.get("userName");
-        String phoneNumber = map.get("phoneNumber");
+        var userName = map.get("userName");
+        var phoneNumber = map.get("phoneNumber");
         if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(phoneNumber)) {
             return Result.error(101, "非法用户名或手机号");
         }
-        User user = userService.findByUsername(userName);
+        var user = userService.findByUsername(userName);
         if (user != null) {
             return Result.error(102, "用户名或手机号已被占用");
         }
-        User user2 = userService.findByPhoneNumber(phoneNumber);
+        var user2 = userService.findByPhoneNumber(phoneNumber);
         if (user2 != null) {
             return Result.error(103, "用户名或手机号已被占用");
         }
@@ -85,14 +83,14 @@ public class AuthController {
     @PostMapping("/register")
     public Result register(@RequestBody Map<String, String> map) {
         logger.debug("/register接受请求{}", map);
-        String userName = map.get("userName");
-        String userPassword = map.get("userPassword");
-        String phoneNumber = map.get("phoneNumber");
-        String messageCode = map.get("messageCode");
+        var userName = map.get("userName");
+        var userPassword = map.get("userPassword");
+        var phoneNumber = map.get("phoneNumber");
+        var messageCode = map.get("messageCode");
         if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(userPassword) || !userName.matches("^[a-zA-Z0-9_]{3,20}$") || !userPassword.matches("^[a-zA-Z0-9_]{6,20}$")) {
             return Result.error(101, "非法用户名或密码");
         }
-        User user = userService.findByUsername(userName);
+        var user = userService.findByUsername(userName);
         if (user != null) {
             return Result.error(102, "用户名已被占用");
         }
@@ -104,8 +102,8 @@ public class AuthController {
             return Result.error(112, "验证码错误");
         }
          */
-        long uid = snowFlake.nextId();
-        String password = DigestUtils.md5DigestAsHex(userPassword.getBytes());
+        var uid = snowFlake.nextId();
+        var password = DigestUtils.md5DigestAsHex(userPassword.getBytes());
         userService.register(uid, userName, password, phoneNumber);
         logger.info("注册成功 用户名:{} 手机号:{}", userName, phoneNumber);
         return Result.success();
@@ -139,18 +137,18 @@ public class AuthController {
     @PostMapping("/login")
     public Result login(@RequestBody Map<String, String> map) {
         logger.debug("/login接受请求{}", map);
-        String userName = map.get("userName");
-        String userPassword = map.get("userPassword");
+        var userName = map.get("userName");
+        var userPassword = map.get("userPassword");
         if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(userPassword)) {
             return Result.error(104, "用户名或密码错误");
         }
-        User user = userService.findByUsername(userName);
+        var user = userService.findByUsername(userName);
         if (user == null) {
             return Result.error(104, "用户名或密码错误");
         } else {
             if (userPassword.equals(user.getUserPassword())) {
                 //密码正确，根据用户的uid和用户名生成token
-                String tokens = createToken(user);
+                var tokens = createToken(user);
                 @Getter
                 class Data {
                     private final int permission = user.getPermission();
@@ -168,14 +166,14 @@ public class AuthController {
     @PostMapping("/resetPassword")
     public Result resetPassword(@RequestBody Map<String, String> map) {
         logger.debug("/resetPassword接受请求{}", map);
-        String phoneNumber = map.get("phoneNumber");
-        String messageCode = map.get("messageCode");
-        String newPassword = map.get("newPassword");
+        var phoneNumber = map.get("phoneNumber");
+        var messageCode = map.get("messageCode");
+        var newPassword = map.get("newPassword");
         if (StringUtil.isEmpty(phoneNumber) || StringUtil.isEmpty(messageCode) || StringUtil.isEmpty(newPassword) || !newPassword.matches("^[a-zA-Z0-9_]{6,20}$")) {
             return Result.error(101, "非法手机号或验证码或密码");
         }
-        User user = userService.findByPhoneNumber(phoneNumber);
-        String password = DigestUtils.md5DigestAsHex(newPassword.getBytes());
+        var user = userService.findByPhoneNumber(phoneNumber);
+        var password = DigestUtils.md5DigestAsHex(newPassword.getBytes());
         if (user == null) {
             return Result.error(105, "用户不存在");
         }

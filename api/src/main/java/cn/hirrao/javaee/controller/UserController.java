@@ -1,7 +1,6 @@
 package cn.hirrao.javaee.controller;
 
 import cn.hirrao.javaee.entity.Result;
-import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.service.UserService;
 import cn.hirrao.javaee.utils.ThreadLocalUtil;
 import org.slf4j.Logger;
@@ -25,7 +24,7 @@ public class UserController {
 
     @GetMapping("/userInfo")
     public Result userInfo() {
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         logger.debug("获取用户信息{}", user);
         return Result.success(user);
     }
@@ -33,7 +32,7 @@ public class UserController {
     @PutMapping("/update")
     public Result update(@RequestBody Map<String, String> map) {
         logger.debug("更新用户信息{}", map);
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var phoneNumber = map.get("phoneNumber");
         var sex = map.get("sex");
@@ -71,27 +70,27 @@ public class UserController {
 
     @PostMapping("/updateUserName")
     public Result updateUserName(@RequestBody Map<String, String> map) {
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
-        String userName = map.get("userName");
+        var userName = map.get("userName");
         userService.updateUserName(uid, userName);
         return Result.success();
     }
 
     @PostMapping("/updateSex")
     public Result updateSex(@RequestBody Map<String, String> map) {
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
-        String sex = map.get("sex");
+        var sex = map.get("sex");
         userService.updateSex(uid, sex);
         return Result.success();
     }
 
     @PostMapping("/updateBirthday")
     public Result updateBirthday(@RequestBody Map<String, String> map) {
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
-        String birthday = map.get("birthday");
+        var birthday = map.get("birthday");
         userService.updateBirthday(uid, birthday);
         return Result.success();
     }

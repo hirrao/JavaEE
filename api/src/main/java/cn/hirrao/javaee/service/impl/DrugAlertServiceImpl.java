@@ -2,12 +2,11 @@ package cn.hirrao.javaee.service.impl;
 
 import cn.hirrao.javaee.mapper.DrugAlertMapper;
 import cn.hirrao.javaee.service.DrugAlertService;
-import cn.hirrao.javaee.service.DrugService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Service
 public class DrugAlertServiceImpl implements DrugAlertService {
@@ -19,7 +18,7 @@ public class DrugAlertServiceImpl implements DrugAlertService {
     }
 
     @Override
-    public void insertDrugAlert(long alertId, long uid, long drugId, Time alertTime, Date eatTime){
+    public void insertDrugAlert(long alertId, long uid, long drugId, LocalTime alertTime, LocalDate eatTime) {
         drugAlertMapper.insertDrugAlert(alertId, uid, drugId, alertTime, eatTime);
     }
 
@@ -29,7 +28,7 @@ public class DrugAlertServiceImpl implements DrugAlertService {
     }
 
     @Override
-    public void updateDrugAlertEatTimeById(long alertId,Date eatTime){
+    public void updateDrugAlertEatTimeById(long alertId, LocalDate eatTime) {
         drugAlertMapper.updateDrugAlertEatTimeById(alertId, eatTime);
     }
 

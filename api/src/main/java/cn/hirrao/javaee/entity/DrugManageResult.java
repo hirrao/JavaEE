@@ -1,13 +1,11 @@
 package cn.hirrao.javaee.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -21,6 +19,6 @@ public class DrugManageResult {
     private int isActive;
 
     private Long alertId;
-    private Time alertTime;
-    private Date eatTime;
+    private LocalTime alertTime;
+    private LocalDate eatTime;
 }

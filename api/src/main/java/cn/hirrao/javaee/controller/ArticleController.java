@@ -22,10 +22,10 @@ public class ArticleController {
 
     @PostMapping("/add")
     public Result addArticle(@RequestBody Map<String, String> map) {
-        String title = map.get("title");
-        String description = map.get("description");
-        String image = map.get("image");
-        String content = map.get("content");
+        var title = map.get("title");
+        var description = map.get("description");
+        var image = map.get("image");
+        var content = map.get("content");
         articleService.addArticle(title, description, image, content);
         return Result.success();
     }

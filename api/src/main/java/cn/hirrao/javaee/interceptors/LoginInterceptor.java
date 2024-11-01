@@ -1,6 +1,5 @@
 package cn.hirrao.javaee.interceptors;
 
-import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.service.UserService;
 import cn.hirrao.javaee.utils.Jwt;
 import cn.hirrao.javaee.utils.ThreadLocalUtil;
@@ -32,13 +31,13 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         System.out.println(request.getHeader("Authorization"));
         //获取请求头中的token
-        String token = request.getHeader("Authorization");
+        var token = request.getHeader("Authorization");
         logger.debug("token={}", token);
         //先验证token
         try {
-            String Uid = Jwt.parseToken(token);
+            var Uid = Jwt.parseToken(token);
             System.out.println(Uid);
-            User user = userService.findByUid(Long.parseLong(Uid));
+            var user = userService.findByUid(Long.parseLong(Uid));
             ThreadLocalUtil.set(user);
             return true;
         } catch (Exception e) {

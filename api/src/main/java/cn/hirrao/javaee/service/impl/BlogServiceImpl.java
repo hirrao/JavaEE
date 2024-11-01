@@ -1,13 +1,11 @@
 package cn.hirrao.javaee.service.impl;
 
 import cn.hirrao.javaee.entity.Blog;
-import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.mapper.BlogMapper;
 import cn.hirrao.javaee.service.BlogService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import lombok.extern.slf4j.Slf4j;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +17,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Autowired
     private BlogServiceImpl(BlogMapper blogMapper) {
-        this.blogMapper =  blogMapper;
+        this.blogMapper = blogMapper;
     }
 
     @Override
@@ -54,8 +52,8 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public IPage<Blog> search(int curPage, int size, Long uid) {
-        Page<Blog> page = new Page<>(curPage, size);
-        QueryWrapper<Blog> queryWrapper=new QueryWrapper<>();
+        var page = new Page<Blog>(curPage, size);
+        var queryWrapper = new QueryWrapper<Blog>();
         queryWrapper.eq("uid", uid);
         return blogMapper.selectPage(page, queryWrapper);
     }

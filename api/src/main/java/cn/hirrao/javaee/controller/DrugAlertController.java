@@ -1,7 +1,6 @@
 package cn.hirrao.javaee.controller;
 
 import cn.hirrao.javaee.entity.Result;
-import cn.hirrao.javaee.entity.User;
 import cn.hirrao.javaee.service.DrugAlertService;
 import cn.hirrao.javaee.utils.SnowFlake;
 import cn.hirrao.javaee.utils.ThreadLocalUtil;
@@ -11,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Map;
 
 @RestController
@@ -29,12 +28,12 @@ public class DrugAlertController {
 
     @PostMapping("/insertDrug")
     public Result insertDrug(@RequestBody Map<String, String> map) {
-        long alertId = snowFlake.nextId();
-        User user = ThreadLocalUtil.get();
+        var alertId = snowFlake.nextId();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var drugId = Long.parseLong(map.get("drugId"));
-        var alertTime = Time.valueOf(map.get("alertTime"));
-        Date eatTime = Date.valueOf("2000-01-01");
+        var alertTime = LocalTime.parse(map.get("alertTime"));
+        var eatTime = LocalDate.parse("2000-01-01");
         drugAlertService.insertDrugAlert(alertId, uid, drugId, alertTime, eatTime);
         return Result.success();
     }
@@ -50,7 +49,7 @@ public class DrugAlertController {
     @PostMapping("/updateDrugAlertEatTimeById")
     public Result updateDrugAlertEatTimeById(@RequestBody Map<String, String> map) {
         var alertId = Long.parseLong(map.get("alertId"));
-        Date eatTime = Date.valueOf(map.get("eatTime"));
+        var eatTime = LocalDate.parse(map.get("eatTime"));
         drugAlertService.updateDrugAlertEatTimeById(alertId, eatTime);
         return Result.success();
     }
@@ -58,7 +57,7 @@ public class DrugAlertController {
     @PostMapping("/deleteDrugAlertById")
     public Result deleteDrugAlertById(@RequestBody Map<String, String> map) {
         var alertId = Long.parseLong(map.get("alertId"));
-        User user = ThreadLocalUtil.get();
+        var user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var drugId = Long.parseLong(map.get("drugId"));
         drugAlertService.deleteDrugAlertById(alertId, uid, drugId);

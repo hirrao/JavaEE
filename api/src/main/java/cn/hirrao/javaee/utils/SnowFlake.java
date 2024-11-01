@@ -40,7 +40,7 @@ public class SnowFlake {
      * @return 下一个ID
      */
     public synchronized long nextId() {
-        long currTimestamp = getTimestamp();
+        var currTimestamp = getTimestamp();
         if (currTimestamp < lastTimestamp) {
             throw new RuntimeException("Clock moved backwards. Refusing to generate id");
         }
@@ -73,7 +73,7 @@ public class SnowFlake {
      * @return 下一个毫秒数
      */
     private long getNextTimestamp() {
-        long timestamp = getTimestamp();
+        var timestamp = getTimestamp();
         while (timestamp <= lastTimestamp) {
             timestamp = getTimestamp();
         }

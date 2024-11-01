@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public IPage<User> accountsInfo(int curPage, int size) {
-        Page<User> page = new Page<>(curPage, size);
+        var page = new Page<User>(curPage, size);
         return userMapper.selectPage(page, null);
     }
 
@@ -66,8 +66,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public IPage<User> searchUserByCondition(int curPage, int size, String searchCondition, String conditionValue) {
-        Page<User> page = new Page<>(curPage, size);
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        var page = new Page<User>(curPage, size);
+        var queryWrapper = new QueryWrapper<User>();
         queryWrapper.eq(searchCondition, conditionValue);
         return userMapper.selectPage(page, queryWrapper);
     }

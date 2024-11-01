@@ -1,8 +1,6 @@
 package cn.hirrao.javaee.controller;
 
 import cn.hirrao.javaee.entity.Result;
-import cn.hirrao.javaee.entity.User;
-import cn.hirrao.javaee.entity.UserIntro;
 import cn.hirrao.javaee.service.UserIntroService;
 import cn.hirrao.javaee.utils.ThreadLocalUtil;
 import org.slf4j.Logger;
@@ -25,9 +23,9 @@ public class UserIntroController {
 
     @GetMapping("/get")
     public Result get() {
-        User user = ThreadLocalUtil.get();
-        long uid = user.getUid();
-        UserIntro userIntro = userIntroService.findUserIntro(uid);
+        var user = ThreadLocalUtil.get();
+        var uid = user.getUid();
+        var userIntro = userIntroService.findUserIntro(uid);
         if (userIntro == null) userIntroService.setUserIntro(uid, "");
         userIntro = userIntroService.findUserIntro(uid);
         return Result.success(userIntro);
@@ -36,8 +34,8 @@ public class UserIntroController {
     @PostMapping("/update")
     public Result update(@RequestBody Map<String, String> map) {
         logger.debug("intro/update接受请求 {}", map);
-        Long uid = Long.parseLong(map.get("uid"));
-        String userIntro = map.get("intro");
+        var uid = Long.parseLong(map.get("uid"));
+        var userIntro = map.get("intro");
         userIntroService.updateUserIntro(uid, userIntro);
         return Result.success("修改成功");
     }

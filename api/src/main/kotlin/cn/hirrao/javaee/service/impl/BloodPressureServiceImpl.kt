@@ -1,44 +1,41 @@
-package cn.hirrao.javaee.service.impl;
+package cn.hirrao.javaee.service.impl
 
-import cn.hirrao.javaee.entity.BloodPressure;
-import cn.hirrao.javaee.entity.BloodPressureTable;
-import cn.hirrao.javaee.mapper.BloodPressureMapper;
-import cn.hirrao.javaee.mapper.BloodPressureTableMapper;
-import cn.hirrao.javaee.service.BloodPressureService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.List;
+import cn.hirrao.javaee.entity.BloodPressure
+import cn.hirrao.javaee.entity.BloodPressureTable
+import cn.hirrao.javaee.mapper.BloodPressureMapper
+import cn.hirrao.javaee.mapper.BloodPressureTableMapper
+import cn.hirrao.javaee.service.BloodPressureService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
-public class BloodPressureServiceImpl implements BloodPressureService {
-    private final BloodPressureMapper BloodPressureMapper;
-    private final BloodPressureTableMapper BloodPressureTableMapper;
-
-    @Autowired
-    public BloodPressureServiceImpl(BloodPressureMapper bloodPressureMapper, BloodPressureTableMapper bloodPressureTableMapper) {
-        BloodPressureMapper = bloodPressureMapper;
-        BloodPressureTableMapper = bloodPressureTableMapper;
+class BloodPressureServiceImpl @Autowired constructor(
+    private val BloodPressureMapper: BloodPressureMapper,
+    private val BloodPressureTableMapper: BloodPressureTableMapper
+) :
+    BloodPressureService {
+    override fun getBloodPressureList(uid: Long?, date: LocalDate?): List<BloodPressure?>? {
+        return BloodPressureMapper.getBloodPressureList(uid, date)
     }
 
-    @Override
-    public List<BloodPressure> getBloodPressureList(Long uid, LocalDate date) {
-        return BloodPressureMapper.getBloodPressureList(uid, date);
+    override fun insertBloodPressure(
+        bplId: Long,
+        userId: Long,
+        sbp: Float,
+        dbp: Float,
+        recordTime: String?,
+        classification: String?,
+        riskLevel: String?
+    ) {
+        BloodPressureMapper.insertBloodPressure(bplId, userId, sbp, dbp, recordTime, classification, riskLevel)
     }
 
-    @Override
-    public void insertBloodPressure(long bplId, long userId, float sbp, float dbp, String recordTime, String classification, String riskLevel) {
-        BloodPressureMapper.insertBloodPressure(bplId, userId, sbp, dbp, recordTime, classification, riskLevel);
+    override fun getBloodPressureTable(date: LocalDate?, uid: Long?): BloodPressureTable? {
+        return BloodPressureTableMapper.getBloodPressureTable(date, uid)
     }
 
-    @Override
-    public BloodPressureTable getBloodPressureTable(LocalDate date, Long uid) {
-        return BloodPressureTableMapper.getBloodPressureTable(date, uid);
-    }
-
-    @Override
-    public List<String> getRiskLevel(Long uid, LocalDate date) {
-        return BloodPressureMapper.getRiskLevel(uid, date);
+    override fun getRiskLevel(uid: Long?, date: LocalDate?): List<String?>? {
+        return BloodPressureMapper.getRiskLevel(uid, date)
     }
 }

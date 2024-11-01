@@ -1,44 +1,39 @@
-package cn.hirrao.javaee.controller;
+package cn.hirrao.javaee.controller
 
-import cn.hirrao.javaee.entity.Result;
-import cn.hirrao.javaee.service.HeartRateService;
-import cn.hirrao.javaee.utils.SnowFlake;
-import cn.hirrao.javaee.utils.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import cn.hirrao.javaee.entity.Result
+import cn.hirrao.javaee.entity.Result.Companion.error
+import cn.hirrao.javaee.entity.Result.Companion.success
+import cn.hirrao.javaee.service.HeartRateService
+import cn.hirrao.javaee.utils.SnowFlake
+import cn.hirrao.javaee.utils.StringUtil.isEmpty
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/heartRate")
-public class HeartRateController {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final SnowFlake snowFlake = new SnowFlake(1, 3);
-    private final HeartRateService heartRateService;
-
-    public HeartRateController(HeartRateService heartRateService) {
-        this.heartRateService = heartRateService;
-    }
+class HeartRateController(private val heartRateService: HeartRateService) {
+    private val logger: Logger = LoggerFactory.getLogger(javaClass)
+    private val snowFlake = SnowFlake(1, 3)
 
     @GetMapping("/searchHRById")
-    public Result searchHRById(@RequestBody Map<String, String> map) {
-        logger.debug("通过id查找心率信息{}", map);
-        var userId = Long.parseLong(map.get("userId"));
-        var result = heartRateService.searchHeartRateById(userId);
-        return Result.success(result);
+    fun searchHRById(@RequestBody map: Map<String?, String>): Result {
+        logger.debug("通过id查找心率信息{}", map)
+        val userId = map["userId"]!!.toLong()
+        val result = heartRateService.searchHeartRateById(userId)
+        return success(result)
     }
 
     @PostMapping("/insertHR")
-    public Result insertHR(@RequestBody Map<String, String> map) {
-        logger.debug("插入心率信息{}", map);
-        var userId = map.get("userId");
-        var heartRate = map.get("heartRate");
-        var date = map.get("date");
-        if (StringUtil.isEmpty(userId) || StringUtil.isEmpty(heartRate) || StringUtil.isEmpty(date)) {
-            return Result.error(101, "错误输入");
+    fun insertHR(@RequestBody map: Map<String?, String?>): Result {
+        logger.debug("插入心率信息{}", map)
+        val userId = map["userId"]
+        val heartRate = map["heartRate"]
+        val date = map["date"]
+        if (isEmpty(userId) || isEmpty(heartRate) || isEmpty(date)) {
+            return error(101, "错误输入")
         }
-        heartRateService.insertHeartRate(snowFlake.nextId(), Long.parseLong(userId), Float.parseFloat(heartRate), date);
-        return Result.success();
+        heartRateService.insertHeartRate(snowFlake.nextId(), userId!!.toLong(), heartRate!!.toFloat(), date)
+        return success()
     }
 }

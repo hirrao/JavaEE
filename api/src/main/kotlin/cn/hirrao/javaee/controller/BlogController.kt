@@ -1,87 +1,80 @@
-package cn.hirrao.javaee.controller;
+package cn.hirrao.javaee.controller
 
-import cn.hirrao.javaee.entity.Result;
-import cn.hirrao.javaee.service.BlogService;
-import cn.hirrao.javaee.utils.SnowFlake;
-import cn.hirrao.javaee.utils.ThreadLocalUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
+import cn.hirrao.javaee.entity.Result
+import cn.hirrao.javaee.entity.Result.Companion.success
+import cn.hirrao.javaee.service.BlogService
+import cn.hirrao.javaee.utils.SnowFlake
+import cn.hirrao.javaee.utils.ThreadLocalUtil.get
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @RestController
 @RequestMapping("/profile")
-public class BlogController {
-    private final SnowFlake snowFlake = new SnowFlake(1, 1);
-    private final BlogService blogService;
-
-    @Autowired
-    private BlogController(BlogService blogService) {
-        this.blogService = blogService;
-    }
+class BlogController @Autowired private constructor(private val blogService: BlogService) {
+    private val snowFlake = SnowFlake(1, 1)
 
     @GetMapping("/userBlogInfo")
-    public Result userBlogInfo() {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var blog = blogService.findByUid(uid);
-        return Result.success(blog);
+    fun userBlogInfo(): Result {
+        val user = get()
+        val uid = user.uid
+        val blog = blogService.findByUid(uid)
+        return success(blog)
     }
 
     @PostMapping("/blogInfo")
-    public Result blogInfo(@RequestBody Map<String, String> map) {
-        var blogId = Long.parseLong(map.get("blogId"));
-        var blog = blogService.findByBlogId(blogId);
-        return Result.success(blog);
+    fun blogInfo(@RequestBody map: Map<String?, String>): Result {
+        val blogId = map["blogId"]!!.toLong()
+        val blog = blogService.findByBlogId(blogId)
+        return success(blog)
     }
 
     @GetMapping("/userInfo")
-    public Result userInfo() {
-        var user = ThreadLocalUtil.get();
-        return Result.success(user);
+    fun userInfo(): Result {
+        val user = get()
+        return success(user)
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody Map<String, String> map) {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var blogId = snowFlake.nextId();
-        var now = LocalDateTime.now();
-        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        var time = now.format(formatter);
-        var content = map.get("content");
-        var title = map.get("title");
-        blogService.addBlog(blogId, content, time, time, uid, title);
-        return Result.success();
+    fun add(@RequestBody map: Map<String?, String?>): Result {
+        val user = get()
+        val uid = user.uid
+        val blogId = snowFlake.nextId()
+        val now = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val time = now.format(formatter)
+        val content = map["content"]
+        val title = map["title"]
+        blogService.addBlog(blogId, content, time, time, uid, title)
+        return success()
     }
 
     @PostMapping("/search")
-    public Result searchUserByCondition(@RequestBody Map<String, String> map) {
-        var curPage = Integer.parseInt(map.get("curPage"));
-        var size = Integer.parseInt(map.get("size"));
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        return Result.success(blogService.search(curPage, size, uid));
+    fun searchUserByCondition(@RequestBody map: Map<String?, String>): Result {
+        val curPage = map["curPage"]!!.toInt()
+        val size = map["size"]!!.toInt()
+        val user = get()
+        val uid = user.uid
+        return success(blogService.search(curPage, size, uid))
     }
 
     @PostMapping("/delete")
-    public Result delete(@RequestBody Map<String, String> map) {
-        var blogId = Long.parseLong(map.get("blogId"));
-        blogService.delete(blogId);
-        return Result.success();
+    fun delete(@RequestBody map: Map<String?, String>): Result {
+        val blogId = map["blogId"]!!.toLong()
+        blogService.delete(blogId)
+        return success()
     }
 
     @PostMapping("/update")
-    public Result update(@RequestBody Map<String, String> map) {
-        var blogId = Long.parseLong(map.get("blogId"));
-        var now = LocalDateTime.now();
-        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        var time = now.format(formatter);
-        var content = map.get("content");
-        var title = map.get("title");
-        blogService.update(blogId, content, time, title);
-        return Result.success();
+    fun update(@RequestBody map: Map<String?, String>): Result {
+        val blogId = map["blogId"]!!.toLong()
+        val now = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val time = now.format(formatter)
+        val content = map["content"]
+        val title = map["title"]
+        blogService.update(blogId, content, time, title)
+        return success()
     }
 }

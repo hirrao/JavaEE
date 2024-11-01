@@ -1,24 +1,22 @@
-package cn.hirrao.javaee.service;
+package cn.hirrao.javaee.service
 
-import cn.hirrao.javaee.entity.Blog;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import cn.hirrao.javaee.entity.Blog
+import com.baomidou.mybatisplus.core.metadata.IPage
+import org.springframework.stereotype.Service
 
 @Service
-public interface BlogService {
-    Blog findByBlogId(Long bolgId);
+interface BlogService {
+    fun findByBlogId(bolgId: Long?): Blog?
 
-    List<Blog> findByUid(Long uid);
+    fun findByUid(uid: Long?): List<Blog?>?
 
-    List<Blog> findByTitle(String title);
+    fun findByTitle(title: String?): List<Blog?>?
 
-    void addBlog(Long blogId, String content, String createTime, String updateTime, Long uid, String title);
+    fun addBlog(blogId: Long?, content: String?, createTime: String?, updateTime: String?, uid: Long?, title: String?)
 
-    void update(Long blogId, String content, String updateTime, String title);
+    fun update(blogId: Long?, content: String?, updateTime: String?, title: String?)
 
-    void delete(Long blogId);
+    fun delete(blogId: Long?)
 
-    IPage<Blog> search(int curPage,int size, Long uid);
+    fun search(curPage: Int, size: Int, uid: Long?): IPage<Blog?>?
 }

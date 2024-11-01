@@ -1,28 +1,26 @@
-package cn.hirrao.javaee.mapper;
+package cn.hirrao.javaee.mapper
 
-import cn.hirrao.javaee.entity.Blog;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.*;
-
-import java.util.List;
+import cn.hirrao.javaee.entity.Blog
+import com.baomidou.mybatisplus.core.mapper.BaseMapper
+import org.apache.ibatis.annotations.*
 
 @Mapper
-public interface BlogMapper extends BaseMapper<Blog> {
+interface BlogMapper : BaseMapper<Blog?> {
     @Select("select * from blog where blogId = #{blogId}")
-    Blog findByBlogId(Long blogId);
+    fun findByBlogId(blogId: Long?): Blog?
 
     @Select("select * from blog where uid = #{uid}")
-    List<Blog> findByUid(Long uid);
+    fun findByUid(uid: Long?): List<Blog?>?
 
     @Select("select * from blog where title = #{title}")
-    List<Blog> findByTitle(String title);
+    fun findByTitle(title: String?): List<Blog?>?
 
     @Insert("insert into blog(blogId, content, createTime, updateTime, uid, title) values(#{blogId}, #{content}, #{createTime}, #{updateTime}, #{uid}, #{title})")
-    void addBlog(Long blogId, String content, String createTime, String updateTime, Long uid, String title);
+    fun addBlog(blogId: Long?, content: String?, createTime: String?, updateTime: String?, uid: Long?, title: String?)
 
     @Update("update blog set content=#{content}, updateTime=#{updateTime}, title=#{title} where blogId=#{blogId}")
-    void update(Long blogId, String content, String updateTime, String title);
+    fun update(blogId: Long?, content: String?, updateTime: String?, title: String?)
 
     @Delete("DELETE FROM blog WHERE blogId = #{blogId}")
-    void delete(Long blogId);
+    fun delete(blogId: Long?)
 }

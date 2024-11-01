@@ -1,10 +1,10 @@
-package cn.hirrao.javaee.service;
+package cn.hirrao.javaee.service
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service
 
 @Service
-public interface RedisService {
-    void set(String key, String value);
+interface RedisService {
+    fun set(key: String?, value: String?)
 
-    String get(String key);
+    fun get(key: String?): String?
 }

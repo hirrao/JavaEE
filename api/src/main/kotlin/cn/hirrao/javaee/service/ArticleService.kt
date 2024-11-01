@@ -1,29 +1,31 @@
-package cn.hirrao.javaee.service;
+package cn.hirrao.javaee.service
 
-import cn.hirrao.javaee.entity.Article;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
+import cn.hirrao.javaee.entity.Article
+import com.baomidou.mybatisplus.core.metadata.IPage
+import org.springframework.stereotype.Service
 
 @Service
-public interface ArticleService {
+interface ArticleService {
     //返回全部文章
-    List<Article> findAll();
+    fun findAll(): List<Article?>?
 
     //根据文章id查询文章
-    Article findById(long id);
+    fun findById(id: Long): Article?
 
     //添加文章
-    void addArticle(String title, String description, String image, String content);
+    fun addArticle(title: String?, description: String?, image: String?, content: String?)
 
 
-    void deleteArticle(long id);
+    fun deleteArticle(id: Long)
 
-    void modifyArticleInfo(long id, String title, String description, String image, String content);
+    fun modifyArticleInfo(id: Long, title: String?, description: String?, image: String?, content: String?)
 
-    IPage<Article> articlesInfo(int curPage, int size);
+    fun articlesInfo(curPage: Int, size: Int): IPage<Article?>?
 
-    IPage<Article> searchArticleByCondition(int curPage, int size, String searchCondition, String conditionValue);
+    fun searchArticleByCondition(
+        curPage: Int,
+        size: Int,
+        searchCondition: String?,
+        conditionValue: String?
+    ): IPage<Article?>?
 }

@@ -1,7 +1,7 @@
 plugins {
-    java
     id("org.springframework.boot") version "3.3.3"
     id("io.spring.dependency-management") version "1.1.6"
+    kotlin("jvm") version "2.0.21"
 }
 
 group = "cn.hirrao"
@@ -11,11 +11,6 @@ repositories {
     mavenLocal()
     mavenCentral()
     gradlePluginPortal()
-}
-
-java {
-    val sourceCompatibility = JavaVersion.VERSION_21
-    val targetCompatibility = JavaVersion.VERSION_21
 }
 
 dependencies {
@@ -38,6 +33,7 @@ dependencies {
     runtimeOnly("org.xerial:sqlite-jdbc:3.46.1.3")
 
     annotationProcessor("org.projectlombok:lombok")
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 tasks.withType<JavaCompile> {
@@ -56,4 +52,7 @@ tasks.withType<JavaCompile> {
 
 tasks.test {
     useJUnitPlatform()
+}
+kotlin {
+    jvmToolchain(21)
 }

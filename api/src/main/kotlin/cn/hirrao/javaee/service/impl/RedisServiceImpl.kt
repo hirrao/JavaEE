@@ -1,30 +1,22 @@
-package cn.hirrao.javaee.service.impl;
+package cn.hirrao.javaee.service.impl
 
-import cn.hirrao.javaee.service.RedisService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
-
-import java.util.concurrent.TimeUnit;
+import cn.hirrao.javaee.service.RedisService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.stereotype.Service
+import java.util.concurrent.TimeUnit
 
 @Service
-public class RedisServiceImpl implements RedisService {
-    private final long DEFAULT_TIMEOUT = 20;
-    private final TimeUnit DEFAULT_TIMEUNIT = TimeUnit.MINUTES;
-    private final RedisTemplate<String, String> redisTemplate;
+abstract class RedisServiceImpl @Autowired private constructor(private val redisTemplate: RedisTemplate<String, String>) :
+    RedisService {
+    private val DEFAULT_TIMEOUT: Long = 20
+    private val DEFAULT_TIMEUNIT = TimeUnit.MINUTES
 
-    @Autowired
-    private RedisServiceImpl(RedisTemplate<String, String> redisTemplate) {
-        this.redisTemplate = redisTemplate;
+    override fun set(key: String?, value: String?) {
+        redisTemplate.opsForValue()[key!!, value!!, DEFAULT_TIMEOUT] = DEFAULT_TIMEUNIT
     }
 
-    @Override
-    public void set(String key, String value) {
-        redisTemplate.opsForValue().set(key, value, DEFAULT_TIMEOUT, DEFAULT_TIMEUNIT);
-    }
-
-    @Override
-    public String get(String key) {
-        return redisTemplate.opsForValue().get(key);
+    override fun get(key: String?): String? {
+        return redisTemplate.opsForValue()[key!!]
     }
 }

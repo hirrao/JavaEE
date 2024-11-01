@@ -1,76 +1,76 @@
-package cn.hirrao.javaee.service.impl;
+package cn.hirrao.javaee.service.impl
 
-import cn.hirrao.javaee.entity.DrugManageResult;
-import cn.hirrao.javaee.mapper.DrugMapper;
-import cn.hirrao.javaee.service.DrugService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import cn.hirrao.javaee.entity.DrugManageResult
+import cn.hirrao.javaee.mapper.DrugMapper
+import cn.hirrao.javaee.service.DrugService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
 @Service
-public class DrugServiceImpl implements DrugService {
-    private final DrugMapper drugMapper;
-
-    @Autowired
-    public DrugServiceImpl(DrugMapper drugMapper){this.drugMapper=drugMapper;}
-
-    @Override
-    public void insertDrug(long drugId,long uid,String drugName,String frequency,String unit,Float dosage,int isActive){
-        drugMapper.insertDrug(drugId,uid, drugName, frequency, unit, dosage, isActive);
-    }
-//    @Override
-//    public List<DrugManageResult> getAllDrugInfo(long uid){
-//        return drugMapper.getAllDrugInfo(uid);
-//    }
-
-    @Override
-    public List<DrugManageResult> getPageDrugInfo(long uid,int curPage,int size){
-        return drugMapper.getPageDrugInfo(uid,(curPage-1)*size,size);
+class DrugServiceImpl @Autowired constructor(private val drugMapper: DrugMapper) : DrugService {
+    override fun insertDrug(
+        drugId: Long,
+        uid: Long,
+        drugName: String?,
+        frequency: String?,
+        unit: String?,
+        dosage: Float?,
+        isActive: Int
+    ) {
+        drugMapper.insertDrug(drugId, uid, drugName, frequency, unit, dosage, isActive)
     }
 
-    @Override
-    public List<DrugManageResult> getPageDrugInfoByDrugName(long uid,int curPage,int size,String drugName){
-        return drugMapper.getPageDrugInfoByDrugName(uid,(curPage-1)*size,size,drugName);
+    //    @Override
+    //    public List<DrugManageResult> getAllDrugInfo(long uid){
+    //        return drugMapper.getAllDrugInfo(uid);
+    //    }
+    override fun getPageDrugInfo(uid: Long, curPage: Int, size: Int): List<DrugManageResult?>? {
+        return drugMapper.getPageDrugInfo(uid, (curPage - 1) * size, size)
     }
 
-    @Override
-    public int getPageDrugInfoTotal(long uid){
-        return drugMapper.getPageDrugInfoTotal(uid);
+    override fun getPageDrugInfoByDrugName(
+        uid: Long,
+        curPage: Int,
+        size: Int,
+        drugName: String?
+    ): List<DrugManageResult?>? {
+        return drugMapper.getPageDrugInfoByDrugName(uid, (curPage - 1) * size, size, drugName)
     }
 
-    @Override
-    public int getPageDrugInfoTotalByDrugName(long uid,String drugName){
-        return drugMapper.getPageDrugInfoTotalByDrugName(uid,drugName);
+    override fun getPageDrugInfoTotal(uid: Long): Int {
+        return drugMapper.getPageDrugInfoTotal(uid)
     }
 
-    @Override
-    public List<DrugManageResult> getPageDrugAlertInfo(long uid,int curPage,int size){
-        return drugMapper.getPageDrugAlertInfo(uid,(curPage-1)*size,size);
+    override fun getPageDrugInfoTotalByDrugName(uid: Long, drugName: String?): Int {
+        return drugMapper.getPageDrugInfoTotalByDrugName(uid, drugName)
     }
 
-    @Override
-    public List<DrugManageResult> getPageDrugAlertInfoByDrugName(long uid,int curPage,int size,String drugName){
-        return drugMapper.getPageDrugAlertInfoByDrugName(uid,(curPage-1)*size,size,drugName);
+    override fun getPageDrugAlertInfo(uid: Long, curPage: Int, size: Int): List<DrugManageResult?>? {
+        return drugMapper.getPageDrugAlertInfo(uid, (curPage - 1) * size, size)
     }
 
-    @Override
-    public int getPageDrugAlertInfoTotal(long uid){
-        return drugMapper.getPageDrugAlertInfoTotal(uid);
+    override fun getPageDrugAlertInfoByDrugName(
+        uid: Long,
+        curPage: Int,
+        size: Int,
+        drugName: String?
+    ): List<DrugManageResult?>? {
+        return drugMapper.getPageDrugAlertInfoByDrugName(uid, (curPage - 1) * size, size, drugName)
     }
 
-    @Override
-    public int getPageDrugAlertInfoTotalByDrugName(long uid,String drugName){
-        return drugMapper.getPageDrugAlertInfoTotalByDrugName(uid,drugName);
+    override fun getPageDrugAlertInfoTotal(uid: Long): Int {
+        return drugMapper.getPageDrugAlertInfoTotal(uid)
     }
 
-    @Override
-    public void updateDrugIsActiveById(long drugId,long uid,int isActive){
-        drugMapper.updateDrugIsActiveById(drugId, uid, isActive);
+    override fun getPageDrugAlertInfoTotalByDrugName(uid: Long, drugName: String?): Int {
+        return drugMapper.getPageDrugAlertInfoTotalByDrugName(uid, drugName)
     }
 
-    @Override
-    public void deleteDrugById(long uid,long drugId){
-        drugMapper.deleteDrugById(uid, drugId);
+    override fun updateDrugIsActiveById(drugId: Long, uid: Long, isActive: Int) {
+        drugMapper.updateDrugIsActiveById(drugId, uid, isActive)
+    }
+
+    override fun deleteDrugById(uid: Long, drugId: Long) {
+        drugMapper.deleteDrugById(uid, drugId)
     }
 }

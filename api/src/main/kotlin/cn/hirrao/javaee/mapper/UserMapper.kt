@@ -1,42 +1,49 @@
-package cn.hirrao.javaee.mapper;
+package cn.hirrao.javaee.mapper
 
-import cn.hirrao.javaee.entity.User;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.*;
+import cn.hirrao.javaee.entity.User
+import com.baomidou.mybatisplus.core.mapper.BaseMapper
+import org.apache.ibatis.annotations.*
 
 @Mapper
-public interface UserMapper extends BaseMapper<User> {
+interface UserMapper : BaseMapper<User?> {
     //根据用户名查询用户
     @Select("select * from user where userName = #{userName}")
-    User findByUsername(String userName);
+    fun findByUsername(userName: String?): User?
 
     @Select("select * from user where uid = #{uid}")
-    User findByUid(long uid);
+    fun findByUid(uid: Long): User?
 
     @Select("select * from user where phoneNumber = #{phoneNumber}")
-    User findByPhoneNumber(String phoneNumber);
+    fun findByPhoneNumber(phoneNumber: String?): User?
 
     @Insert("insert into user(uid,userName, userPassword,phoneNumber) values(#{uid},#{userName}, #{userPassword},#{phoneNumber})")
-    void addUser(long uid, String userName, String userPassword, String phoneNumber);
+    fun addUser(uid: Long, userName: String?, userPassword: String?, phoneNumber: String?)
 
     @Update("update user set phoneNumber=#{phoneNumber},sex=#{sex},birthday=#{birthday} where uid=#{uid}")
-    void update(long uid, String phoneNumber, String sex, String birthday);
+    fun update(uid: Long, phoneNumber: String?, sex: String?, birthday: String?)
 
     @Update("update user set userPassword=#{userPassword} where uid = #{uid}")
-    void updatePassword(long uid, String userPassword);
+    fun updatePassword(uid: Long, userPassword: String?)
 
     @Update("update user set uid=#{uid},userName=#{userName},phoneNumber=#{phoneNumber},sex=#{sex},birthday=#{birthday},permission=#{permission} where uid=#{uid}")
-    void modifyUserInfo(long uid, String userName,String phoneNumber, String sex, String birthday,int permission);
+    fun modifyUserInfo(
+        uid: Long,
+        userName: String?,
+        phoneNumber: String?,
+        sex: String?,
+        birthday: String?,
+        permission: Int
+    )
 
     @Delete("delete from user where uid=#{uid}")
-    void deleteUser(long uid);
+    fun deleteUser(uid: Long)
 
     @Update("update user set userName=#{userName} where uid=#{uid}")
-    void updateUserName(long uid, String userName);
+    fun updateUserName(uid: Long, userName: String?)
 
     @Update("update user set sex=#{sex} where uid=#{uid}")
-    void updateSex(long uid, String sex);
+    fun updateSex(uid: Long, sex: String?)
 
     @Update("update user set birthday=#{birthday} where uid=#{uid}")
-    void updateBirthday(long uid, String birthday);
+    fun updateBirthday(uid: Long, birthday: String?)
 }

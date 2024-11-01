@@ -1,60 +1,51 @@
-package cn.hirrao.javaee.service.impl;
+package cn.hirrao.javaee.service.impl
 
-import cn.hirrao.javaee.entity.Blog;
-import cn.hirrao.javaee.mapper.BlogMapper;
-import cn.hirrao.javaee.service.BlogService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import cn.hirrao.javaee.entity.Blog
+import cn.hirrao.javaee.mapper.BlogMapper
+import cn.hirrao.javaee.service.BlogService
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
+import com.baomidou.mybatisplus.core.metadata.IPage
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
 @Service
-public class BlogServiceImpl implements BlogService {
-    private final BlogMapper blogMapper;
-
-    @Autowired
-    private BlogServiceImpl(BlogMapper blogMapper) {
-        this.blogMapper = blogMapper;
+class BlogServiceImpl @Autowired private constructor(private val blogMapper: BlogMapper) : BlogService {
+    override fun findByBlogId(bolgId: Long?): Blog? {
+        return blogMapper.findByBlogId(bolgId)
     }
 
-    @Override
-    public Blog findByBlogId(Long bolgId) {
-        return blogMapper.findByBlogId(bolgId);
+    override fun findByUid(uid: Long?): List<Blog?>? {
+        return blogMapper.findByUid(uid)
     }
 
-    @Override
-    public List<Blog> findByUid(Long uid) {
-        return blogMapper.findByUid(uid);
+    override fun findByTitle(title: String?): List<Blog?>? {
+        return blogMapper.findByTitle(title)
     }
 
-    @Override
-    public List<Blog> findByTitle(String title) {
-        return blogMapper.findByTitle(title);
+    override fun addBlog(
+        blogId: Long?,
+        content: String?,
+        createTime: String?,
+        updateTime: String?,
+        uid: Long?,
+        title: String?
+    ) {
+        blogMapper.addBlog(blogId, content, createTime, updateTime, uid, title)
     }
 
-    @Override
-    public void addBlog(Long blogId, String content, String createTime, String updateTime, Long uid, String title) {
-        blogMapper.addBlog(blogId, content, createTime, updateTime, uid, title);
+    override fun update(blogId: Long?, content: String?, updateTime: String?, title: String?) {
+        blogMapper.update(blogId, content, updateTime, title)
     }
 
-    @Override
-    public void update(Long blogId, String content, String updateTime, String title) {
-        blogMapper.update(blogId, content, updateTime, title);
+    override fun delete(blogId: Long?) {
+        blogMapper.delete(blogId)
     }
 
-    @Override
-    public void delete(Long blogId) {
-        blogMapper.delete(blogId);
-    }
-
-    @Override
-    public IPage<Blog> search(int curPage, int size, Long uid) {
-        var page = new Page<Blog>(curPage, size);
-        var queryWrapper = new QueryWrapper<Blog>();
-        queryWrapper.eq("uid", uid);
-        return blogMapper.selectPage(page, queryWrapper);
+    override fun search(curPage: Int, size: Int, uid: Long?): IPage<Blog?>? {
+        val page = Page<Blog>(curPage.toLong(), size.toLong())
+        val queryWrapper = QueryWrapper<Blog>()
+        queryWrapper.eq("uid", uid)
+        return blogMapper.selectPage(page, queryWrapper)
     }
 }

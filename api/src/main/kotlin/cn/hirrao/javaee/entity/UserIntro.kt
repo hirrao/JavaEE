@@ -1,17 +1,18 @@
-package cn.hirrao.javaee.entity;
+package cn.hirrao.javaee.entity
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.baomidou.mybatisplus.annotation.TableField
+import com.baomidou.mybatisplus.annotation.TableId
+import lombok.AllArgsConstructor
+import lombok.Getter
+import lombok.Setter
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserIntro {
+class UserIntro {
     @TableId(value = "uid")
-    private Long uid;
+    private val uid: Long? = null
+
     @TableField("intro")
-    private String intro;
+    private val intro: String? = null
 }

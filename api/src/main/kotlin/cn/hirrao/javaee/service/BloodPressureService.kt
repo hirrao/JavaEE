@@ -1,19 +1,25 @@
-package cn.hirrao.javaee.service;
+package cn.hirrao.javaee.service
 
-import cn.hirrao.javaee.entity.BloodPressure;
-import cn.hirrao.javaee.entity.BloodPressureTable;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.List;
+import cn.hirrao.javaee.entity.BloodPressure
+import cn.hirrao.javaee.entity.BloodPressureTable
+import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
-public interface BloodPressureService {
-    List<BloodPressure> getBloodPressureList(Long uid, LocalDate date);
+interface BloodPressureService {
+    fun getBloodPressureList(uid: Long?, date: LocalDate?): List<BloodPressure?>?
 
-    void insertBloodPressure(long bplId, long userId, float sbp, float dbp, String recordTime, String classification, String riskLevel);
+    fun insertBloodPressure(
+        bplId: Long,
+        userId: Long,
+        sbp: Float,
+        dbp: Float,
+        recordTime: String?,
+        classification: String?,
+        riskLevel: String?
+    )
 
-    BloodPressureTable getBloodPressureTable(LocalDate date, Long uid);
+    fun getBloodPressureTable(date: LocalDate?, uid: Long?): BloodPressureTable?
 
-    List<String> getRiskLevel(Long uid, LocalDate date);
+    fun getRiskLevel(uid: Long?, date: LocalDate?): List<String?>?
 }

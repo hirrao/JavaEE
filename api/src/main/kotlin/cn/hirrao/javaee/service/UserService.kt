@@ -1,36 +1,40 @@
-package cn.hirrao.javaee.service;
+package cn.hirrao.javaee.service
 
+import cn.hirrao.javaee.entity.User
+import com.baomidou.mybatisplus.core.metadata.IPage
+import org.springframework.stereotype.Service
 
-import cn.hirrao.javaee.entity.User;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.Map;
 
 @Service
-public interface UserService {
-    User findByUsername(String userName);
+interface UserService {
+    fun findByUsername(userName: String?): User?
 
-    User findByUid(long uid);
+    fun findByUid(uid: Long): User?
 
-    User findByPhoneNumber(String phoneNumber);
+    fun findByPhoneNumber(phoneNumber: String?): User?
 
-    void register(long uid, String userName, String userPassword, String phoneNumber);
+    fun register(uid: Long, userName: String?, userPassword: String?, phoneNumber: String?)
 
-    void update(long uid, String phoneNumber, String sex, String birthday);
+    fun update(uid: Long, phoneNumber: String?, sex: String?, birthday: String?)
 
-    void updatePassword(long uid, String userPassword);
+    fun updatePassword(uid: Long, userPassword: String?)
 
-    IPage<User> accountsInfo(int curPage,int size);
+    fun accountsInfo(curPage: Int, size: Int): IPage<User?>?
 
-    void modifyUserInfo(long uid, String userName,String phoneNumber, String sex, String birthday,int permission);
+    fun modifyUserInfo(
+        uid: Long,
+        userName: String?,
+        phoneNumber: String?,
+        sex: String?,
+        birthday: String?,
+        permission: Int
+    )
 
-    void updateUserName(long uid, String userName);
-    void updateSex(long uid, String sex);
-    void updateBirthday(long uid, String birthday);
+    fun updateUserName(uid: Long, userName: String?)
+    fun updateSex(uid: Long, sex: String?)
+    fun updateBirthday(uid: Long, birthday: String?)
 
-    void deleteUser(long uid);
+    fun deleteUser(uid: Long)
 
-    IPage<User> searchUserByCondition(int curPage,int size,String searchCondition,String conditionValue);
+    fun searchUserByCondition(curPage: Int, size: Int, searchCondition: String?, conditionValue: String?): IPage<User?>?
 }

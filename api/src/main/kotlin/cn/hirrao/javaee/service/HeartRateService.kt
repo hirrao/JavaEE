@@ -1,11 +1,10 @@
-package cn.hirrao.javaee.service;
+package cn.hirrao.javaee.service
 
-import cn.hirrao.javaee.entity.HeartRate;
-import org.springframework.stereotype.Service;
-import java.util.List;
+import cn.hirrao.javaee.entity.HeartRate
+import org.springframework.stereotype.Service
 
 @Service
-public interface HeartRateService {
-    List<HeartRate> searchHeartRateById(Long uid);
-    void insertHeartRate(long hrlId, long uid, float heartRate,String recordTime);
+interface HeartRateService {
+    fun searchHeartRateById(uid: Long?): List<HeartRate?>?
+    fun insertHeartRate(hrlId: Long, uid: Long, heartRate: Float, recordTime: String?)
 }

@@ -1,31 +1,34 @@
-package cn.hirrao.javaee.entity;
+package cn.hirrao.javaee.entity
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.time.LocalDate;
+import com.baomidou.mybatisplus.annotation.TableField
+import com.baomidou.mybatisplus.annotation.TableId
+import com.baomidou.mybatisplus.annotation.TableName
+import lombok.AllArgsConstructor
+import lombok.Getter
+import lombok.NoArgsConstructor
+import lombok.Setter
+import java.time.LocalDate
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("bloodPressureLog")
-public class BloodPressure {
+class BloodPressure {
     @TableId(value = "bplId")
-    private Long bplId;
-    private Long uid;
+    private val bplId: Long? = null
+    private val uid: Long? = null
+
     @TableField("SBP")
-    private Float SBP;
+    private val SBP: Float? = null
+
     @TableField("DBP")
-    private Float DBP;
+    private val DBP: Float? = null
+
     @TableField("recordTime")
-    private LocalDate recordTime;
+    private val recordTime: LocalDate? = null
+
     @TableField("riskLevel")
-    private String riskLevel;
-    private String classification;
+    private val riskLevel: String? = null
+    private val classification: String? = null
 }

@@ -1,12 +1,11 @@
-package cn.hirrao.javaee.entity;
+package cn.hirrao.javaee.entity
 
-
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.Id;
+import com.baomidou.mybatisplus.annotation.TableName
+import lombok.AllArgsConstructor
+import lombok.Getter
+import lombok.NoArgsConstructor
+import lombok.Setter
+import org.springframework.data.annotation.Id
 
 
 @Getter
@@ -14,15 +13,12 @@ import org.springframework.data.annotation.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("articles")
-public class Article {
+class Article {
     @Id
-    private Long id;
+    var id: Long? = null
 
-    private String title;
-    private String description;
-    private String image;
-    private String content;
-
-
-    // getters and setters
+    var title: String? = null
+    var description: String? = null
+    var image: String? = null
+    var content: String? = null // getters and setters
 }

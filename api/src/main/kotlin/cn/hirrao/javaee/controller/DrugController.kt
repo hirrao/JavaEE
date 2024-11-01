@@ -1,185 +1,180 @@
-package cn.hirrao.javaee.controller;
+package cn.hirrao.javaee.controller
 
-import cn.hirrao.javaee.entity.Result;
-import cn.hirrao.javaee.service.DrugAlertService;
-import cn.hirrao.javaee.service.DrugService;
-import cn.hirrao.javaee.utils.SnowFlake;
-import cn.hirrao.javaee.utils.ThreadLocalUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Map;
+import cn.hirrao.javaee.entity.Result
+import cn.hirrao.javaee.entity.Result.Companion.success
+import cn.hirrao.javaee.service.DrugAlertService
+import cn.hirrao.javaee.service.DrugService
+import cn.hirrao.javaee.utils.SnowFlake
+import cn.hirrao.javaee.utils.ThreadLocalUtil.get
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
+import java.time.LocalTime
 
 @RestController
 @RequestMapping("/drug")
-public class DrugController {
-    private final SnowFlake snowFlakeDrug = new SnowFlake(1, 4);
+class DrugController @Autowired internal constructor(
+    private val drugService: DrugService,
+    private val drugAlertService: DrugAlertService
+) {
+    private val snowFlakeDrug = SnowFlake(1, 4)
 
-    private final SnowFlake snowFlakeDrugAlert = new SnowFlake(1, 5);
+    private val snowFlakeDrugAlert = SnowFlake(1, 5)
 
-    private final DrugService drugService;
-
-    private final DrugAlertService drugAlertService;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    DrugController(DrugService drugService, DrugAlertService drugAlertService) {
-        this.drugService = drugService;
-        this.drugAlertService = drugAlertService;
-    }
+    private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     @PostMapping("/getPageDrugsInfo")
-    public Result getPageDrugsInfo(@RequestBody Map<String, String> map) {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var curPage = Integer.parseInt(map.get("curPage"));
-        var size = Integer.parseInt(map.get("size"));
-        return Result.success(drugService.getPageDrugInfo(uid, curPage, size));
+    fun getPageDrugsInfo(@RequestBody map: Map<String?, String>): Result {
+        val user = get()
+        val uid = user.uid
+        val curPage = map["curPage"]!!.toInt()
+        val size = map["size"]!!.toInt()
+        return success(drugService.getPageDrugInfo(uid, curPage, size))
     }
 
     @PostMapping("/getPageDrugsInfoByDrugName")
-    public Result getPageDrugsInfoByDrugName(@RequestBody Map<String, String> map) {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var curPage = Integer.parseInt(map.get("curPage"));
-        var size = Integer.parseInt(map.get("size"));
-        var drugName = map.get("drugName");
-        if (!drugName.isEmpty()) {
-            System.out.println("notEmpty");
-            return Result.success(drugService.getPageDrugInfoByDrugName(uid, curPage, size, drugName));
+    fun getPageDrugsInfoByDrugName(@RequestBody map: Map<String?, String>): Result {
+        val user = get()
+        val uid = user.uid
+        val curPage = map["curPage"]!!.toInt()
+        val size = map["size"]!!.toInt()
+        val drugName = map["drugName"]
+        if (!drugName!!.isEmpty()) {
+            println("notEmpty")
+            return success(drugService.getPageDrugInfoByDrugName(uid, curPage, size, drugName))
         } else {
-            System.out.println("Empty");
-            return Result.success(drugService.getPageDrugInfo(uid, curPage, size));
+            println("Empty")
+            return success(drugService.getPageDrugInfo(uid, curPage, size))
         }
     }
 
-    @GetMapping("/getPageDrugInfoTotal")
-    public Result getPageDrugInfoTotal() {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        return Result.success(drugService.getPageDrugInfoTotal(uid));
-    }
+    @get:GetMapping("/getPageDrugInfoTotal")
+    val pageDrugInfoTotal: Result
+        get() {
+            val user = get()
+            val uid = user.uid
+            return success(drugService.getPageDrugInfoTotal(uid))
+        }
 
     @PostMapping("/getPageDrugInfoTotalByDrugName")
-    public Result getPageDrugInfoTotalByDrugName(@RequestBody Map<String, String> map) {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var drugName = map.get("drugName");
-        if (!drugName.isEmpty()) {
-            return Result.success(drugService.getPageDrugInfoTotalByDrugName(uid, drugName));
+    fun getPageDrugInfoTotalByDrugName(@RequestBody map: Map<String?, String?>): Result {
+        val user = get()
+        val uid = user.uid
+        val drugName = map["drugName"]
+        return if (!drugName!!.isEmpty()) {
+            success(drugService.getPageDrugInfoTotalByDrugName(uid, drugName))
         } else {
-            return Result.success(drugService.getPageDrugInfoTotal(uid));
+            success(drugService.getPageDrugInfoTotal(uid))
         }
     }
 
     @PostMapping("/getPageDrugsAlertInfo")
-    public Result getPageDrugsAlertInfo(@RequestBody Map<String, String> map) {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var curPage = Integer.parseInt(map.get("curPage"));
-        var size = Integer.parseInt(map.get("size"));
-        return Result.success(drugService.getPageDrugAlertInfo(uid, curPage, size));
+    fun getPageDrugsAlertInfo(@RequestBody map: Map<String?, String>): Result {
+        val user = get()
+        val uid = user.uid
+        val curPage = map["curPage"]!!.toInt()
+        val size = map["size"]!!.toInt()
+        return success(drugService.getPageDrugAlertInfo(uid, curPage, size))
     }
 
     @PostMapping("/getPageDrugsAlertInfoByDrugName")
-    public Result getPageDrugsAlertInfoByDrugName(@RequestBody Map<String, String> map) {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var curPage = Integer.parseInt(map.get("curPage"));
-        var size = Integer.parseInt(map.get("size"));
-        var drugName = map.get("drugName");
-        if (!drugName.isEmpty()) {
-            System.out.println("notEmpty");
-            return Result.success(drugService.getPageDrugAlertInfoByDrugName(uid, curPage, size, drugName));
+    fun getPageDrugsAlertInfoByDrugName(@RequestBody map: Map<String?, String>): Result {
+        val user = get()
+        val uid = user.uid
+        val curPage = map["curPage"]!!.toInt()
+        val size = map["size"]!!.toInt()
+        val drugName = map["drugName"]
+        if (!drugName!!.isEmpty()) {
+            println("notEmpty")
+            return success(drugService.getPageDrugAlertInfoByDrugName(uid, curPage, size, drugName))
         } else {
-            System.out.println("Empty");
-            return Result.success(drugService.getPageDrugAlertInfo(uid, curPage, size));
+            println("Empty")
+            return success(drugService.getPageDrugAlertInfo(uid, curPage, size))
         }
     }
 
-    @GetMapping("/getPageDrugAlertInfoTotal")
-    public Result getPageDrugAlertInfoTotal() {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        return Result.success(drugService.getPageDrugAlertInfoTotal(uid));
-    }
+    @get:GetMapping("/getPageDrugAlertInfoTotal")
+    val pageDrugAlertInfoTotal: Result
+        get() {
+            val user = get()
+            val uid = user.uid
+            return success(drugService.getPageDrugAlertInfoTotal(uid))
+        }
 
     @PostMapping("/getPageDrugAlertInfoTotalByDrugName")
-    public Result getPageDrugAlertInfoTotalByDrugName(@RequestBody Map<String, String> map) {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var drugName = map.get("drugName");
-        if (!drugName.isEmpty()) {
-            return Result.success(drugService.getPageDrugAlertInfoTotalByDrugName(uid, drugName));
+    fun getPageDrugAlertInfoTotalByDrugName(@RequestBody map: Map<String?, String?>): Result {
+        val user = get()
+        val uid = user.uid
+        val drugName = map["drugName"]
+        return if (!drugName!!.isEmpty()) {
+            success(drugService.getPageDrugAlertInfoTotalByDrugName(uid, drugName))
         } else {
-            return Result.success(drugService.getPageDrugAlertInfoTotal(uid));
+            success(drugService.getPageDrugAlertInfoTotal(uid))
         }
     }
 
     @PostMapping("/insertDrug")
-    public Result insertDrug(@RequestBody Map<String, String> map) {
-        var drugId = snowFlakeDrug.nextId();
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var drugName = map.get("drugName");
-        var frequency = map.get("frequency");
-        var unit = map.get("unit");
-        var dosage = Float.parseFloat(map.get("dosage"));
-        var isActive = Integer.parseInt(map.get("isActive"));
-        drugService.insertDrug(drugId, uid, drugName, frequency, unit, dosage, isActive);
-        return Result.success();
+    fun insertDrug(@RequestBody map: Map<String?, String>): Result {
+        val drugId = snowFlakeDrug.nextId()
+        val user = get()
+        val uid = user.uid
+        val drugName = map["drugName"]
+        val frequency = map["frequency"]
+        val unit = map["unit"]
+        val dosage = map["dosage"]!!.toFloat()
+        val isActive = map["isActive"]!!.toInt()
+        drugService.insertDrug(drugId, uid, drugName, frequency, unit, dosage, isActive)
+        return success()
     }
 
     @PostMapping("/insertDrugAndAlert")
-    public Result insertDrugAndAlert(@RequestBody Map<String, String> map) {
-        var drugId = snowFlakeDrug.nextId();
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var drugName = map.get("drugName");
-        var frequency = map.get("frequency");
-        var unit = map.get("unit");
-        var dosage = Float.parseFloat(map.get("dosage"));
-        var isActive = Integer.parseInt(map.get("isActive"));
-        logger.debug("uid{}", uid);
-        drugService.insertDrug(drugId, uid, drugName, frequency, unit, dosage, isActive);
-        long alertId = snowFlakeDrugAlert.nextId();
-        var alertTime = LocalTime.parse(map.get("alertTime"));
-        LocalDate eatTime = LocalDate.parse("2000-01-01");
-        drugAlertService.insertDrugAlert(alertId, uid, drugId, alertTime, eatTime);
-        return Result.success();
+    fun insertDrugAndAlert(@RequestBody map: Map<String?, String>): Result {
+        val drugId = snowFlakeDrug.nextId()
+        val user = get()
+        val uid = user.uid
+        val drugName = map["drugName"]
+        val frequency = map["frequency"]
+        val unit = map["unit"]
+        val dosage = map["dosage"]!!.toFloat()
+        val isActive = map["isActive"]!!.toInt()
+        logger.debug("uid{}", uid)
+        drugService.insertDrug(drugId, uid, drugName, frequency, unit, dosage, isActive)
+        val alertId = snowFlakeDrugAlert.nextId()
+        val alertTime = LocalTime.parse(map["alertTime"])
+        val eatTime = LocalDate.parse("2000-01-01")
+        drugAlertService.insertDrugAlert(alertId, uid, drugId, alertTime, eatTime)
+        return success()
     }
 
     @PostMapping("/updateDrugIsActiveById")
-    public Result updateDrugIsActiveById(@RequestBody Map<String, String> map) {
-        var drugId = Long.parseLong(map.get("drugId"));
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var isActive = Integer.parseInt(map.get("isActive"));
-        drugService.updateDrugIsActiveById(drugId, uid, isActive);
-        return Result.success();
+    fun updateDrugIsActiveById(@RequestBody map: Map<String?, String>): Result {
+        val drugId = map["drugId"]!!.toLong()
+        val user = get()
+        val uid = user.uid
+        val isActive = map["isActive"]!!.toInt()
+        drugService.updateDrugIsActiveById(drugId, uid, isActive)
+        return success()
     }
 
     @PostMapping("/deleteDrugById")
-    public Result deleteDrugById(@RequestBody Map<String, String> map) {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var drugId = Long.parseLong(map.get("drugId"));
-        drugService.deleteDrugById(uid, drugId);
-        return Result.success();
+    fun deleteDrugById(@RequestBody map: Map<String?, String>): Result {
+        val user = get()
+        val uid = user.uid
+        val drugId = map["drugId"]!!.toLong()
+        drugService.deleteDrugById(uid, drugId)
+        return success()
     }
 
     @PostMapping("/deleteDrugAndDrugAlertById")
-    public Result deleteDrugAndDrugAlertById(@RequestBody Map<String, String> map) {
-        var alertId = Long.parseLong(map.get("alertId"));
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var drugId = Long.parseLong(map.get("drugId"));
-        drugService.deleteDrugById(uid, drugId);
-        drugAlertService.deleteDrugAlertById(alertId, uid, drugId);
-        return Result.success();
+    fun deleteDrugAndDrugAlertById(@RequestBody map: Map<String?, String>): Result {
+        val alertId = map["alertId"]!!.toLong()
+        val user = get()
+        val uid = user.uid
+        val drugId = map["drugId"]!!.toLong()
+        drugService.deleteDrugById(uid, drugId)
+        drugAlertService.deleteDrugAlertById(alertId, uid, drugId)
+        return success()
     }
 }

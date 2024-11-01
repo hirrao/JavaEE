@@ -1,33 +1,23 @@
-package cn.hirrao.javaee.service.impl;
+package cn.hirrao.javaee.service.impl
 
-import cn.hirrao.javaee.entity.UserIntro;
-import cn.hirrao.javaee.mapper.UserIntroMapper;
-import cn.hirrao.javaee.service.UserIntroService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import cn.hirrao.javaee.entity.UserIntro
+import cn.hirrao.javaee.mapper.UserIntroMapper
+import cn.hirrao.javaee.service.UserIntroService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
 @Service
-public class UserIntroServiceImpl implements UserIntroService {
-    private final UserIntroMapper userIntroMapper;
-
-    @Autowired
-    private UserIntroServiceImpl(UserIntroMapper userIntroMapper){
-        this.userIntroMapper = userIntroMapper;
+abstract class UserIntroServiceImpl @Autowired private constructor(private val userIntroMapper: UserIntroMapper) :
+    UserIntroService {
+    override fun findUserIntro(uid: Long): UserIntro? {
+        return userIntroMapper.findUserIntro(uid)
     }
 
-    @Override
-    public UserIntro findUserIntro(Long uid) {
-        return userIntroMapper.findUserIntro(uid);
+    override fun updateUserIntro(uid: Long, intro: String?) {
+        userIntroMapper.updateUserIntro(uid, intro)
     }
 
-    @Override
-    public void updateUserIntro(Long uid, String intro) {
-        userIntroMapper.updateUserIntro(uid, intro);
+    override fun setUserIntro(uid: Long, intro: String?) {
+        userIntroMapper.setUserIntro(uid, intro)
     }
-
-    @Override
-    public void setUserIntro(Long uid, String intro) {
-        userIntroMapper.setUserIntro(uid, intro);
-    }
-
 }

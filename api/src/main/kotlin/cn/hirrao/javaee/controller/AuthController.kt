@@ -1,42 +1,33 @@
-package cn.hirrao.javaee.controller;
+package cn.hirrao.javaee.controller
 
+import cn.hirrao.javaee.entity.Result
+import cn.hirrao.javaee.entity.Result.Companion.error
+import cn.hirrao.javaee.entity.Result.Companion.success
+import cn.hirrao.javaee.service.RedisService
+import cn.hirrao.javaee.service.UserService
+import cn.hirrao.javaee.utils.Jwt.createToken
+import cn.hirrao.javaee.utils.SnowFlake
+import cn.hirrao.javaee.utils.StringUtil.isEmpty
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.util.DigestUtils
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
-import cn.hirrao.javaee.entity.Result;
-import cn.hirrao.javaee.service.RedisService;
-import cn.hirrao.javaee.service.UserService;
-import cn.hirrao.javaee.utils.SnowFlake;
-import cn.hirrao.javaee.utils.StringUtil;
-import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
-
-import static cn.hirrao.javaee.utils.Jwt.createToken;
 
 @RestController
 @RequestMapping("/user/auth")
-public class AuthController {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final SnowFlake snowFlake = new SnowFlake(1, 1);
-    private final UserService userService;
-    private final RedisService redisService;
-
-    @Autowired
-    AuthController(UserService userService, RedisService redisService) {
-        this.userService = userService;
-        this.redisService = redisService;
-    }
+class AuthController @Autowired internal constructor(
+    private val userService: UserService, private val redisService: RedisService
+) {
+    private val logger: Logger = LoggerFactory.getLogger(javaClass)
+    private val snowFlake = SnowFlake(1, 1)
 
     @PostMapping("/message")
-    public Result message(@RequestBody Map<String, String> map) {
-        /*
+    fun message(@RequestBody map: Map<String?, String?>?): Result {/*
         logger.debug("/message接受请求{}", map);
         String userName = map.get("userName");
         String phoneNumber = map.get("phoneNumber");
@@ -56,45 +47,47 @@ public class AuthController {
         }
         return Result.success("发送成功！");
          */
-        return Result.success();
+        return success()
     }
 
 
     //查找手机号或者名字是否已被占用
     @PostMapping("/find")
-    public Result find(@RequestBody Map<String, String> map) {
-        logger.debug("/find接受请求{}", map);
-        var userName = map.get("userName");
-        var phoneNumber = map.get("phoneNumber");
-        if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(phoneNumber)) {
-            return Result.error(101, "非法用户名或手机号");
+    fun find(@RequestBody map: Map<String?, String?>): Result {
+        logger.debug("/find接受请求{}", map)
+        val userName = map["userName"]
+        val phoneNumber = map["phoneNumber"]
+        if (isEmpty(userName) || isEmpty(phoneNumber)) {
+            return error(101, "非法用户名或手机号")
         }
-        var user = userService.findByUsername(userName);
+        val user = userService.findByUsername(userName)
         if (user != null) {
-            return Result.error(102, "用户名或手机号已被占用");
+            return error(102, "用户名或手机号已被占用")
         }
-        var user2 = userService.findByPhoneNumber(phoneNumber);
+        val user2 = userService.findByPhoneNumber(phoneNumber)
         if (user2 != null) {
-            return Result.error(103, "用户名或手机号已被占用");
+            return error(103, "用户名或手机号已被占用")
         }
-        return Result.success();
+        return success()
     }
 
     @PostMapping("/register")
-    public Result register(@RequestBody Map<String, String> map) {
-        logger.debug("/register接受请求{}", map);
-        var userName = map.get("userName");
-        var userPassword = map.get("userPassword");
-        var phoneNumber = map.get("phoneNumber");
-        var messageCode = map.get("messageCode");
-        if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(userPassword) || !userName.matches("^[a-zA-Z0-9_]{3,20}$") || !userPassword.matches("^[a-zA-Z0-9_]{6,20}$")) {
-            return Result.error(101, "非法用户名或密码");
+    fun register(@RequestBody map: Map<String?, String?>): Result {
+        logger.debug("/register接受请求{}", map)
+        val userName = map["userName"]
+        val userPassword = map["userPassword"]
+        val phoneNumber = map["phoneNumber"]
+        val messageCode = map["messageCode"]
+        if (isEmpty(userName) || isEmpty(userPassword) || !userName!!.matches("^[a-zA-Z0-9_]{3,20}$".toRegex()) || !userPassword!!.matches(
+                "^[a-zA-Z0-9_]{6,20}$".toRegex()
+            )
+        ) {
+            return error(101, "非法用户名或密码")
         }
-        var user = userService.findByUsername(userName);
+        val user = userService.findByUsername(userName)
         if (user != null) {
-            return Result.error(102, "用户名已被占用");
-        }
-        /*
+            return error(102, "用户名已被占用")
+        }/*
         if (StringUtil.isEmpty(redisService.get(phoneNumber))) {
             return Result.error(111, "请发送验证码");
         }
@@ -102,16 +95,15 @@ public class AuthController {
             return Result.error(112, "验证码错误");
         }
          */
-        var uid = snowFlake.nextId();
-        var password = DigestUtils.md5DigestAsHex(userPassword.getBytes());
-        userService.register(uid, userName, password, phoneNumber);
-        logger.info("注册成功 用户名:{} 手机号:{}", userName, phoneNumber);
-        return Result.success();
+        val uid = snowFlake.nextId()
+        val password = DigestUtils.md5DigestAsHex(userPassword!!.toByteArray())
+        userService.register(uid, userName, password, phoneNumber)
+        logger.info("注册成功 用户名:{} 手机号:{}", userName, phoneNumber)
+        return success()
     }
 
     @PostMapping("/messageSend")
-    public Result messageSend(@RequestBody Map<String, String> map) {
-        /* 发送短信验证码, 服务关闭后展示禁用
+    fun messageSend(@RequestBody map: Map<String?, String?>?): Result {/* 发送短信验证码, 服务关闭后展示禁用
         logger.debug("/messageSend接受请求{}", map);
         String phoneNumber = map.get("phoneNumber");
         if (StringUtil.isEmpty(phoneNumber) || !phoneNumber.matches("^1[3-9]\\d{9}$")) {
@@ -131,53 +123,52 @@ public class AuthController {
                 return Result.error(110, "未知内部错误");
         }
          */
-        return Result.success();
+        return success()
     }
 
     @PostMapping("/login")
-    public Result login(@RequestBody Map<String, String> map) {
-        logger.debug("/login接受请求{}", map);
-        var userName = map.get("userName");
-        var userPassword = map.get("userPassword");
-        if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(userPassword)) {
-            return Result.error(104, "用户名或密码错误");
+    fun login(@RequestBody map: Map<String?, String?>): Result {
+        logger.debug("/login接受请求{}", map)
+        val userName = map["userName"]
+        val userPassword = map["userPassword"]
+        if (isEmpty(userName) || isEmpty(userPassword)) {
+            return error(104, "用户名或密码错误")
         }
-        var user = userService.findByUsername(userName);
+        val user = userService.findByUsername(userName)
         if (user == null) {
-            return Result.error(104, "用户名或密码错误");
+            return error(104, "用户名或密码错误")
         } else {
-            if (userPassword.equals(user.getUserPassword())) {
+            if (userPassword == user.userPassword) {
                 //密码正确，根据用户的uid和用户名生成token
-                var tokens = createToken(user);
-                @Getter
-                class Data {
-                    private final int permission = user.getPermission();
-                    private final String token = tokens;
-                }
-                var data = new Data();
-                if (data.getPermission() == -1) return Result.error(106, "该用户已被封禁");
-                return Result.success(data);
+                val tokens = createToken(user)
+
+                data class Data(
+                    val permission: Int = user.permission, val token: String = tokens,
+                )
+
+                val data = Data()
+                if (data.permission == -1) return error(106, "该用户已被封禁")
+                return success(data)
             } else {
-                return Result.error(104, "用户名密码错误");
+                return error(104, "用户名密码错误")
             }
         }
     }
 
     @PostMapping("/resetPassword")
-    public Result resetPassword(@RequestBody Map<String, String> map) {
-        logger.debug("/resetPassword接受请求{}", map);
-        var phoneNumber = map.get("phoneNumber");
-        var messageCode = map.get("messageCode");
-        var newPassword = map.get("newPassword");
-        if (StringUtil.isEmpty(phoneNumber) || StringUtil.isEmpty(messageCode) || StringUtil.isEmpty(newPassword) || !newPassword.matches("^[a-zA-Z0-9_]{6,20}$")) {
-            return Result.error(101, "非法手机号或验证码或密码");
+    fun resetPassword(@RequestBody map: Map<String?, String?>): Result {
+        logger.debug("/resetPassword接受请求{}", map)
+        val phoneNumber = map["phoneNumber"]
+        val messageCode = map["messageCode"]
+        val newPassword = map["newPassword"]
+        if (isEmpty(phoneNumber) || isEmpty(messageCode) || isEmpty(newPassword) || !newPassword!!.matches("^[a-zA-Z0-9_]{6,20}$".toRegex())) {
+            return error(101, "非法手机号或验证码或密码")
         }
-        var user = userService.findByPhoneNumber(phoneNumber);
-        var password = DigestUtils.md5DigestAsHex(newPassword.getBytes());
+        val user = userService.findByPhoneNumber(phoneNumber)
+        val password = DigestUtils.md5DigestAsHex(newPassword!!.toByteArray())
         if (user == null) {
-            return Result.error(105, "用户不存在");
-        }
-        /*
+            return error(105, "用户不存在")
+        }/*
         if (redisService.get(phoneNumber) == null) {
             return Result.error(111, "请发送验证码");
         }
@@ -185,8 +176,8 @@ public class AuthController {
             return Result.error(112, "验证码错误");
         }
          */
-        userService.updatePassword(user.getUid(), password);
-        logger.info("重置密码成功 用户名:{} 手机号:{}", user.getUserName(), phoneNumber);
-        return Result.success();
+        userService.updatePassword(user.uid, password)
+        logger.info("重置密码成功 用户名:{} 手机号:{}", user.userName, phoneNumber)
+        return success()
     }
 }

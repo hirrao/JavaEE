@@ -1,27 +1,27 @@
-package cn.hirrao.javaee.entity;
+package cn.hirrao.javaee.entity
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+data class Result(
+    private val code: Int? = null, //状态码，0表示成功，-1表示失败
+    private val message: String? = null,//提示信息
+    private val data: Any? = null, //响应数据，比如token
+) {
+    companion object {
 
-@NoArgsConstructor  //生成无参构造
-@AllArgsConstructor //生成有参构造
-@Getter
-public class Result {
-    private Integer code;//状态码，0表示成功，-1表示失败
-    private String message;//提示信息
-    private Object data;//响应数据，比如token
 
-    public static Result success(Object data) {
-        return new Result(0, "success", data);
-    }
+        fun success(data: Any?): Result {
+            return Result(0, "success", data)
+        }
 
-    public static Result success() {
-        return new Result(0, "success", null);
-    }
 
-    public static Result error(int code, String message) {
-        return new Result(code, message, null);
+        fun success(): Result {
+            return Result(0, "success", null)
+        }
+
+
+        fun error(code: Int, message: String?): Result {
+            return Result(code, message, null)
+        }
+
     }
 }

@@ -1,17 +1,16 @@
-package cn.hirrao.javaee.service;
+package cn.hirrao.javaee.service
 
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
+import org.springframework.stereotype.Service
+import java.time.LocalDate
+import java.time.LocalTime
 
 @Service
-public interface DrugAlertService {
-    void insertDrugAlert(long alertId, long uid, long drugId, LocalTime alertTime, LocalDate eatTime);
+interface DrugAlertService {
+    fun insertDrugAlert(alertId: Long, uid: Long, drugId: Long, alertTime: LocalTime?, eatTime: LocalDate?)
 
-    void updateDrugAlertIsActiveById(long alertId,int isActive);
+    fun updateDrugAlertIsActiveById(alertId: Long, isActive: Int)
 
-    void updateDrugAlertEatTimeById(long alertId, LocalDate eatTime);
+    fun updateDrugAlertEatTimeById(alertId: Long, eatTime: LocalDate?)
 
-    void deleteDrugAlertById(long alertId,long uid,long drugId);
+    fun deleteDrugAlertById(alertId: Long, uid: Long, drugId: Long)
 }

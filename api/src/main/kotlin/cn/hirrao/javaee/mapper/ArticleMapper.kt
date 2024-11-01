@@ -1,34 +1,31 @@
-package cn.hirrao.javaee.mapper;
+package cn.hirrao.javaee.mapper
 
-import cn.hirrao.javaee.entity.Article;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import cn.hirrao.javaee.entity.Article
+import com.baomidou.mybatisplus.core.mapper.BaseMapper
+import org.apache.ibatis.annotations.Delete
+import org.apache.ibatis.annotations.Insert
+import org.apache.ibatis.annotations.Select
+import org.apache.ibatis.annotations.Update
 
-import java.util.List;
-
-public interface ArticleMapper extends BaseMapper<Article> {
-
+interface ArticleMapper : BaseMapper<Article?> {
     @Select("SELECT * FROM articles")
-    List<Article> findAll();
+    fun findAll(): List<Article?>?
 
     @Select("SELECT * FROM articles WHERE id = #{id}")
-    Article findById(long id);
+    fun findById(id: Long): Article?
 
     @Select("SELECT * FROM articles WHERE title LIKE CONCAT('%', #{title}, '%')")
-    List<Article> findByTitle(String title);
+    fun findByTitle(title: String?): List<Article?>?
 
     @Select("SELECT * FROM articles WHERE description LIKE CONCAT('%', #{description}, '%')")
-    List<Article> findByDescription(String description);
+    fun findByDescription(description: String?): List<Article?>?
 
     @Insert("INSERT INTO articles(title, description, image, content) VALUES(#{title}, #{description}, #{image}, #{content})")
-    void addArticle(String title, String description, String image, String content);
+    fun addArticle(title: String?, description: String?, image: String?, content: String?)
 
     @Update("UPDATE articles SET title = #{title}, description = #{description}, image = #{image}, content = #{content} WHERE id = #{id}")
-    int updateById(Article article);
+    override fun updateById(article: Article?): Int
 
     @Delete("DELETE FROM articles WHERE id = #{id}")
-    void deleteById(long id);
+    fun deleteById(id: Long)
 }

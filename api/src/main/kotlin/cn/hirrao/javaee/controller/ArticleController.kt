@@ -1,87 +1,90 @@
-package cn.hirrao.javaee.controller;
+package cn.hirrao.javaee.controller
 
-import cn.hirrao.javaee.entity.Article;
-import cn.hirrao.javaee.entity.Result;
-import cn.hirrao.javaee.service.ArticleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
+import cn.hirrao.javaee.entity.Article
+import cn.hirrao.javaee.entity.Result
+import cn.hirrao.javaee.entity.Result.Companion.success
+import cn.hirrao.javaee.service.ArticleService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/articles")
-public class ArticleController {
+class ArticleController {
     @Autowired
-    private ArticleService articleService;
+    private val articleService: ArticleService? = null
 
-    @GetMapping
-    public List<Article> getAllArticles() {
-        return articleService.findAll();
-    }
+    @get:GetMapping
+    val allArticles: List<Article?>?
+        get() = articleService!!.findAll()
 
     @PostMapping("/add")
-    public Result addArticle(@RequestBody Map<String, String> map) {
-        var title = map.get("title");
-        var description = map.get("description");
-        var image = map.get("image");
-        var content = map.get("content");
-        articleService.addArticle(title, description, image, content);
-        return Result.success();
+    fun addArticle(@RequestBody map: Map<String?, String?>): Result {
+        val title = map["title"]
+        val description = map["description"]
+        val image = map["image"]
+        val content = map["content"]
+        articleService!!.addArticle(title, description, image, content)
+        return success()
     }
 
 
     @PostMapping("/articlesInfo")
-    public Result articlesInfo(@RequestBody Map<String, String> map){
-        var curPage = Integer.parseInt(map.get("curPage"));
-        var size = Integer.parseInt(map.get("size"));
-        return Result.success(articleService.articlesInfo(curPage, size));
+    fun articlesInfo(@RequestBody map: Map<String?, String>): Result {
+        val curPage = map["curPage"]!!.toInt()
+        val size = map["size"]!!.toInt()
+        return success(articleService!!.articlesInfo(curPage, size))
     }
 
     @PostMapping("/modifyArticleInfo")
-    public Result modifyArticleInfo(@RequestBody Map<String, String> map) {
-        var id = Long.parseLong(map.get("id"));
-        var title = map.get("title");
-        var description = map.get("description");
-        var image = map.get("image");
-        var content = map.get("content");
+    fun modifyArticleInfo(@RequestBody map: Map<String?, String>): Result {
+        val id = map["id"]!!.toLong()
+        val title = map["title"]
+        val description = map["description"]
+        val image = map["image"]
+        val content = map["content"]
 
-        System.out.println("modifyArticleInfo id:" + id);
-        System.out.println("modifyArticleInfo title:" + title);
-        System.out.println("modifyArticleInfo description:" + description);
-        System.out.println("modifyArticleInfo image:" + image);
-        System.out.println("modifyArticleInfo content:" + content);
+        println("modifyArticleInfo id:$id")
+        println("modifyArticleInfo title:$title")
+        println("modifyArticleInfo description:$description")
+        println("modifyArticleInfo image:$image")
+        println("modifyArticleInfo content:$content")
 
-        articleService.modifyArticleInfo(id, title, description, image, content);
-        return Result.success();
+        articleService!!.modifyArticleInfo(id, title, description, image, content)
+        return success()
     }
 
     @PostMapping("/deleteArticle")
-    public Result deleteArticle(@RequestBody Map<String, String> map){
-        var id = Long.parseLong(map.get("id"));
-        articleService.deleteArticle(id);
-        System.out.println("delete id:" + id);
-        return Result.success();
+    fun deleteArticle(@RequestBody map: Map<String?, String>): Result {
+        val id = map["id"]!!.toLong()
+        articleService!!.deleteArticle(id)
+        println("delete id:$id")
+        return success()
     }
 
     @PostMapping("/searchArticleByCondition")
-    public Result searchArticleByCondition(@RequestBody Map<String, String> map){
-        var curPage = Integer.parseInt(map.get("curPage"));
-        var size = Integer.parseInt(map.get("size"));
-        var searchCondition = map.get("searchCondition");
-        var conditionValue = map.get("conditionValue");
+    fun searchArticleByCondition(@RequestBody map: Map<String?, String>): Result {
+        val curPage = map["curPage"]!!.toInt()
+        val size = map["size"]!!.toInt()
+        val searchCondition = map["searchCondition"]
+        val conditionValue = map["conditionValue"]
 
-        System.out.println("curPage:" + curPage);
-        System.out.println("size:" + size);
-        System.out.println("searchCondition:" + searchCondition);
-        System.out.println("conditionValue:" + conditionValue);
+        println("curPage:$curPage")
+        println("size:$size")
+        println("searchCondition:$searchCondition")
+        println("conditionValue:$conditionValue")
 
-        if(!searchCondition.isEmpty() && !conditionValue.isEmpty()){
-//            return Result.success();
-            return Result.success(articleService.searchArticleByCondition(curPage, size, searchCondition, conditionValue));
+        return if (!searchCondition!!.isEmpty() && !conditionValue!!.isEmpty()) {
+            //            return Result.success();
+            success(
+                articleService!!.searchArticleByCondition(
+                    curPage,
+                    size,
+                    searchCondition,
+                    conditionValue
+                )
+            )
         } else {
-
-            return Result.success(articleService.articlesInfo(curPage, size));
+            success(articleService!!.articlesInfo(curPage, size))
         }
     }
 }

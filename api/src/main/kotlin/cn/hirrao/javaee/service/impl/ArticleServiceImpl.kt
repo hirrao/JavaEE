@@ -1,69 +1,54 @@
-package cn.hirrao.javaee.service.impl;
+package cn.hirrao.javaee.service.impl
 
-import cn.hirrao.javaee.entity.Article;
-import cn.hirrao.javaee.mapper.ArticleMapper;
-import cn.hirrao.javaee.service.ArticleService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import cn.hirrao.javaee.entity.Article
+import cn.hirrao.javaee.mapper.ArticleMapper
+import cn.hirrao.javaee.service.ArticleService
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
+import com.baomidou.mybatisplus.core.metadata.IPage
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
 @Service
-public class ArticleServiceImpl implements ArticleService {
-    private final ArticleMapper articleMapper;
-
-
-    @Autowired
-    public ArticleServiceImpl(ArticleMapper articleMapper) {
-        this.articleMapper = articleMapper;
+class ArticleServiceImpl @Autowired constructor(private val articleMapper: ArticleMapper) : ArticleService {
+    override fun findAll(): List<Article?>? {
+        return articleMapper.findAll()
     }
 
-    @Override
-    public List<Article> findAll() {
-        return articleMapper.findAll();
+    override fun findById(id: Long): Article? {
+        return articleMapper.findById(id)
     }
 
-    @Override
-    public Article findById(long id) {
-        return articleMapper.findById(id);
-    }
-
-    @Override
-    public void addArticle(String title, String description, String image, String content) {
-        articleMapper.addArticle(title, description, image, content);
+    override fun addArticle(title: String?, description: String?, image: String?, content: String?) {
+        articleMapper.addArticle(title, description, image, content)
     }
 
 
-    @Override
-    public void deleteArticle(long id) {
-        articleMapper.deleteById(id);
+    override fun deleteArticle(id: Long) {
+        articleMapper.deleteById(id)
     }
 
-    @Override
-    public void modifyArticleInfo(long id, String title, String description, String image, String content) {
-        var article = new Article();
-        article.setId(id);
-        article.setTitle(title);
-        article.setDescription(description);
-        article.setImage(image);
-        article.setContent(content);
-        articleMapper.updateById(article);
+    override fun modifyArticleInfo(id: Long, title: String?, description: String?, image: String?, content: String?) {
+        val article = Article()
+        article.id = id
+        article.title = title
+        article.description = description
+        article.image = image
+        article.content = content
+        articleMapper.updateById(article)
     }
 
-    @Override
-    public IPage<Article> articlesInfo(int curPage, int size) {
+    override fun articlesInfo(curPage: Int, size: Int): IPage<Article?>? {
 //        PageHelper.startPage(curPage, size);
 //        List<Article> articles = articleMapper.findAll();
 //        PageInfo<Article> pageInfo = new PageInfo<>(articles);
-        var page = new Page<Article>(curPage, size);
-        return articleMapper.selectPage(page, null);
+        val page = Page<Article>(curPage.toLong(), size.toLong())
+        return articleMapper.selectPage(page, null)
     }
 
-    @Override
-    public IPage<Article> searchArticleByCondition(int curPage, int size, String searchCondition, String conditionValue) {
+    override fun searchArticleByCondition(
+        curPage: Int, size: Int, searchCondition: String?, conditionValue: String?
+    ): IPage<Article?>? {
 //        PageHelper.startPage(curPage, size);
 //        List<Article> articles;
 //        switch (searchCondition) {
@@ -77,12 +62,12 @@ public class ArticleServiceImpl implements ArticleService {
 //                articles = new ArrayList<>();
 //        }
 //        PageInfo<Article> pageInfo = new PageInfo<>(articles);
-        var page = new Page<Article>(curPage, size);
-        var queryWrapper = new QueryWrapper<Article>();
-        queryWrapper.eq(searchCondition, conditionValue);
+        val page = Page<Article>(curPage.toLong(), size.toLong())
+        val queryWrapper = QueryWrapper<Article>()
+        queryWrapper.eq(searchCondition, conditionValue)
 
 
-        return articleMapper.selectPage(page, queryWrapper);
+        return articleMapper.selectPage(page, queryWrapper)
     }
 }
 

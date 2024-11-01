@@ -1,27 +1,18 @@
-package cn.hirrao.javaee.entity;
+package cn.hirrao.javaee.entity
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
+import com.baomidou.mybatisplus.annotation.TableField
+import com.baomidou.mybatisplus.annotation.TableId
 
 //JsonIgnore注解是jackson包中的注解，用于返回json数据时，忽略该字段
-@Getter
-@Setter
-@AllArgsConstructor
-public class User {
-    @TableId(value = "uid")
-    private Long uid;
-    @TableField("userName")
-    private String userName;
-    @TableField("phoneNumber")
-    private String phoneNumber;
-    @TableField("userPassword")
-    private String userPassword;
-    private String sex;
-    private String birthday;
-    private int permission;
-}
+data class User(
+    @TableId(value = "uid") var uid: Long,
+
+    @TableField("userName") var userName: String? = null,
+
+    @TableField("phoneNumber") var phoneNumber: String? = null,
+
+    @TableField("userPassword") var userPassword: String? = null,
+    var sex: String? = null,
+    var birthday: String? = null,
+    var permission: Int = 0,
+)

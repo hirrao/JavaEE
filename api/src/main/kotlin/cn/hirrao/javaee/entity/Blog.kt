@@ -1,25 +1,26 @@
-package cn.hirrao.javaee.entity;
+package cn.hirrao.javaee.entity
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
+import com.baomidou.mybatisplus.annotation.TableField
+import com.baomidou.mybatisplus.annotation.TableId
+import lombok.AllArgsConstructor
+import lombok.Getter
+import lombok.Setter
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class Blog {
+class Blog {
     @TableId(value = "blogId")
-    private Long blogId;
+    private val blogId: Long? = null
+
     @TableField("content")
-    private String content;
+    private val content: String? = null
+
     @TableField("createTime")
-    private String createTime;
+    private val createTime: String? = null
+
     @TableField("updateTime")
-    private String updateTime;
-    private Long uid;
-    private String title;
+    private val updateTime: String? = null
+    private val uid: Long? = null
+    private val title: String? = null
 }

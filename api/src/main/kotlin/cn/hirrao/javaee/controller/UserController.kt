@@ -1,124 +1,123 @@
-package cn.hirrao.javaee.controller;
+package cn.hirrao.javaee.controller
 
-import cn.hirrao.javaee.entity.Result;
-import cn.hirrao.javaee.service.UserService;
-import cn.hirrao.javaee.utils.ThreadLocalUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import cn.hirrao.javaee.entity.Result
+import cn.hirrao.javaee.entity.Result.Companion.success
+import cn.hirrao.javaee.service.UserService
+import cn.hirrao.javaee.utils.ThreadLocalUtil.get
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+class UserController @Autowired constructor(private val userService: UserService) {
+    private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     @GetMapping("/userInfo")
-    public Result userInfo() {
-        var user = ThreadLocalUtil.get();
-        logger.debug("获取用户信息{}", user);
-        return Result.success(user);
+    fun userInfo(): Result {
+        val user = get()
+        logger.debug("获取用户信息{}", user)
+        return success(user)
     }
 
     @PutMapping("/update")
-    public Result update(@RequestBody Map<String, String> map) {
-        logger.debug("更新用户信息{}", map);
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var phoneNumber = map.get("phoneNumber");
-        var sex = map.get("sex");
-        var birthday = map.get("birthday");
-        userService.update(uid, phoneNumber, sex, birthday);
-        return Result.success();
+    fun update(@RequestBody map: Map<String?, String?>): Result {
+        logger.debug("更新用户信息{}", map)
+        val user = get()
+        val uid = user.uid
+        val phoneNumber = map["phoneNumber"]
+        val sex = map["sex"]
+        val birthday = map["birthday"]
+        userService.update(uid, phoneNumber, sex, birthday)
+        return success()
     }
 
     @PostMapping("/accountsInfo")
-    public Result accountsInfo(@RequestBody Map<String, String> map) {
-        var curPage = Integer.parseInt(map.get("curPage"));
-        var size = Integer.parseInt(map.get("size"));
-        return Result.success(userService.accountsInfo(curPage, size));
+    fun accountsInfo(@RequestBody map: Map<String?, String>): Result {
+        val curPage = map["curPage"]!!.toInt()
+        val size = map["size"]!!.toInt()
+        return success(userService.accountsInfo(curPage, size))
     }
 
     @PostMapping("/modifyUserInfo")
-    public Result modifyUserInfo(@RequestBody Map<String, String> map) {
+    fun modifyUserInfo(@RequestBody map: Map<String?, String>): Result {
 //        User user = ThreadLocalUtil.get();
-//        var uid = user.getUid();
-        var uid = Long.parseLong(map.get("uid"));
-        var userName = map.get("userName");
-        var phoneNumber = map.get("phoneNumber");
-        var sex = map.get("sex");
-        var birthday = map.get("birthday");
-        var permission = Integer.parseInt(map.get("permission"));
-        System.out.println("modifyUserInfo uid:" + uid);
-        System.out.println("modifyUserInfo userName:" + userName);
-        System.out.println("modifyUserInfo sex:" + sex);
-        System.out.println("modifyUserInfo birthday:" + birthday);
-        System.out.println("modifyUserInfo permission:" + permission);
+//        var uid = user.uid;
+        val uid = map["uid"]!!.toLong()
+        val userName = map["userName"]
+        val phoneNumber = map["phoneNumber"]
+        val sex = map["sex"]
+        val birthday = map["birthday"]
+        val permission = map["permission"]!!.toInt()
+        println("modifyUserInfo uid:$uid")
+        println("modifyUserInfo userName:$userName")
+        println("modifyUserInfo sex:$sex")
+        println("modifyUserInfo birthday:$birthday")
+        println("modifyUserInfo permission:$permission")
 
-        userService.modifyUserInfo(uid, userName, phoneNumber, sex, birthday, permission);
-        return Result.success();
+        userService.modifyUserInfo(uid, userName, phoneNumber, sex, birthday, permission)
+        return success()
     }
 
     @PostMapping("/updateUserName")
-    public Result updateUserName(@RequestBody Map<String, String> map) {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var userName = map.get("userName");
-        userService.updateUserName(uid, userName);
-        return Result.success();
+    fun updateUserName(@RequestBody map: Map<String?, String?>): Result {
+        val user = get()
+        val uid = user.uid
+        val userName = map["userName"]
+        userService.updateUserName(uid, userName)
+        return success()
     }
 
     @PostMapping("/updateSex")
-    public Result updateSex(@RequestBody Map<String, String> map) {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var sex = map.get("sex");
-        userService.updateSex(uid, sex);
-        return Result.success();
+    fun updateSex(@RequestBody map: Map<String?, String?>): Result {
+        val user = get()
+        val uid = user.uid
+        val sex = map["sex"]
+        userService.updateSex(uid, sex)
+        return success()
     }
 
     @PostMapping("/updateBirthday")
-    public Result updateBirthday(@RequestBody Map<String, String> map) {
-        var user = ThreadLocalUtil.get();
-        var uid = user.getUid();
-        var birthday = map.get("birthday");
-        userService.updateBirthday(uid, birthday);
-        return Result.success();
+    fun updateBirthday(@RequestBody map: Map<String?, String?>): Result {
+        val user = get()
+        val uid = user.uid
+        val birthday = map["birthday"]
+        userService.updateBirthday(uid, birthday)
+        return success()
     }
 
     @PostMapping("/deleteUser")
-    public Result deleteUser(@RequestBody Map<String, String> map) {
+    fun deleteUser(@RequestBody map: Map<String?, String>): Result {
 //        System.out.println(map.size());
 //        User user = ThreadLocalUtil.get();
-        var uid = Long.parseLong(map.get("uid"));
-        userService.deleteUser(uid);
-        System.out.println("delete uid:" + uid);
-        return Result.success();
+        val uid = map["uid"]!!.toLong()
+        userService.deleteUser(uid)
+        println("delete uid:$uid")
+        return success()
     }
 
     @PostMapping("/searchUserByCondition")
-    public Result searchUserByCondition(@RequestBody Map<String, String> map) {
-        var curPage = Integer.parseInt(map.get("curPage"));
-        var size = Integer.parseInt(map.get("size"));
-        var searchCondition = map.get("searchCondition");
-        var conditionValue = map.get("conditionValue");
-        System.out.println("curPage:" + curPage);
-        System.out.println("size:" + size);
-        System.out.println("searchCondition:" + searchCondition);
-        System.out.println("conditionValue:" + conditionValue);
-        if (!searchCondition.isEmpty() && !conditionValue.isEmpty()) {
-            return Result.success(userService.searchUserByCondition(curPage, size, searchCondition, conditionValue));
+    fun searchUserByCondition(@RequestBody map: Map<String?, String>): Result {
+        val curPage = map["curPage"]!!.toInt()
+        val size = map["size"]!!.toInt()
+        val searchCondition = map["searchCondition"]
+        val conditionValue = map["conditionValue"]
+        println("curPage:$curPage")
+        println("size:$size")
+        println("searchCondition:$searchCondition")
+        println("conditionValue:$conditionValue")
+        return if (!searchCondition!!.isEmpty() && !conditionValue!!.isEmpty()) {
+            success(
+                userService.searchUserByCondition(
+                    curPage,
+                    size,
+                    searchCondition,
+                    conditionValue
+                )
+            )
         } else {
-            return Result.success(userService.accountsInfo(curPage, size));
+            success(userService.accountsInfo(curPage, size))
         }
     }
 }

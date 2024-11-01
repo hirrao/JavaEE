@@ -1,48 +1,54 @@
-package cn.hirrao.javaee.mapper;
+package cn.hirrao.javaee.mapper
 
-import cn.hirrao.javaee.entity.Drug;
-import cn.hirrao.javaee.entity.DrugManageResult;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.*;
-
-import java.util.List;
+import cn.hirrao.javaee.entity.Drug
+import cn.hirrao.javaee.entity.DrugManageResult
+import com.baomidou.mybatisplus.core.mapper.BaseMapper
+import org.apache.ibatis.annotations.*
 
 @Mapper
-public interface DrugMapper extends BaseMapper<Drug> {
+interface DrugMapper : BaseMapper<Drug?> {
     @Insert("INSERT INTO drug VALUES (#{drugId},#{uid}, #{drugName},#{frequency},#{unit}, #{dosage},#{isActive})")
-    void insertDrug(long drugId, long uid, String drugName, String frequency, String unit, Float dosage, int isActive);
+    fun insertDrug(
+        drugId: Long,
+        uid: Long,
+        drugName: String?,
+        frequency: String?,
+        unit: String?,
+        dosage: Float?,
+        isActive: Int
+    )
 
     //    @Select("SELECT d.drugId, d.drugName, d.frequency, d.unit, d.dosage, d.isActive, da.alertId, da.alertTime, da.eatTime FROM drug d JOIN drugAlert da ON d.drugId=da.drugId AND d.uid=da.uid WHERE d.uid=#{uid} LIMIT 1,2")
-//    List<DrugManageResult> getAllDrugInfo(long uid);
+    //    List<DrugManageResult> getAllDrugInfo(long uid);
     @Select("SELECT COUNT(*) FROM drug d JOIN drugAlert da ON d.drugId=da.drugId AND d.uid=da.uid WHERE d.uid=#{uid} AND d.isActive=1")
-    int getPageDrugInfoTotal(long uid);
+    fun getPageDrugInfoTotal(uid: Long): Int
 
 
     @Select("SELECT COUNT(*) FROM drug d JOIN drugAlert da ON d.drugId=da.drugId AND d.uid=da.uid WHERE d.uid=#{uid}")
-    int getPageDrugAlertInfoTotal(long uid);
+    fun getPageDrugAlertInfoTotal(uid: Long): Int
 
     @Update("UPDATE drug SET isActive=#{isActive} WHERE drugId=#{drugId} AND uid=#{uid}")
-    void updateDrugIsActiveById(long drugId, long uid, int isActive);
+    fun updateDrugIsActiveById(drugId: Long, uid: Long, isActive: Int)
 
     @Delete("DELETE FROM drug WHERE uid=#{uid} AND drugId=#{drugId}")
-    void deleteDrugById(long uid, long drugId);
+    fun deleteDrugById(uid: Long, drugId: Long)
 
 
     @Select("SELECT d.drugId, d.drugName, d.frequency, d.unit, d.dosage, d.isActive, da.alertId, da.alertTime, da.eatTime FROM drug d JOIN drugAlert da ON d.drugId=da.drugId AND d.uid=da.uid WHERE d.uid=#{uid} AND d.isActive=1 ORDER BY da.alertTime LIMIT #{size} OFFSET #{curPage}")
-    List<DrugManageResult> getPageDrugInfo(long uid, int curPage, int size);
+    fun getPageDrugInfo(uid: Long, curPage: Int, size: Int): List<DrugManageResult?>?
 
     @Select("SELECT d.drugId, d.drugName, d.frequency, d.unit, d.dosage, d.isActive, da.alertId, da.alertTime, da.eatTime FROM drug d JOIN drugAlert da ON d.drugId=da.drugId AND d.uid=da.uid WHERE d.uid=#{uid} AND d.isActive=1 AND d.drugName LIKE '%' || #{drugName} || '%' ORDER BY da.alertTime LIMIT #{size} OFFSET #{curPage}")
-    List<DrugManageResult> getPageDrugInfoByDrugName(long uid, int curPage, int size, String drugName);
+    fun getPageDrugInfoByDrugName(uid: Long, curPage: Int, size: Int, drugName: String?): List<DrugManageResult?>?
 
     @Select("SELECT COUNT(*) FROM drug d JOIN drugAlert da ON d.drugId=da.drugId AND d.uid=da.uid WHERE d.uid=#{uid} AND d.isActive=1 AND d.drugName LIKE '%' || #{drugName} || '%'")
-    int getPageDrugInfoTotalByDrugName(long uid, String drugName);
+    fun getPageDrugInfoTotalByDrugName(uid: Long, drugName: String?): Int
 
     @Select("SELECT d.drugId, d.drugName, d.frequency, d.unit, d.dosage, d.isActive, da.alertId, da.alertTime, da.eatTime FROM drug d JOIN drugAlert da ON d.drugId=da.drugId AND d.uid=da.uid WHERE d.uid=#{uid} ORDER BY da.alertTime LIMIT #{size} OFFSET #{curPage}")
-    List<DrugManageResult> getPageDrugAlertInfo(long uid, int curPage, int size);
+    fun getPageDrugAlertInfo(uid: Long, curPage: Int, size: Int): List<DrugManageResult?>?
 
     @Select("SELECT d.drugId, d.drugName, d.frequency, d.unit, d.dosage, d.isActive, da.alertId, da.alertTime, da.eatTime FROM drug d JOIN drugAlert da ON d.drugId=da.drugId AND d.uid=da.uid WHERE d.uid=#{uid} AND d.drugName LIKE '%' || #{drugName} || '%' ORDER BY da.alertTime LIMIT #{size} OFFSET #{curPage}")
-    List<DrugManageResult> getPageDrugAlertInfoByDrugName(long uid, int curPage, int size, String drugName);
+    fun getPageDrugAlertInfoByDrugName(uid: Long, curPage: Int, size: Int, drugName: String?): List<DrugManageResult?>?
 
     @Select("SELECT COUNT(*) FROM drug d JOIN drugAlert da ON d.drugId=da.drugId AND d.uid=da.uid WHERE d.uid=#{uid} AND d.drugName LIKE '%' || #{drugName} || '%'")
-    int getPageDrugAlertInfoTotalByDrugName(long uid, String drugName);
+    fun getPageDrugAlertInfoTotalByDrugName(uid: Long, drugName: String?): Int
 }

@@ -1,34 +1,38 @@
-package cn.hirrao.javaee.service;
+package cn.hirrao.javaee.service
 
-import cn.hirrao.javaee.entity.DrugManageResult;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Select;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import cn.hirrao.javaee.entity.DrugManageResult
+import org.springframework.stereotype.Service
 
 @Service
-public interface DrugService {
-    void insertDrug(long drugId,long uid,String drugName,String frequency,String unit,Float dosage,int isActive);
-//    List<DrugManageResult> getAllDrugInfo(long uid);
+interface DrugService {
+    fun insertDrug(
+        drugId: Long,
+        uid: Long,
+        drugName: String?,
+        frequency: String?,
+        unit: String?,
+        dosage: Float?,
+        isActive: Int
+    )
 
-    List<DrugManageResult> getPageDrugInfo(long uid,int curPage,int size);
+    //    List<DrugManageResult> getAllDrugInfo(long uid);
+    fun getPageDrugInfo(uid: Long, curPage: Int, size: Int): List<DrugManageResult?>?
 
-    List<DrugManageResult> getPageDrugInfoByDrugName(long uid,int curPage,int size,String drugName);
+    fun getPageDrugInfoByDrugName(uid: Long, curPage: Int, size: Int, drugName: String?): List<DrugManageResult?>?
 
-    int getPageDrugInfoTotal(long uid);
+    fun getPageDrugInfoTotal(uid: Long): Int
 
-    int getPageDrugInfoTotalByDrugName(long uid,String drugName);
+    fun getPageDrugInfoTotalByDrugName(uid: Long, drugName: String?): Int
 
-    List<DrugManageResult> getPageDrugAlertInfo(long uid,int curPage,int size);
+    fun getPageDrugAlertInfo(uid: Long, curPage: Int, size: Int): List<DrugManageResult?>?
 
-    List<DrugManageResult> getPageDrugAlertInfoByDrugName(long uid,int curPage,int size,String drugName);
+    fun getPageDrugAlertInfoByDrugName(uid: Long, curPage: Int, size: Int, drugName: String?): List<DrugManageResult?>?
 
-    int getPageDrugAlertInfoTotal(long uid);
+    fun getPageDrugAlertInfoTotal(uid: Long): Int
 
-    int getPageDrugAlertInfoTotalByDrugName(long uid,String drugName);
+    fun getPageDrugAlertInfoTotalByDrugName(uid: Long, drugName: String?): Int
 
-    void updateDrugIsActiveById(long drugId,long uid,int isActive);
+    fun updateDrugIsActiveById(drugId: Long, uid: Long, isActive: Int)
 
-    void deleteDrugById(long uid,long drugId);
+    fun deleteDrugById(uid: Long, drugId: Long)
 }

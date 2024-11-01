@@ -1,18 +1,16 @@
-package cn.hirrao.javaee.mapper;
+package cn.hirrao.javaee.mapper
 
-import cn.hirrao.javaee.entity.HeartRate;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
+import cn.hirrao.javaee.entity.HeartRate
+import com.baomidou.mybatisplus.core.mapper.BaseMapper
+import org.apache.ibatis.annotations.Insert
+import org.apache.ibatis.annotations.Mapper
+import org.apache.ibatis.annotations.Select
 
 @Mapper
-public interface HeartRateMapper extends BaseMapper<HeartRate> {
-
+interface HeartRateMapper : BaseMapper<HeartRate?> {
     @Select("SELECT * FROM heartRateLog WHERE uid=#{uid}")
-    List<HeartRate> searchHeartRateById(Long uid);
+    fun searchHeartRateById(uid: Long?): List<HeartRate?>?
+
     @Insert("INSERT INTO heartRateLog(hrlId, uid, heartRate,recordTime) VALUES(#{hrlId},#{uid}, #{heartRate}, #{recordTime})")
-    void insertHeartRate(long hrlId, long uid, float heartRate,String recordTime);
+    fun insertHeartRate(hrlId: Long, uid: Long, heartRate: Float, recordTime: String?)
 }

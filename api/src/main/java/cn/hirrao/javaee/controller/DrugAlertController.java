@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Map;
 
 @RestController
@@ -33,8 +34,8 @@ public class DrugAlertController {
         User user = ThreadLocalUtil.get();
         var uid = user.getUid();
         var drugId = Long.parseLong(map.get("drugId"));
-        var alertTime = Time.valueOf(map.get("alertTime"));
-        Date eatTime = Date.valueOf("2000-01-01");
+        var alertTime = LocalTime.parse(map.get("alertTime"));
+        LocalDate eatTime = LocalDate.parse("2000-01-01");
         drugAlertService.insertDrugAlert(alertId, uid, drugId, alertTime, eatTime);
         return Result.success();
     }

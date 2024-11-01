@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Map;
 
 @RestController
@@ -148,8 +148,8 @@ public class DrugController {
         logger.debug("uid{}", uid);
         drugService.insertDrug(drugId, uid, drugName, frequency, unit, dosage, isActive);
         long alertId = snowFlakeDrugAlert.nextId();
-        var alertTime = Time.valueOf(map.get("alertTime"));
-        Date eatTime = Date.valueOf("2000-01-01");
+        var alertTime = LocalTime.parse(map.get("alertTime"));
+        LocalDate eatTime = LocalDate.parse("2000-01-01");
         drugAlertService.insertDrugAlert(alertId, uid, drugId, alertTime, eatTime);
         return Result.success();
     }

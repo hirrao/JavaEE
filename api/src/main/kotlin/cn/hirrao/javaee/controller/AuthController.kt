@@ -1,8 +1,8 @@
 package cn.hirrao.javaee.controller
 
 import cn.hirrao.javaee.entity.Result
-import cn.hirrao.javaee.entity.Result.Companion.error
-import cn.hirrao.javaee.entity.Result.Companion.success
+import cn.hirrao.javaee.entity.error
+import cn.hirrao.javaee.entity.success
 import cn.hirrao.javaee.service.RedisService
 import cn.hirrao.javaee.service.UserService
 import cn.hirrao.javaee.utils.Jwt.createToken
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/user/auth")
-class AuthController @Autowired internal constructor(
+class AuthController @Autowired constructor(
     private val userService: UserService, private val redisService: RedisService
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
@@ -96,7 +96,7 @@ class AuthController @Autowired internal constructor(
         }
          */
         val uid = snowFlake.nextId()
-        val password = DigestUtils.md5DigestAsHex(userPassword!!.toByteArray())
+        val password = DigestUtils.md5DigestAsHex(userPassword.toByteArray())
         userService.register(uid, userName, password, phoneNumber)
         logger.info("注册成功 用户名:{} 手机号:{}", userName, phoneNumber)
         return success()
@@ -148,6 +148,7 @@ class AuthController @Autowired internal constructor(
 
                 val data = Data()
                 if (data.permission == -1) return error(106, "该用户已被封禁")
+                logger.info("${success(data)}")
                 return success(data)
             } else {
                 return error(104, "用户名密码错误")
@@ -165,7 +166,7 @@ class AuthController @Autowired internal constructor(
             return error(101, "非法手机号或验证码或密码")
         }
         val user = userService.findByPhoneNumber(phoneNumber)
-        val password = DigestUtils.md5DigestAsHex(newPassword!!.toByteArray())
+        val password = DigestUtils.md5DigestAsHex(newPassword.toByteArray())
         if (user == null) {
             return error(105, "用户不存在")
         }/*

@@ -1,7 +1,7 @@
 package cn.hirrao.javaee.controller
 
 import cn.hirrao.javaee.entity.Result
-import cn.hirrao.javaee.entity.Result.Companion.success
+import cn.hirrao.javaee.entity.success
 import cn.hirrao.javaee.service.DrugAlertService
 import cn.hirrao.javaee.service.DrugService
 import cn.hirrao.javaee.utils.SnowFlake
@@ -16,8 +16,7 @@ import java.time.LocalTime
 @RestController
 @RequestMapping("/drug")
 class DrugController @Autowired internal constructor(
-    private val drugService: DrugService,
-    private val drugAlertService: DrugAlertService
+    private val drugService: DrugService, private val drugAlertService: DrugAlertService
 ) {
     private val snowFlakeDrug = SnowFlake(1, 4)
 
@@ -41,7 +40,7 @@ class DrugController @Autowired internal constructor(
         val curPage = map["curPage"]!!.toInt()
         val size = map["size"]!!.toInt()
         val drugName = map["drugName"]
-        if (!drugName!!.isEmpty()) {
+        if (drugName!!.isNotEmpty()) {
             println("notEmpty")
             return success(drugService.getPageDrugInfoByDrugName(uid, curPage, size, drugName))
         } else {
@@ -50,20 +49,19 @@ class DrugController @Autowired internal constructor(
         }
     }
 
-    @get:GetMapping("/getPageDrugInfoTotal")
-    val pageDrugInfoTotal: Result
-        get() {
-            val user = get()
-            val uid = user.uid
-            return success(drugService.getPageDrugInfoTotal(uid))
-        }
+    @GetMapping("/getPageDrugInfoTotal")
+    fun pageDrugInfoTotal(): Result {
+        val user = get()
+        val uid = user.uid
+        return success(drugService.getPageDrugInfoTotal(uid))
+    }
 
     @PostMapping("/getPageDrugInfoTotalByDrugName")
     fun getPageDrugInfoTotalByDrugName(@RequestBody map: Map<String?, String?>): Result {
         val user = get()
         val uid = user.uid
         val drugName = map["drugName"]
-        return if (!drugName!!.isEmpty()) {
+        return if (drugName!!.isNotEmpty()) {
             success(drugService.getPageDrugInfoTotalByDrugName(uid, drugName))
         } else {
             success(drugService.getPageDrugInfoTotal(uid))
@@ -86,7 +84,7 @@ class DrugController @Autowired internal constructor(
         val curPage = map["curPage"]!!.toInt()
         val size = map["size"]!!.toInt()
         val drugName = map["drugName"]
-        if (!drugName!!.isEmpty()) {
+        if (drugName!!.isNotEmpty()) {
             println("notEmpty")
             return success(drugService.getPageDrugAlertInfoByDrugName(uid, curPage, size, drugName))
         } else {
@@ -95,20 +93,20 @@ class DrugController @Autowired internal constructor(
         }
     }
 
-    @get:GetMapping("/getPageDrugAlertInfoTotal")
-    val pageDrugAlertInfoTotal: Result
-        get() {
-            val user = get()
-            val uid = user.uid
-            return success(drugService.getPageDrugAlertInfoTotal(uid))
-        }
+    @GetMapping("/getPageDrugAlertInfoTotal")
+    fun pageDrugAlertInfoTotal(): Result {
+        val user = get()
+        val uid = user.uid
+        return success(drugService.getPageDrugAlertInfoTotal(uid))
+    }
+
 
     @PostMapping("/getPageDrugAlertInfoTotalByDrugName")
     fun getPageDrugAlertInfoTotalByDrugName(@RequestBody map: Map<String?, String?>): Result {
         val user = get()
         val uid = user.uid
         val drugName = map["drugName"]
-        return if (!drugName!!.isEmpty()) {
+        return if (drugName!!.isNotEmpty()) {
             success(drugService.getPageDrugAlertInfoTotalByDrugName(uid, drugName))
         } else {
             success(drugService.getPageDrugAlertInfoTotal(uid))
@@ -142,7 +140,7 @@ class DrugController @Autowired internal constructor(
         logger.debug("uid{}", uid)
         drugService.insertDrug(drugId, uid, drugName, frequency, unit, dosage, isActive)
         val alertId = snowFlakeDrugAlert.nextId()
-        val alertTime = LocalTime.parse(map["alertTime"])
+        val alertTime = map["alertTime"]?.let { LocalTime.parse(it) }
         val eatTime = LocalDate.parse("2000-01-01")
         drugAlertService.insertDrugAlert(alertId, uid, drugId, alertTime, eatTime)
         return success()

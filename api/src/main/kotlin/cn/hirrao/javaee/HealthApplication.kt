@@ -6,9 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
 @MapperScan("cn.hirrao.javaee.mapper")
-open class HealthApplication {
+open class HealthApplication
 
-    fun main(args: Array<String>) {
-        SpringApplication.run(HealthApplication::class.java, *args)
-    }
+fun main(args: Array<String>) {
+    SpringApplication.run(HealthApplication::class.java, *args)
 }

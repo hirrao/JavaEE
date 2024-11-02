@@ -1,8 +1,8 @@
 package cn.hirrao.javaee.controller
 
 import cn.hirrao.javaee.entity.Result
-import cn.hirrao.javaee.entity.Result.Companion.error
-import cn.hirrao.javaee.entity.Result.Companion.success
+import cn.hirrao.javaee.entity.error
+import cn.hirrao.javaee.entity.success
 import cn.hirrao.javaee.service.HeartRateService
 import cn.hirrao.javaee.utils.SnowFlake
 import cn.hirrao.javaee.utils.StringUtil.isEmpty

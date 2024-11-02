@@ -28,11 +28,8 @@ dependencies {
     testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    compileOnly("org.projectlombok:lombok")
-
     runtimeOnly("org.xerial:sqlite-jdbc:3.46.1.3")
 
-    annotationProcessor("org.projectlombok:lombok")
     implementation(kotlin("stdlib-jdk8"))
 }
 

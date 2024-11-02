@@ -1,8 +1,8 @@
 package cn.hirrao.javaee.controller
 
 import cn.hirrao.javaee.entity.Result
-import cn.hirrao.javaee.entity.Result.Companion.error
-import cn.hirrao.javaee.entity.Result.Companion.success
+import cn.hirrao.javaee.entity.error
+import cn.hirrao.javaee.entity.success
 import cn.hirrao.javaee.service.BloodPressureService
 import cn.hirrao.javaee.utils.BloodPressureUtil.generateClassification
 import cn.hirrao.javaee.utils.BloodPressureUtil.generateRiskLevel
@@ -27,7 +27,7 @@ class BloodPressureController(private val bloodPressureService: BloodPressureSer
     fun getUid(@RequestBody map: Map<String?, String?>): Result {
         logger.debug("/record/uid接受请求{}", map)
         val user = get()
-        val date = LocalDate.parse(map["date"])
+        val date = map["date"]?.let { LocalDate.parse(it) }
         val result = bloodPressureService.getBloodPressureList(user.uid, date)
         return success(result)
     }
@@ -36,7 +36,7 @@ class BloodPressureController(private val bloodPressureService: BloodPressureSer
     fun getTable(@RequestBody map: Map<String?, String?>): Result {
         logger.debug("/record/table接受请求{}", map)
         val user = get()
-        val date = LocalDate.parse(map["date"])
+        val date = map["date"]?.let { LocalDate.parse(it) }
         val result = bloodPressureService.getBloodPressureTable(date, user.uid)
         return success(result)
     }
@@ -45,7 +45,7 @@ class BloodPressureController(private val bloodPressureService: BloodPressureSer
     fun getRiskLevel(@RequestBody map: Map<String?, String?>): Result {
         logger.debug("/record/riskLevel接受请求{}", map)
         val user = get()
-        val date = LocalDate.parse(map["date"])
+        val date = map["date"]?.let { LocalDate.parse(it) }
         val result = bloodPressureService.getRiskLevel(user.uid, date)
         return success(result)
     }

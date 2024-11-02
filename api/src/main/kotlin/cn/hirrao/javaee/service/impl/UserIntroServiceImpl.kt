@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-abstract class UserIntroServiceImpl @Autowired private constructor(private val userIntroMapper: UserIntroMapper) :
+class UserIntroServiceImpl @Autowired private constructor(private val userIntroMapper: UserIntroMapper) :
     UserIntroService {
     override fun findUserIntro(uid: Long): UserIntro? {
         return userIntroMapper.findUserIntro(uid)

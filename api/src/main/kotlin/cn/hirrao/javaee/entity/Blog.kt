@@ -2,25 +2,15 @@ package cn.hirrao.javaee.entity
 
 import com.baomidou.mybatisplus.annotation.TableField
 import com.baomidou.mybatisplus.annotation.TableId
-import lombok.AllArgsConstructor
-import lombok.Getter
-import lombok.Setter
 
-@Getter
-@Setter
-@AllArgsConstructor
-class Blog {
-    @TableId(value = "blogId")
-    private val blogId: Long? = null
+data class Blog(
+    @TableId(value = "blogId") val blogId: Long? = null,
 
-    @TableField("content")
-    private val content: String? = null
+    @TableField("content") val content: String? = null,
 
-    @TableField("createTime")
-    private val createTime: String? = null
+    @TableField("createTime") val createTime: String? = null,
 
-    @TableField("updateTime")
-    private val updateTime: String? = null
-    private val uid: Long? = null
-    private val title: String? = null
-}
+    @TableField("updateTime") val updateTime: String? = null,
+    val uid: Long? = null,
+    val title: String? = null,
+)

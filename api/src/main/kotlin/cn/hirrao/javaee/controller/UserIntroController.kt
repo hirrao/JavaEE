@@ -1,7 +1,7 @@
 package cn.hirrao.javaee.controller
 
 import cn.hirrao.javaee.entity.Result
-import cn.hirrao.javaee.entity.Result.Companion.success
+import cn.hirrao.javaee.entity.success
 import cn.hirrao.javaee.service.UserIntroService
 import cn.hirrao.javaee.utils.ThreadLocalUtil
 import org.slf4j.Logger

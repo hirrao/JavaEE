@@ -2,20 +2,19 @@ package cn.hirrao.javaee.controller
 
 import cn.hirrao.javaee.entity.Article
 import cn.hirrao.javaee.entity.Result
-import cn.hirrao.javaee.entity.Result.Companion.success
+import cn.hirrao.javaee.entity.success
 import cn.hirrao.javaee.service.ArticleService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/articles")
-class ArticleController {
-    @Autowired
-    private val articleService: ArticleService? = null
+class ArticleController @Autowired constructor(private val articleService: ArticleService) {
 
-    @get:GetMapping
-    val allArticles: List<Article?>?
-        get() = articleService!!.findAll()
+    @GetMapping
+    fun getAllArticles(): List<Article?>? {
+        return articleService.findAll()
+    }
 
     @PostMapping("/add")
     fun addArticle(@RequestBody map: Map<String?, String?>): Result {
@@ -23,7 +22,7 @@ class ArticleController {
         val description = map["description"]
         val image = map["image"]
         val content = map["content"]
-        articleService!!.addArticle(title, description, image, content)
+        articleService.addArticle(title, description, image, content)
         return success()
     }
 
@@ -32,7 +31,7 @@ class ArticleController {
     fun articlesInfo(@RequestBody map: Map<String?, String>): Result {
         val curPage = map["curPage"]!!.toInt()
         val size = map["size"]!!.toInt()
-        return success(articleService!!.articlesInfo(curPage, size))
+        return success(articleService.articlesInfo(curPage, size))
     }
 
     @PostMapping("/modifyArticleInfo")
@@ -49,14 +48,14 @@ class ArticleController {
         println("modifyArticleInfo image:$image")
         println("modifyArticleInfo content:$content")
 
-        articleService!!.modifyArticleInfo(id, title, description, image, content)
+        articleService.modifyArticleInfo(id, title, description, image, content)
         return success()
     }
 
     @PostMapping("/deleteArticle")
     fun deleteArticle(@RequestBody map: Map<String?, String>): Result {
         val id = map["id"]!!.toLong()
-        articleService!!.deleteArticle(id)
+        articleService.deleteArticle(id)
         println("delete id:$id")
         return success()
     }
@@ -73,18 +72,15 @@ class ArticleController {
         println("searchCondition:$searchCondition")
         println("conditionValue:$conditionValue")
 
-        return if (!searchCondition!!.isEmpty() && !conditionValue!!.isEmpty()) {
+        return if (searchCondition!!.isNotEmpty() && conditionValue!!.isNotEmpty()) {
             //            return Result.success();
             success(
-                articleService!!.searchArticleByCondition(
-                    curPage,
-                    size,
-                    searchCondition,
-                    conditionValue
+                articleService.searchArticleByCondition(
+                    curPage, size, searchCondition, conditionValue
                 )
             )
         } else {
-            success(articleService!!.articlesInfo(curPage, size))
+            success(articleService.articlesInfo(curPage, size))
         }
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import java.util.concurrent.TimeUnit
 
 @Service
-abstract class RedisServiceImpl @Autowired private constructor(private val redisTemplate: RedisTemplate<String, String>) :
+class RedisServiceImpl @Autowired private constructor(private val redisTemplate: RedisTemplate<String, String>) :
     RedisService {
     private val DEFAULT_TIMEOUT: Long = 20
     private val DEFAULT_TIMEUNIT = TimeUnit.MINUTES

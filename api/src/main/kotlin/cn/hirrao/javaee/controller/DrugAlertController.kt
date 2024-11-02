@@ -1,7 +1,7 @@
 package cn.hirrao.javaee.controller
 
 import cn.hirrao.javaee.entity.Result
-import cn.hirrao.javaee.entity.Result.Companion.success
+import cn.hirrao.javaee.entity.success
 import cn.hirrao.javaee.service.DrugAlertService
 import cn.hirrao.javaee.utils.SnowFlake
 import cn.hirrao.javaee.utils.ThreadLocalUtil.get
@@ -24,7 +24,7 @@ class DrugAlertController @Autowired internal constructor(private val drugAlertS
         val user = get()
         val uid = user.uid
         val drugId = map["drugId"]!!.toLong()
-        val alertTime = LocalTime.parse(map["alertTime"])
+        val alertTime = map["alertTime"]?.let { LocalTime.parse(it) }
         val eatTime = LocalDate.parse("2000-01-01")
         drugAlertService.insertDrugAlert(alertId, uid, drugId, alertTime, eatTime)
         return success()
@@ -41,7 +41,7 @@ class DrugAlertController @Autowired internal constructor(private val drugAlertS
     @PostMapping("/updateDrugAlertEatTimeById")
     fun updateDrugAlertEatTimeById(@RequestBody map: Map<String?, String>): Result {
         val alertId = map["alertId"]!!.toLong()
-        val eatTime = LocalDate.parse(map["eatTime"])
+        val eatTime = map["eatTime"]?.let { LocalDate.parse(it) }
         drugAlertService.updateDrugAlertEatTimeById(alertId, eatTime)
         return success()
     }

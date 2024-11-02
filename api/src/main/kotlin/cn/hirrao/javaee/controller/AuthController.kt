@@ -3,7 +3,6 @@ package cn.hirrao.javaee.controller
 import cn.hirrao.javaee.entity.Result
 import cn.hirrao.javaee.entity.error
 import cn.hirrao.javaee.entity.success
-import cn.hirrao.javaee.service.RedisService
 import cn.hirrao.javaee.service.UserService
 import cn.hirrao.javaee.utils.Jwt.createToken
 import cn.hirrao.javaee.utils.SnowFlake
@@ -21,32 +20,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/user/auth")
 class AuthController @Autowired constructor(
-    private val userService: UserService, private val redisService: RedisService
+    private val userService: UserService
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
     private val snowFlake = SnowFlake(1, 1)
 
     @PostMapping("/message")
-    fun message(@RequestBody map: Map<String?, String?>?): Result {/*
-        logger.debug("/message接受请求{}", map);
-        String userName = map.get("userName");
-        String phoneNumber = map.get("phoneNumber");
-        String messageCode = map.get("messageCode");
-        if (StringUtil.isEmpty(userName) || !userName.matches("^[a-zA-Z0-9_]{3,20}$")) {
-            return Result.error(101, "非法用户名或密码");
-        }
-        User user = userService.findByUsername(userName);
-        if (user != null) {
-            return Result.error(102, "用户名已被占用");
-        }
-        if (StringUtil.isEmpty(redisService.get(phoneNumber))) {
-            return Result.error(111, "请发送验证码");
-        }
-        if (!redisService.get(phoneNumber).equals(messageCode)) {
-            return Result.error(112, "验证码错误");
-        }
-        return Result.success("发送成功！");
-         */
+    fun message(@RequestBody map: Map<String?, String?>?): Result {
         return success()
     }
 
@@ -77,7 +57,6 @@ class AuthController @Autowired constructor(
         val userName = map["userName"]
         val userPassword = map["userPassword"]
         val phoneNumber = map["phoneNumber"]
-        val messageCode = map["messageCode"]
         if (isEmpty(userName) || isEmpty(userPassword) || !userName!!.matches("^[a-zA-Z0-9_]{3,20}$".toRegex()) || !userPassword!!.matches(
                 "^[a-zA-Z0-9_]{6,20}$".toRegex()
             )
@@ -87,14 +66,7 @@ class AuthController @Autowired constructor(
         val user = userService.findByUsername(userName)
         if (user != null) {
             return error(102, "用户名已被占用")
-        }/*
-        if (StringUtil.isEmpty(redisService.get(phoneNumber))) {
-            return Result.error(111, "请发送验证码");
         }
-        if (!redisService.get(phoneNumber).equals(messageCode)) {
-            return Result.error(112, "验证码错误");
-        }
-         */
         val uid = snowFlake.nextId()
         val password = DigestUtils.md5DigestAsHex(userPassword.toByteArray())
         userService.register(uid, userName, password, phoneNumber)
@@ -103,26 +75,7 @@ class AuthController @Autowired constructor(
     }
 
     @PostMapping("/messageSend")
-    fun messageSend(@RequestBody map: Map<String?, String?>?): Result {/* 发送短信验证码, 服务关闭后展示禁用
-        logger.debug("/messageSend接受请求{}", map);
-        String phoneNumber = map.get("phoneNumber");
-        if (StringUtil.isEmpty(phoneNumber) || !phoneNumber.matches("^1[3-9]\\d{9}$")) {
-            return Result.error(101, "非法手机号");
-        }
-        String code = MobileMessage.generateCode();
-        switch (MobileMessage.sendMessage(phoneNumber, code, "20")) {
-            case -1:
-                return Result.error(110, "验证码发送失败, 请稍后重试");
-            case -2:
-                return Result.error(113, "手机号状态异常, 请检查手机号是否正确与正常使用");
-            case 0:
-                redisService.set(phoneNumber, code);
-                logger.info("发送验证码成功 手机号:{}", phoneNumber);
-                return Result.success();
-            default:
-                return Result.error(110, "未知内部错误");
-        }
-         */
+    fun messageSend(@RequestBody map: Map<String?, String?>?): Result {
         return success()
     }
 
@@ -169,14 +122,7 @@ class AuthController @Autowired constructor(
         val password = DigestUtils.md5DigestAsHex(newPassword.toByteArray())
         if (user == null) {
             return error(105, "用户不存在")
-        }/*
-        if (redisService.get(phoneNumber) == null) {
-            return Result.error(111, "请发送验证码");
         }
-        if (!redisService.get(phoneNumber).equals(messageCode)) {
-            return Result.error(112, "验证码错误");
-        }
-         */
         userService.updatePassword(user.uid, password)
         logger.info("重置密码成功 用户名:{} 手机号:{}", user.userName, phoneNumber)
         return success()

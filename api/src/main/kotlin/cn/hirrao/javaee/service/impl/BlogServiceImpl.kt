@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class BlogServiceImpl @Autowired private constructor(private val blogMapper: BlogMapper) : BlogService {
+class BlogServiceImpl @Autowired constructor(private val blogMapper: BlogMapper) : BlogService {
     override fun findByBlogId(bolgId: Long?): Blog? {
         return blogMapper.findByBlogId(bolgId)
     }
@@ -24,12 +24,7 @@ class BlogServiceImpl @Autowired private constructor(private val blogMapper: Blo
     }
 
     override fun addBlog(
-        blogId: Long?,
-        content: String?,
-        createTime: String?,
-        updateTime: String?,
-        uid: Long?,
-        title: String?
+        blogId: Long?, content: String?, createTime: String?, updateTime: String?, uid: Long?, title: String?
     ) {
         blogMapper.addBlog(blogId, content, createTime, updateTime, uid, title)
     }

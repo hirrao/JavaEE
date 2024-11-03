@@ -11,12 +11,10 @@ import java.time.LocalDate
 
 @Service
 class BloodPressureServiceImpl @Autowired constructor(
-    private val BloodPressureMapper: BloodPressureMapper,
-    private val BloodPressureTableMapper: BloodPressureTableMapper
-) :
-    BloodPressureService {
+    private val bloodPressureMapper: BloodPressureMapper, private val bloodPressureTableMapper: BloodPressureTableMapper
+) : BloodPressureService {
     override fun getBloodPressureList(uid: Long?, date: LocalDate?): List<BloodPressure?>? {
-        return BloodPressureMapper.getBloodPressureList(uid, date)
+        return bloodPressureMapper.getBloodPressureList(uid, date)
     }
 
     override fun insertBloodPressure(
@@ -28,14 +26,14 @@ class BloodPressureServiceImpl @Autowired constructor(
         classification: String?,
         riskLevel: String?
     ) {
-        BloodPressureMapper.insertBloodPressure(bplId, userId, sbp, dbp, recordTime, classification, riskLevel)
+        bloodPressureMapper.insertBloodPressure(bplId, userId, sbp, dbp, recordTime, classification, riskLevel)
     }
 
     override fun getBloodPressureTable(date: LocalDate?, uid: Long?): BloodPressureTable? {
-        return BloodPressureTableMapper.getBloodPressureTable(date, uid)
+        return bloodPressureTableMapper.getBloodPressureTable(date, uid)
     }
 
     override fun getRiskLevel(uid: Long?, date: LocalDate?): List<String?>? {
-        return BloodPressureMapper.getRiskLevel(uid, date)
+        return bloodPressureMapper.getRiskLevel(uid, date)
     }
 }

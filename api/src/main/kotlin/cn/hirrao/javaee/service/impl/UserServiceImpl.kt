@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class UserServiceImpl @Autowired private constructor(private val userMapper: UserMapper) : UserService {
+class UserServiceImpl @Autowired constructor(private val userMapper: UserMapper) : UserService {
     override fun findByUsername(userName: String?): User? {
         return userMapper.findByUsername(userName)
     }
@@ -41,12 +41,7 @@ class UserServiceImpl @Autowired private constructor(private val userMapper: Use
     }
 
     override fun modifyUserInfo(
-        uid: Long,
-        userName: String?,
-        phoneNumber: String?,
-        sex: String?,
-        birthday: String?,
-        permission: Int
+        uid: Long, userName: String?, phoneNumber: String?, sex: String?, birthday: String?, permission: Int
     ) {
         userMapper.modifyUserInfo(uid, userName, phoneNumber, sex, birthday, permission)
     }
@@ -56,10 +51,7 @@ class UserServiceImpl @Autowired private constructor(private val userMapper: Use
     }
 
     override fun searchUserByCondition(
-        curPage: Int,
-        size: Int,
-        searchCondition: String?,
-        conditionValue: String?
+        curPage: Int, size: Int, searchCondition: String?, conditionValue: String?
     ): IPage<User?>? {
         val page = Page<User>(curPage.toLong(), size.toLong())
         val queryWrapper = QueryWrapper<User>()

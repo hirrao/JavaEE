@@ -1,11 +1,11 @@
 package cn.hirrao.javaee.controller
 
 import cn.hirrao.javaee.entity.Result
-import cn.hirrao.javaee.entity.error
-import cn.hirrao.javaee.entity.success
 import cn.hirrao.javaee.service.BloodPressureService
 import cn.hirrao.javaee.utils.BloodPressureUtil.generateClassification
 import cn.hirrao.javaee.utils.BloodPressureUtil.generateRiskLevel
+import cn.hirrao.javaee.utils.Result.error
+import cn.hirrao.javaee.utils.Result.success
 import cn.hirrao.javaee.utils.SnowFlake
 import cn.hirrao.javaee.utils.StringUtil.isEmpty
 import cn.hirrao.javaee.utils.ThreadLocalUtil.get

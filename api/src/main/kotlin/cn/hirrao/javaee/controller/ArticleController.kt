@@ -2,8 +2,8 @@ package cn.hirrao.javaee.controller
 
 import cn.hirrao.javaee.entity.Article
 import cn.hirrao.javaee.entity.Result
-import cn.hirrao.javaee.entity.success
 import cn.hirrao.javaee.service.ArticleService
+import cn.hirrao.javaee.utils.Result.success
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 

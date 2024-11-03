@@ -1,8 +1,8 @@
 package cn.hirrao.javaee.controller
 
 import cn.hirrao.javaee.entity.Result
-import cn.hirrao.javaee.entity.success
 import cn.hirrao.javaee.service.UserService
+import cn.hirrao.javaee.utils.Result.success
 import cn.hirrao.javaee.utils.ThreadLocalUtil.get
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -110,10 +110,7 @@ class UserController @Autowired constructor(private val userService: UserService
         return if (!searchCondition!!.isEmpty() && !conditionValue!!.isEmpty()) {
             success(
                 userService.searchUserByCondition(
-                    curPage,
-                    size,
-                    searchCondition,
-                    conditionValue
+                    curPage, size, searchCondition, conditionValue
                 )
             )
         } else {

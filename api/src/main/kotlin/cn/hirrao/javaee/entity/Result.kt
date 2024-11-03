@@ -7,18 +7,3 @@ data class Result(
     val data: Any? = null, //响应数据，比如token
 )
 
-fun success(data: Any?): Result {
-    return Result(0, "success", data)
-}
-
-
-fun success(): Result {
-    return Result(0, "success", null)
-}
-
-
-fun error(code: Int, message: String?): Result {
-    return Result(code, message, null)
-}
-
-

@@ -1,72 +1,61 @@
 package cn.hirrao.javaee.service
 
-import jakarta.annotation.Resource
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
 @Transactional
-internal open class DrugServiceTest {
-    @Resource
-    private val drugService: DrugService? = null
-
-    @Resource
-    private val userService: UserService? = null
+internal open class DrugServiceTest @Autowired constructor(
+    private val drugService: DrugService, private val userService: UserService
+) {
 
     @BeforeEach
     fun init() {
-        userService!!.register(1, "test", "test", "12345678912")
+        userService.register(1, "test", "test", "12345678912")
     }
 
     @Test
     fun insertDrug() {
-        drugService!!.insertDrug(1L, 1, "test", "test", "test", 1.0f, 1)
+        drugService.insertDrug(1L, 1, "test", "test", "test", 1.0f, 1)
     }
 
-    @get:Test
-    val pageDrugInfo: Unit
-        get() {
-            drugService!!.getPageDrugInfo(1049164671497670656L, 1, 5)
-        }
+    @Test
+    fun pageDrugInfo() {
+        drugService.getPageDrugInfo(1049164671497670656L, 1, 5)
+    }
 
-    @get:Test
-    val pageDrugInfoByDrugName: Unit
-        get() {
-            drugService!!.getPageDrugInfoByDrugName(1, 1, 1, "test")
-        }
+    @Test
+    fun pageDrugInfoByDrugName() {
+        drugService.getPageDrugInfoByDrugName(1, 1, 1, "test")
+    }
 
-    @get:Test
-    val pageDrugInfoTotal: Unit
-        get() {
-        }
+    @Test
+    fun pageDrugInfoTotal() {
+    }
 
-    @get:Test
-    val pageDrugInfoTotalByDrugName: Unit
-        get() {
-            drugService!!.getPageDrugInfoTotalByDrugName(1, "test")
-        }
+    @Test
+    fun pageDrugInfoTotalByDrugName() {
+        drugService.getPageDrugInfoTotalByDrugName(1, "test")
+    }
 
-    @get:Test
-    val pageDrugAlertInfo: Unit
-        get() {
-        }
+    @Test
+    fun pageDrugAlertInfo() {
+    }
 
-    @get:Test
-    val pageDrugAlertInfoByDrugName: Unit
-        get() {
-        }
+    @Test
+    fun pageDrugAlertInfoByDrugName() {
+    }
 
-    @get:Test
-    val pageDrugAlertInfoTotal: Unit
-        get() {
-        }
+    @Test
+    fun pageDrugAlertInfoTotal() {
+    }
 
-    @get:Test
-    val pageDrugAlertInfoTotalByDrugName: Unit
-        get() {
-        }
+    @Test
+    fun pageDrugAlertInfoTotalByDrugName() {
+    }
 
     @Test
     fun updateDrugIsActiveById() {

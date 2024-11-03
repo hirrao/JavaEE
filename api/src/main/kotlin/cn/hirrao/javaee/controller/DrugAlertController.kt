@@ -1,8 +1,8 @@
 package cn.hirrao.javaee.controller
 
 import cn.hirrao.javaee.entity.Result
-import cn.hirrao.javaee.entity.success
 import cn.hirrao.javaee.service.DrugAlertService
+import cn.hirrao.javaee.utils.Result.success
 import cn.hirrao.javaee.utils.SnowFlake
 import cn.hirrao.javaee.utils.ThreadLocalUtil.get
 import org.springframework.beans.factory.annotation.Autowired

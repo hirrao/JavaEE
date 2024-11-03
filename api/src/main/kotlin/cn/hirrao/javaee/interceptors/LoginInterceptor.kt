@@ -15,7 +15,7 @@ import org.springframework.web.servlet.HandlerInterceptor
 
 //拦截器
 @Component
-class LoginInterceptor @Autowired private constructor(private val userService: UserService) : HandlerInterceptor {
+class LoginInterceptor @Autowired constructor(private val userService: UserService) : HandlerInterceptor {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
@@ -28,9 +28,9 @@ class LoginInterceptor @Autowired private constructor(private val userService: U
         logger.debug("token={}", token)
         //先验证token
         try {
-            val Uid = parseToken(token)
-            println(Uid)
-            val user = userService.findByUid(Uid.toLong())
+            val uid = parseToken(token)
+            println(uid)
+            val user = userService.findByUid(uid.toLong())
             set(user!!)
             return true
         } catch (e: Exception) {
@@ -41,10 +41,7 @@ class LoginInterceptor @Autowired private constructor(private val userService: U
     }
 
     override fun afterCompletion(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        handler: Any,
-        @Nullable ex: java.lang.Exception?
+        request: HttpServletRequest, response: HttpServletResponse, handler: Any, @Nullable ex: java.lang.Exception?
     ) {
         //清除ThreadLocal中的用户信息
         remove()

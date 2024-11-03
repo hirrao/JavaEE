@@ -26,7 +26,7 @@ object Jwt {
     }
 
 
-    fun parseToken(token: String?): String {
+    fun parseToken(token: String): String {
         return Jwts.parser().verifyWith(CONST.key).build().parseSignedClaims(token).payload.id
     }
 }

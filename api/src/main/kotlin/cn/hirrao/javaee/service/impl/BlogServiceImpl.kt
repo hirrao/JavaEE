@@ -15,7 +15,7 @@ class BlogServiceImpl @Autowired constructor(private val blogMapper: BlogMapper)
         return blogMapper.findByBlogId(bolgId)
     }
 
-    override fun findByUid(uid: Long?): List<Blog?>? {
+    override fun findByUid(uid: Int): List<Blog?>? {
         return blogMapper.findByUid(uid)
     }
 
@@ -24,7 +24,7 @@ class BlogServiceImpl @Autowired constructor(private val blogMapper: BlogMapper)
     }
 
     override fun addBlog(
-        blogId: Long?, content: String?, createTime: String?, updateTime: String?, uid: Long?, title: String?
+        blogId: Long?, content: String?, createTime: String?, updateTime: String?, uid: Int, title: String?
     ) {
         blogMapper.addBlog(blogId, content, createTime, updateTime, uid, title)
     }
@@ -37,7 +37,7 @@ class BlogServiceImpl @Autowired constructor(private val blogMapper: BlogMapper)
         blogMapper.delete(blogId)
     }
 
-    override fun search(curPage: Int, size: Int, uid: Long?): IPage<Blog?>? {
+    override fun search(curPage: Int, size: Int, uid: Int): IPage<Blog?>? {
         val page = Page<Blog>(curPage.toLong(), size.toLong())
         val queryWrapper = QueryWrapper<Blog>()
         queryWrapper.eq("uid", uid)

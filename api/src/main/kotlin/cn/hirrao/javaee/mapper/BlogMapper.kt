@@ -10,13 +10,13 @@ interface BlogMapper : BaseMapper<Blog?> {
     fun findByBlogId(blogId: Long?): Blog?
 
     @Select("select * from blog where uid = #{uid}")
-    fun findByUid(uid: Long?): List<Blog?>?
+    fun findByUid(uid: Int): List<Blog?>?
 
     @Select("select * from blog where title = #{title}")
     fun findByTitle(title: String?): List<Blog?>?
 
     @Insert("insert into blog(blogId, content, createTime, updateTime, uid, title) values(#{blogId}, #{content}, #{createTime}, #{updateTime}, #{uid}, #{title})")
-    fun addBlog(blogId: Long?, content: String?, createTime: String?, updateTime: String?, uid: Long?, title: String?)
+    fun addBlog(blogId: Long?, content: String?, createTime: String?, updateTime: String?, uid: Int, title: String?)
 
     @Update("update blog set content=#{content}, updateTime=#{updateTime}, title=#{title} where blogId=#{blogId}")
     fun update(blogId: Long?, content: String?, updateTime: String?, title: String?)

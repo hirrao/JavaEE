@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 interface DrugService {
     fun insertDrug(
         drugId: Long,
-        uid: Long,
+        uid: Int,
         drugName: String?,
         frequency: String?,
         unit: String?,
@@ -16,23 +16,23 @@ interface DrugService {
     )
 
     //    List<DrugManageResult> getAllDrugInfo(long uid);
-    fun getPageDrugInfo(uid: Long, curPage: Int, size: Int): List<DrugManageResult?>?
+    fun getPageDrugInfo(uid: Int, curPage: Int, size: Int): List<DrugManageResult?>?
 
-    fun getPageDrugInfoByDrugName(uid: Long, curPage: Int, size: Int, drugName: String?): List<DrugManageResult?>?
+    fun getPageDrugInfoByDrugName(uid: Int, curPage: Int, size: Int, drugName: String?): List<DrugManageResult?>?
 
-    fun getPageDrugInfoTotal(uid: Long): Int
+    fun getPageDrugInfoTotal(uid: Int): Int
 
-    fun getPageDrugInfoTotalByDrugName(uid: Long, drugName: String?): Int
+    fun getPageDrugInfoTotalByDrugName(uid: Int, drugName: String?): Int
 
-    fun getPageDrugAlertInfo(uid: Long, curPage: Int, size: Int): List<DrugManageResult?>?
+    fun getPageDrugAlertInfo(uid: Int, curPage: Int, size: Int): List<DrugManageResult?>?
 
-    fun getPageDrugAlertInfoByDrugName(uid: Long, curPage: Int, size: Int, drugName: String?): List<DrugManageResult?>?
+    fun getPageDrugAlertInfoByDrugName(uid: Int, curPage: Int, size: Int, drugName: String?): List<DrugManageResult?>?
 
-    fun getPageDrugAlertInfoTotal(uid: Long): Int
+    fun getPageDrugAlertInfoTotal(uid: Int): Int
 
-    fun getPageDrugAlertInfoTotalByDrugName(uid: Long, drugName: String?): Int
+    fun getPageDrugAlertInfoTotalByDrugName(uid: Int, drugName: String?): Int
 
-    fun updateDrugIsActiveById(drugId: Long, uid: Long, isActive: Int)
+    fun updateDrugIsActiveById(drugId: Long, uid: Int, isActive: Int)
 
-    fun deleteDrugById(uid: Long, drugId: Long)
+    fun deleteDrugById(uid: Int, drugId: Long)
 }

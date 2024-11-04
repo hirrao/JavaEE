@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 class UserIntroServiceImpl @Autowired private constructor(private val userIntroMapper: UserIntroMapper) :
     UserIntroService {
-    override fun findUserIntro(uid: Long): UserIntro? {
+    override fun findUserIntro(uid: Int): UserIntro? {
         return userIntroMapper.findUserIntro(uid)
     }
 
@@ -17,7 +17,7 @@ class UserIntroServiceImpl @Autowired private constructor(private val userIntroM
         userIntroMapper.updateUserIntro(uid, intro)
     }
 
-    override fun setUserIntro(uid: Long, intro: String?) {
+    override fun setUserIntro(uid: Int, intro: String?) {
         userIntroMapper.setUserIntro(uid, intro)
     }
 }

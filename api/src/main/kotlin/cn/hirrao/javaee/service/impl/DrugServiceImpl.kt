@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 class DrugServiceImpl @Autowired constructor(private val drugMapper: DrugMapper) : DrugService {
     override fun insertDrug(
         drugId: Long,
-        uid: Long,
+        uid: Int,
         drugName: String?,
         frequency: String?,
         unit: String?,
@@ -24,12 +24,12 @@ class DrugServiceImpl @Autowired constructor(private val drugMapper: DrugMapper)
     //    public List<DrugManageResult> getAllDrugInfo(long uid){
     //        return drugMapper.getAllDrugInfo(uid);
     //    }
-    override fun getPageDrugInfo(uid: Long, curPage: Int, size: Int): List<DrugManageResult?>? {
+    override fun getPageDrugInfo(uid: Int, curPage: Int, size: Int): List<DrugManageResult?>? {
         return drugMapper.getPageDrugInfo(uid, (curPage - 1) * size, size)
     }
 
     override fun getPageDrugInfoByDrugName(
-        uid: Long,
+        uid: Int,
         curPage: Int,
         size: Int,
         drugName: String?
@@ -37,20 +37,20 @@ class DrugServiceImpl @Autowired constructor(private val drugMapper: DrugMapper)
         return drugMapper.getPageDrugInfoByDrugName(uid, (curPage - 1) * size, size, drugName)
     }
 
-    override fun getPageDrugInfoTotal(uid: Long): Int {
+    override fun getPageDrugInfoTotal(uid: Int): Int {
         return drugMapper.getPageDrugInfoTotal(uid)
     }
 
-    override fun getPageDrugInfoTotalByDrugName(uid: Long, drugName: String?): Int {
+    override fun getPageDrugInfoTotalByDrugName(uid: Int, drugName: String?): Int {
         return drugMapper.getPageDrugInfoTotalByDrugName(uid, drugName)
     }
 
-    override fun getPageDrugAlertInfo(uid: Long, curPage: Int, size: Int): List<DrugManageResult?>? {
+    override fun getPageDrugAlertInfo(uid: Int, curPage: Int, size: Int): List<DrugManageResult?>? {
         return drugMapper.getPageDrugAlertInfo(uid, (curPage - 1) * size, size)
     }
 
     override fun getPageDrugAlertInfoByDrugName(
-        uid: Long,
+        uid: Int,
         curPage: Int,
         size: Int,
         drugName: String?
@@ -58,19 +58,19 @@ class DrugServiceImpl @Autowired constructor(private val drugMapper: DrugMapper)
         return drugMapper.getPageDrugAlertInfoByDrugName(uid, (curPage - 1) * size, size, drugName)
     }
 
-    override fun getPageDrugAlertInfoTotal(uid: Long): Int {
+    override fun getPageDrugAlertInfoTotal(uid: Int): Int {
         return drugMapper.getPageDrugAlertInfoTotal(uid)
     }
 
-    override fun getPageDrugAlertInfoTotalByDrugName(uid: Long, drugName: String?): Int {
+    override fun getPageDrugAlertInfoTotalByDrugName(uid: Int, drugName: String?): Int {
         return drugMapper.getPageDrugAlertInfoTotalByDrugName(uid, drugName)
     }
 
-    override fun updateDrugIsActiveById(drugId: Long, uid: Long, isActive: Int) {
+    override fun updateDrugIsActiveById(drugId: Long, uid: Int, isActive: Int) {
         drugMapper.updateDrugIsActiveById(drugId, uid, isActive)
     }
 
-    override fun deleteDrugById(uid: Long, drugId: Long) {
+    override fun deleteDrugById(uid: Int, drugId: Long) {
         drugMapper.deleteDrugById(uid, drugId)
     }
 }

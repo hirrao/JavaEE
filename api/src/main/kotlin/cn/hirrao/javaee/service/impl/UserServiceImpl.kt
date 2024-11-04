@@ -15,7 +15,7 @@ class UserServiceImpl @Autowired constructor(private val userMapper: UserMapper)
         return userMapper.findByUsername(userName)
     }
 
-    override fun findByUid(uid: Long): User? {
+    override fun findByUid(uid: Int): User? {
         return userMapper.findByUid(uid)
     }
 
@@ -23,15 +23,15 @@ class UserServiceImpl @Autowired constructor(private val userMapper: UserMapper)
         return userMapper.findByPhoneNumber(phoneNumber)
     }
 
-    override fun register(uid: Long, userName: String?, userPassword: String?, phoneNumber: String?) {
+    override fun register(uid: Int, userName: String?, userPassword: String?, phoneNumber: String?) {
         userMapper.addUser(uid, userName, userPassword, phoneNumber)
     }
 
-    override fun update(uid: Long, phoneNumber: String?, sex: String?, birthday: String?) {
+    override fun update(uid: Int, phoneNumber: String?, sex: String?, birthday: String?) {
         userMapper.update(uid, phoneNumber, sex, birthday)
     }
 
-    override fun updatePassword(uid: Long, userPassword: String?) {
+    override fun updatePassword(uid: Int, userPassword: String?) {
         userMapper.updatePassword(uid, userPassword)
     }
 
@@ -59,15 +59,15 @@ class UserServiceImpl @Autowired constructor(private val userMapper: UserMapper)
         return userMapper.selectPage(page, queryWrapper)
     }
 
-    override fun updateUserName(uid: Long, userName: String?) {
+    override fun updateUserName(uid: Int, userName: String?) {
         userMapper.updateUserName(uid, userName)
     }
 
-    override fun updateBirthday(uid: Long, birthday: String?) {
+    override fun updateBirthday(uid: Int, birthday: String?) {
         userMapper.updateBirthday(uid, birthday)
     }
 
-    override fun updateSex(uid: Long, sex: String?) {
+    override fun updateSex(uid: Int, sex: String?) {
         userMapper.updateSex(uid, sex)
     }
 }

@@ -11,19 +11,19 @@ interface UserMapper : BaseMapper<User?> {
     fun findByUsername(userName: String?): User?
 
     @Select("select * from user where uid = #{uid}")
-    fun findByUid(uid: Long): User?
+    fun findByUid(uid: Int): User?
 
     @Select("select * from user where phoneNumber = #{phoneNumber}")
     fun findByPhoneNumber(phoneNumber: String?): User?
 
     @Insert("insert into user(uid,userName, userPassword,phoneNumber) values(#{uid},#{userName}, #{userPassword},#{phoneNumber})")
-    fun addUser(uid: Long, userName: String?, userPassword: String?, phoneNumber: String?)
+    fun addUser(uid: Int, userName: String?, userPassword: String?, phoneNumber: String?)
 
     @Update("update user set phoneNumber=#{phoneNumber},sex=#{sex},birthday=#{birthday} where uid=#{uid}")
-    fun update(uid: Long, phoneNumber: String?, sex: String?, birthday: String?)
+    fun update(uid: Int, phoneNumber: String?, sex: String?, birthday: String?)
 
     @Update("update user set userPassword=#{userPassword} where uid = #{uid}")
-    fun updatePassword(uid: Long, userPassword: String?)
+    fun updatePassword(uid: Int, userPassword: String?)
 
     @Update("update user set uid=#{uid},userName=#{userName},phoneNumber=#{phoneNumber},sex=#{sex},birthday=#{birthday},permission=#{permission} where uid=#{uid}")
     fun modifyUserInfo(
@@ -39,11 +39,11 @@ interface UserMapper : BaseMapper<User?> {
     fun deleteUser(uid: Long)
 
     @Update("update user set userName=#{userName} where uid=#{uid}")
-    fun updateUserName(uid: Long, userName: String?)
+    fun updateUserName(uid: Int, userName: String?)
 
     @Update("update user set sex=#{sex} where uid=#{uid}")
-    fun updateSex(uid: Long, sex: String?)
+    fun updateSex(uid: Int, sex: String?)
 
     @Update("update user set birthday=#{birthday} where uid=#{uid}")
-    fun updateBirthday(uid: Long, birthday: String?)
+    fun updateBirthday(uid: Int, birthday: String?)
 }

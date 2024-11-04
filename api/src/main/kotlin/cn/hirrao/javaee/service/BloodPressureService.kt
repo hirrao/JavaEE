@@ -7,11 +7,11 @@ import java.time.LocalDate
 
 @Service
 interface BloodPressureService {
-    fun getBloodPressureList(uid: Long?, date: LocalDate?): List<BloodPressure?>?
+    fun getBloodPressureList(uid: Int, date: LocalDate?): List<BloodPressure?>?
 
     fun insertBloodPressure(
         bplId: Long,
-        userId: Long,
+        userId: Int,
         sbp: Float,
         dbp: Float,
         recordTime: String?,
@@ -19,7 +19,7 @@ interface BloodPressureService {
         riskLevel: String?
     )
 
-    fun getBloodPressureTable(date: LocalDate?, uid: Long?): BloodPressureTable?
+    fun getBloodPressureTable(date: LocalDate?, uid: Int): BloodPressureTable?
 
-    fun getRiskLevel(uid: Long?, date: LocalDate?): List<String?>?
+    fun getRiskLevel(uid: Int, date: LocalDate?): List<String?>?
 }

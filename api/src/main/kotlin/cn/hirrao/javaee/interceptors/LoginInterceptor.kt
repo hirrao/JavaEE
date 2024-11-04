@@ -30,7 +30,7 @@ class LoginInterceptor @Autowired constructor(private val userService: UserServi
         try {
             val uid = parseToken(token)
             println(uid)
-            val user = userService.findByUid(uid.toLong())
+            val user = userService.findByUid(uid.toInt())
             set(user!!)
             return true
         } catch (e: Exception) {

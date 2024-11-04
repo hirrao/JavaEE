@@ -70,7 +70,7 @@ class AuthController @Autowired constructor(
         var uid: Int
         do {
             uid = idGen.gen()
-        } while (userService.findByUid(uid) == null)
+        } while (userService.findByUid(uid) != null)
         val password = DigestUtils.md5DigestAsHex(userPassword.toByteArray())
         userService.register(uid, userName, password, phoneNumber)
         logger.info("注册成功 用户名:{} 手机号:{}", userName, phoneNumber)

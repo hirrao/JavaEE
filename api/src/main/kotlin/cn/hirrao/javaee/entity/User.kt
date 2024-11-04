@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId
 
 //JsonIgnore注解是jackson包中的注解，用于返回json数据时，忽略该字段
 data class User(
-    @TableId(value = "uid") var uid: Long,
+    @TableId(value = "uid") var uid: Int,
 
     @TableField("userName") var userName: String? = null,
 

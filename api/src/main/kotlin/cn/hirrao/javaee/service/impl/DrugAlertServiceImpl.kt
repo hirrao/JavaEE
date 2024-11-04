@@ -9,7 +9,7 @@ import java.time.LocalTime
 
 @Service
 class DrugAlertServiceImpl @Autowired constructor(private val drugAlertMapper: DrugAlertMapper) : DrugAlertService {
-    override fun insertDrugAlert(alertId: Long, uid: Long, drugId: Long, alertTime: LocalTime?, eatTime: LocalDate?) {
+    override fun insertDrugAlert(alertId: Long, uid: Int, drugId: Long, alertTime: LocalTime?, eatTime: LocalDate?) {
         drugAlertMapper.insertDrugAlert(alertId, uid, drugId, alertTime, eatTime)
     }
 
@@ -21,7 +21,7 @@ class DrugAlertServiceImpl @Autowired constructor(private val drugAlertMapper: D
         drugAlertMapper.updateDrugAlertEatTimeById(alertId, eatTime)
     }
 
-    override fun deleteDrugAlertById(alertId: Long, uid: Long, drugId: Long) {
+    override fun deleteDrugAlertById(alertId: Long, uid: Int, drugId: Long) {
         drugAlertMapper.deleteDrugAlertById(alertId, uid, drugId)
     }
 }

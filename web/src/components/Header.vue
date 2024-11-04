@@ -6,12 +6,12 @@
 
     <el-menu
       :default-active="currentRoute"
+      :ellipsis="false"
       class="el-menu-demo"
       mode="horizontal"
-      :ellipsis="false"
-      @select="handleSelect"
-      unique-opened
       router
+      unique-opened
+      @select="handleSelect"
     >
       <el-menu-item index="/">首页</el-menu-item>
       <template v-if="isAdmin()">
@@ -35,9 +35,9 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+<script lang="ts" setup>
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import instance from '@/utils/axios'
 
 const router = useRouter()

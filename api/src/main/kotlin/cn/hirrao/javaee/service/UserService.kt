@@ -9,15 +9,15 @@ import org.springframework.stereotype.Service
 interface UserService {
     fun findByUsername(userName: String?): User?
 
-    fun findByUid(uid: Long): User?
+    fun findByUid(uid: Int): User?
 
     fun findByPhoneNumber(phoneNumber: String?): User?
 
-    fun register(uid: Long, userName: String?, userPassword: String?, phoneNumber: String?)
+    fun register(uid: Int, userName: String?, userPassword: String?, phoneNumber: String?)
 
-    fun update(uid: Long, phoneNumber: String?, sex: String?, birthday: String?)
+    fun update(uid: Int, phoneNumber: String?, sex: String?, birthday: String?)
 
-    fun updatePassword(uid: Long, userPassword: String?)
+    fun updatePassword(uid: Int, userPassword: String?)
 
     fun accountsInfo(curPage: Int, size: Int): IPage<User?>?
 
@@ -30,9 +30,9 @@ interface UserService {
         permission: Int
     )
 
-    fun updateUserName(uid: Long, userName: String?)
-    fun updateSex(uid: Long, sex: String?)
-    fun updateBirthday(uid: Long, birthday: String?)
+    fun updateUserName(uid: Int, userName: String?)
+    fun updateSex(uid: Int, sex: String?)
+    fun updateBirthday(uid: Int, birthday: String?)
 
     fun deleteUser(uid: Long)
 

@@ -2,13 +2,13 @@
   <div class="login-form">
     <el-form ref="form" label-width="80px" @submit.prevent="handleSubmit">
       <el-form-item label="用户名" prop="username">
-        <el-input v-model="username" type="text" placeholder="请输入用户名" required></el-input>
+        <el-input v-model="username" placeholder="请输入用户名" required type="text"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="password" type="password" placeholder="密码" required></el-input>
+        <el-input v-model="password" placeholder="密码" required type="password"></el-input>
       </el-form-item>
       <el-form-item align="center">
-        <el-button type="primary" size="mini" @click="handleSubmit">登录</el-button>
+        <el-button size="mini" type="primary" @click="handleSubmit">登录</el-button>
       </el-form-item>
 
       <div class="tips" style="float: left">
@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import router from '@/router'
 import { ref } from 'vue'
 import instance from '@/utils/axios'

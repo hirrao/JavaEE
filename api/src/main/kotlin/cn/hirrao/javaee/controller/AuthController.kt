@@ -2,10 +2,10 @@ package cn.hirrao.javaee.controller
 
 import cn.hirrao.javaee.entity.Result
 import cn.hirrao.javaee.service.UserService
+import cn.hirrao.javaee.utils.IdGen
 import cn.hirrao.javaee.utils.Jwt.createToken
 import cn.hirrao.javaee.utils.Result.error
 import cn.hirrao.javaee.utils.Result.success
-import cn.hirrao.javaee.utils.SnowFlake
 import cn.hirrao.javaee.utils.StringUtil.isEmpty
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -23,7 +23,7 @@ class AuthController @Autowired constructor(
     private val userService: UserService
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
-    private val snowFlake = SnowFlake(1, 1)
+    private val idGen = IdGen(8)
 
     @PostMapping("/message")
     fun message(@RequestBody map: Map<String?, String?>?): Result {
@@ -67,7 +67,10 @@ class AuthController @Autowired constructor(
         if (user != null) {
             return error(102, "用户名已被占用")
         }
-        val uid = snowFlake.nextId()
+        var uid: Int
+        do {
+            uid = idGen.gen()
+        } while (userService.findByUid(uid) != null)
         val password = DigestUtils.md5DigestAsHex(userPassword.toByteArray())
         userService.register(uid, userName, password, phoneNumber)
         logger.info("注册成功 用户名:{} 手机号:{}", userName, phoneNumber)

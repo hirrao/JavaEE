@@ -8,17 +8,17 @@
 
     <section class="services">
       <div class="service">
-        <img src="/home/b.webp" alt="记录血压" />
+        <img alt="记录血压" src="/home/b.webp" />
         <h3>全科医生服务</h3>
         <p>我们的全科医生为您提供全面的健康咨询和治疗服务，关注您的整体健康。</p>
       </div>
       <div class="service">
-        <img src="/home/a.webp" alt="专科诊疗" />
+        <img alt="专科诊疗" src="/home/a.webp" />
         <h3>专科诊疗</h3>
         <p>我们的专科医生团队为您提供精确的诊断和贴心的治疗，确保最佳的服务质量。</p>
       </div>
       <div class="service">
-        <img src="/home/c.webp" alt="健康体检" />
+        <img alt="健康体检" src="/home/c.webp" />
         <h3>健康体检</h3>
         <p>定期健康体检让您时刻了解自己的健康状况，预防潜在疾病，保证身体健康。</p>
       </div>
@@ -26,7 +26,7 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script lang="ts" setup></script>
 
 <style>
 body {

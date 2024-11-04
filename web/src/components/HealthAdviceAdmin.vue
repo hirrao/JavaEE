@@ -1,51 +1,51 @@
 <template>
   <div>
-    <el-card class="card" body-style="justify-content: center;">
+    <el-card body-style="justify-content: center;" class="card">
       <h2 class="tital">文章管理</h2>
 
       <div class="searchConditionDiv">
         <p style="margin-top: auto; margin-bottom: auto">查询条件：</p>
         <el-select
-          class="selectCon"
           v-model="searchCondition"
+          class="selectCon"
+          clearable
           placeholder="查询条件"
           size="large"
           style="width: 10%; margin-top: auto; margin-bottom: auto"
-          clearable
         >
-          <el-option value="id" label="ID" />
-          <el-option value="title" label="标题" />
-          <el-option value="description" label="描述" />
+          <el-option label="ID" value="id" />
+          <el-option label="标题" value="title" />
+          <el-option label="描述" value="description" />
         </el-select>
         <el-input
-          class="conditionInput"
           v-model="conditionValue"
+          class="conditionInput"
+          clearable
           placeholder=""
           size="small"
           style="margin-top: auto; margin-bottom: auto"
-          clearable
         ></el-input>
         <el-button
-          type="primary"
           style="height: 40px; margin-right: 5px; margin-top: auto; margin-bottom: auto"
-          @click="searchByCondition"
-          >搜索</el-button
-        >
-        <el-button
-          type="danger"
-          style="height: 40px; margin-top: auto; margin-bottom: auto"
-          @click="clearSearchCondition"
-          >清空</el-button
-        >
-        <el-button
           type="primary"
+          @click="searchByCondition"
+          >搜索
+        </el-button>
+        <el-button
+          style="height: 40px; margin-top: auto; margin-bottom: auto"
+          type="danger"
+          @click="clearSearchCondition"
+          >清空
+        </el-button>
+        <el-button
           style="height: 40px; margin-left: 50px; margin-top: auto; margin-bottom: auto"
+          type="primary"
           @click="addArticlesDialog"
-          >添加文章</el-button
-        >
+          >添加文章
+        </el-button>
       </div>
 
-      <el-dialog title="添加文章" v-model="addArticlesDialogVisible" width="50%">
+      <el-dialog v-model="addArticlesDialogVisible" title="添加文章" width="50%">
         <el-form
           ref="form"
           :model="addArticle"
@@ -65,17 +65,17 @@
             <el-input v-model="addArticle.content" placeholder="请输入内容"></el-input>
           </el-form-item>
           <el-form-item align="center">
-            <el-button type="primary" size="small" @click="saveAddArticle">添加</el-button>
-            <el-button type="info" size="small" @click="closeAddDialog">取消</el-button>
+            <el-button size="small" type="primary" @click="saveAddArticle">添加</el-button>
+            <el-button size="small" type="info" @click="closeAddDialog">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
 
-      <el-table class="table" :data="articles">
-        <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="title" label="标题" width="180" />
-        <el-table-column prop="description" label="描述" width="300" />
-        <el-table-column prop="image" label="图片" width="180">
+      <el-table :data="articles" class="table">
+        <el-table-column label="ID" prop="id" width="80" />
+        <el-table-column label="标题" prop="title" width="180" />
+        <el-table-column label="描述" prop="description" width="300" />
+        <el-table-column label="图片" prop="image" width="180">
           <template v-slot="scoped">
             <img
               :src="scoped.row.image"
@@ -84,41 +84,41 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="content" label="内容" />
-        <el-table-column header-align="center" align="center" label="操作">
+        <el-table-column label="内容" prop="content" />
+        <el-table-column align="center" header-align="center" label="操作">
           <template v-slot="scoped">
             <el-button
               class="tableButton"
-              type="primary"
               icon="el-icon-edit"
+              type="primary"
               @click="updateArticle(scoped.row)"
-              >更新</el-button
-            >
+              >更新
+            </el-button>
             <el-button
               class="tableButton"
-              type="danger"
               icon="el-icon-delete"
+              type="danger"
               @click="deleteArticle(scoped.row.id)"
-              >删除</el-button
-            >
+              >删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
 
       <el-pagination
-        class="paging"
-        :page-size="pageSize"
         :current-page="currentPage"
+        :page-size="pageSize"
         :page-sizes="[5, 10, 15, 20]"
+        :total="total"
+        class="paging"
         layout="sizes,prev,pager,next,jumper,->,total"
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
-        :total="total"
       >
       </el-pagination>
     </el-card>
 
-    <el-dialog title="修改文章信息" v-model="dialogVisible" width="50%">
+    <el-dialog v-model="dialogVisible" title="修改文章信息" width="50%">
       <el-form
         ref="form"
         :model="modifyArticle"
@@ -126,7 +126,7 @@
         style="margin-left: auto; margin-right: auto"
       >
         <el-form-item class="dialogInput" label="ID" prop="id">
-          <el-input v-model="modifyArticle.id" placeholder="请输入ID" disabled></el-input>
+          <el-input v-model="modifyArticle.id" disabled placeholder="请输入ID"></el-input>
         </el-form-item>
         <el-form-item class="dialogInput" label="标题" prop="title">
           <el-input v-model="modifyArticle.title" placeholder="请输入标题"></el-input>
@@ -141,15 +141,15 @@
           <el-input v-model="modifyArticle.content" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item align="center">
-          <el-button type="primary" size="small" @click="saveArticle">更改</el-button>
-          <el-button type="info" size="small" @click="closeDialog">取消</el-button>
+          <el-button size="small" type="primary" @click="saveArticle">更改</el-button>
+          <el-button size="small" type="info" @click="closeDialog">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ElMessage } from 'element-plus'
 import instance from '@/utils/axios'
 import { onMounted, ref } from 'vue'
@@ -333,44 +333,53 @@ function closeAddDialog() {
 .tital {
   text-align: center;
 }
+
 .card {
   margin-left: auto;
   margin-right: auto;
   width: 90%;
   min-height: 80%;
 }
+
 .table {
   margin-left: auto;
   margin-right: auto;
   width: 100%;
 }
+
 .tableButton {
   width: 30%;
   height: 30%;
 }
+
 .paging {
   margin-left: auto;
   margin-right: auto;
   width: 100%;
 }
+
 .searchConditionDiv {
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
 }
+
 .selectCon {
   width: 10%;
 }
+
 .conditionInput {
   width: 20%;
   margin-left: 10px;
 }
+
 .el-input.el-input--small.conditionInput {
   width: 20%;
   height: 40px;
   margin-left: 10px;
   margin-right: 10px;
 }
+
 .dialogInput {
   width: 70%;
 }

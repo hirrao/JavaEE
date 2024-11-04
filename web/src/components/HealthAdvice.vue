@@ -107,8 +107,9 @@ function viewArticle(article: Article) {
 
 .article-item {
   cursor: pointer;
-  transition: transform 0.3s ease,
-  box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   margin-bottom: 20px;
   border-radius: 12px;
   background-color: #ffffff;

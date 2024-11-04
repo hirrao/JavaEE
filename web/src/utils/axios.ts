@@ -10,7 +10,7 @@ const instance = axios.create({
   timeout: 10000, // 请求超时的时间限制
   headers: { 'Content-Type': 'application/json' },
   transformResponse: [
-    function(data) {
+    function (data) {
       try {
         // 转换
         return JSONbigToString.parse(data)

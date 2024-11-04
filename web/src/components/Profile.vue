@@ -79,25 +79,22 @@
                     icon="el-icon-edit"
                     type="primary"
                     @click="viewBlog(scoped.row)"
-                  >查看
-                  </el-button
-                  >
+                    >查看
+                  </el-button>
                   <el-button
                     class="tableButton"
                     icon="el-icon-edit"
                     type="primary"
                     @click="updateBlog(scoped.row)"
-                  >更改
-                  </el-button
-                  >
+                    >更改
+                  </el-button>
                   <el-button
                     class="tableButton"
                     icon="el-icon-delete"
                     type="danger"
                     @click="(confirm = true), setBlog(scoped.row)"
-                  >删除
-                  </el-button
-                  >
+                    >删除
+                  </el-button>
                 </template>
               </el-table-column>
             </el-table>

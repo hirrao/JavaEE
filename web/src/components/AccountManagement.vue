@@ -31,16 +31,14 @@
           style="height: 40px; margin-right: 5px; margin-top: auto; margin-bottom: auto"
           type="primary"
           @click="searchByCondition"
-        >搜索
-        </el-button
-        >
+          >搜索
+        </el-button>
         <el-button
           style="height: 40px; margin-top: auto; margin-bottom: auto"
           type="danger"
           @click="claerSearchCondition"
-        >清空
-        </el-button
-        >
+          >清空
+        </el-button>
       </div>
 
       <el-table :data="Account" class="table">
@@ -57,17 +55,15 @@
               icon="el-icon-edit"
               type="primary"
               @click="updateAccount(scoped.row)"
-            >更新
-            </el-button
-            >
+              >更新
+            </el-button>
             <el-button
               class="tableButton"
               icon="el-icon-delete"
               type="danger"
               @click="deleteAccount(scoped.row.uid)"
-            >删除
-            </el-button
-            >
+              >删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>

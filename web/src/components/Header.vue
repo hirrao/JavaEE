@@ -78,13 +78,13 @@ function isAdmin() {
   console.log('permission' + localStorage.getItem('permission'))
   console.log('token' + localStorage.getItem('token'))
   if (localStorage.getItem('permission') == null) {
-    console.log('localStorage.getItem(\'permission\')==null')
+    console.log("localStorage.getItem('permission')==null")
     return false
   }
   let temp = localStorage.getItem('permission')
   console.log(temp)
   if (temp === '1') {
-    console.log('temp===\'1\'')
+    console.log("temp==='1'")
     return true
   }
   return false

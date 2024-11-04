@@ -29,23 +29,20 @@
           style="height: 40px; margin-right: 5px; margin-top: auto; margin-bottom: auto"
           type="primary"
           @click="searchByCondition"
-        >搜索
-        </el-button
-        >
+          >搜索
+        </el-button>
         <el-button
           style="height: 40px; margin-top: auto; margin-bottom: auto"
           type="danger"
           @click="clearSearchCondition"
-        >清空
-        </el-button
-        >
+          >清空
+        </el-button>
         <el-button
           style="height: 40px; margin-left: 50px; margin-top: auto; margin-bottom: auto"
           type="primary"
           @click="addArticlesDialog"
-        >添加文章
-        </el-button
-        >
+          >添加文章
+        </el-button>
       </div>
 
       <el-dialog v-model="addArticlesDialogVisible" title="添加文章" width="50%">
@@ -95,17 +92,15 @@
               icon="el-icon-edit"
               type="primary"
               @click="updateArticle(scoped.row)"
-            >更新
-            </el-button
-            >
+              >更新
+            </el-button>
             <el-button
               class="tableButton"
               icon="el-icon-delete"
               type="danger"
               @click="deleteArticle(scoped.row.id)"
-            >删除
-            </el-button
-            >
+              >删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>

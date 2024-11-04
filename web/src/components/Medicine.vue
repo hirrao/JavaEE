@@ -16,23 +16,20 @@
           style="height: 40px; margin-right: 5px; margin-top: auto; margin-bottom: auto"
           type="primary"
           @click="searchByCondition"
-        >搜索
-        </el-button
-        >
+          >搜索
+        </el-button>
         <el-button
           style="height: 40px; margin-top: auto; margin-bottom: auto"
           type="danger"
           @click="clearSearchCondition"
-        >清空
-        </el-button
-        >
+          >清空
+        </el-button>
         <el-button
           style="height: 40px; margin-left: auto; margin-top: auto; margin-bottom: auto"
           type="primary"
           @click="showDrugManage"
-        >用药管理
-        </el-button
-        >
+          >用药管理
+        </el-button>
       </div>
 
       <el-table :data="drugs" :row-class-name="tableRowClassName" class="table" row-key="drugId">
@@ -89,25 +86,22 @@
           style="height: 40px; margin-right: 5px"
           type="primary"
           @click="searchByConditionAlert"
-        >搜索
-        </el-button
-        >
+          >搜索
+        </el-button>
         <el-button
           class="drugAlertBtn"
           style="height: 40px"
           type="danger"
           @click="clearSearchConditionAlert"
-        >清空
-        </el-button
-        >
+          >清空
+        </el-button>
         <el-button
           class="drugAlertBtn"
           style="height: 40px; margin-left: auto"
           type="primary"
           @click="addDrugAlertsDialog"
-        >添加用药提醒
-        </el-button
-        >
+          >添加用药提醒
+        </el-button>
       </div>
 
       <el-table :data="drugAlerts" class="table">
@@ -119,9 +113,8 @@
               <p style="margin-left: 20px">频率: {{ props.row.frequency }}</p>
               <p style="margin-left: 20px">剂量: {{ props.row.dosage }} {{ props.row.unit }}</p>
               <el-button style="margin-left: 20px" type="danger" @click="deleteDrugAlert(props.row)"
-              >删除
-              </el-button
-              >
+                >删除
+              </el-button>
             </div>
           </template>
         </el-table-column>

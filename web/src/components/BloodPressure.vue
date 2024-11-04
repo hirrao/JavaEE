@@ -8,9 +8,8 @@
         style="width: 10%"
         type="primary"
         @click="DialogVisble"
-      >上传新的血压数据
-      </el-button
-      >
+        >上传新的血压数据
+      </el-button>
       <el-dialog v-model="addDialogVisble" title="添加血压记录" width="80%">
         <el-form ref="form" :model="addBloodPressure" label-width="80px">
           <el-form-item label="高压（收缩压）" prop="SBP">
@@ -52,32 +51,32 @@
     <div class="blood-pressure-log-detail-table">
       <table>
         <thead>
-        <tr>
-          <th>指标</th>
-          <th>最高</th>
-          <th>最低</th>
-          <th>平均</th>
-        </tr>
+          <tr>
+            <th>指标</th>
+            <th>最高</th>
+            <th>最低</th>
+            <th>平均</th>
+          </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>收缩压</td>
-          <td>{{ maxSBP }}</td>
-          <td>{{ minSBP }}</td>
-          <td>{{ avgSBP }}</td>
-        </tr>
-        <tr>
-          <td>舒张压</td>
-          <td>{{ maxDBP }}</td>
-          <td>{{ minDBP }}</td>
-          <td>{{ avgDBP }}</td>
-        </tr>
-        <tr>
-          <td>脉压差</td>
-          <td>{{ maxPP }}</td>
-          <td>{{ minPP }}</td>
-          <td>{{ avgPP }}</td>
-        </tr>
+          <tr>
+            <td>收缩压</td>
+            <td>{{ maxSBP }}</td>
+            <td>{{ minSBP }}</td>
+            <td>{{ avgSBP }}</td>
+          </tr>
+          <tr>
+            <td>舒张压</td>
+            <td>{{ maxDBP }}</td>
+            <td>{{ minDBP }}</td>
+            <td>{{ avgDBP }}</td>
+          </tr>
+          <tr>
+            <td>脉压差</td>
+            <td>{{ maxPP }}</td>
+            <td>{{ minPP }}</td>
+            <td>{{ avgPP }}</td>
+          </tr>
         </tbody>
       </table>
     </div>

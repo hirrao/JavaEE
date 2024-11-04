@@ -16,7 +16,7 @@
         </p>
       </div>
 
-      <el-dialog title="" v-model="confirm" width="30%" style="">
+      <el-dialog v-model="confirm" style="" title="" width="30%">
         <div style="text-align: center">
           <h1>确认删除吗</h1>
         </div>
@@ -26,7 +26,7 @@
         </div>
       </el-dialog>
 
-      <el-dialog title="修改个人资料" v-model="edit" width="50%">
+      <el-dialog v-model="edit" title="修改个人资料" width="50%">
         <el-form
           ref="form"
           :model="edit"
@@ -41,22 +41,22 @@
           </el-form-item>
           <el-form-item label="性别" prop="sex">
             <el-radio-group v-model="sex">
-              <el-radio value="男" size="large" label="男">男</el-radio>
-              <el-radio value="女" size="large" label="女">女</el-radio>
+              <el-radio label="男" size="large" value="男">男</el-radio>
+              <el-radio label="女" size="large" value="女">女</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="生日" prop="birthday">
             <el-date-picker
               v-model="birthday"
               default-value="2022-01-30"
+              placeholder="请选择生日"
               type="datetime"
               value-format="YYYY-MM-DD"
-              placeholder="请选择生日"
             ></el-date-picker>
           </el-form-item>
           <el-form-item align="center">
-            <el-button type="primary" size="small" @click="editProfile">更改</el-button>
-            <el-button type="info" size="small" @click="edit = false">取消</el-button>
+            <el-button size="small" type="primary" @click="editProfile">更改</el-button>
+            <el-button size="small" type="info" @click="edit = false">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -68,55 +68,58 @@
         </div>
         <div>
           <el-card class="card">
-            <el-table class="table" :data="Blog">
-              <el-table-column prop="title" label="标题" width="200" />
-              <el-table-column prop="createTime" label="发布时间" width="180" />
-              <el-table-column prop="updateTime" label="最后更改" width="180" />
-              <el-table-column header-align="center" align="center" label="操作">
+            <el-table :data="Blog" class="table">
+              <el-table-column label="标题" prop="title" width="200" />
+              <el-table-column label="发布时间" prop="createTime" width="180" />
+              <el-table-column label="最后更改" prop="updateTime" width="180" />
+              <el-table-column align="center" header-align="center" label="操作">
                 <template v-slot="scoped">
                   <el-button
                     class="tableButton"
-                    type="primary"
                     icon="el-icon-edit"
+                    type="primary"
                     @click="viewBlog(scoped.row)"
-                    >查看</el-button
+                  >查看
+                  </el-button
                   >
                   <el-button
                     class="tableButton"
-                    type="primary"
                     icon="el-icon-edit"
+                    type="primary"
                     @click="updateBlog(scoped.row)"
-                    >更改</el-button
+                  >更改
+                  </el-button
                   >
                   <el-button
                     class="tableButton"
-                    type="danger"
                     icon="el-icon-delete"
+                    type="danger"
                     @click="(confirm = true), setBlog(scoped.row)"
-                    >删除</el-button
+                  >删除
+                  </el-button
                   >
                 </template>
               </el-table-column>
             </el-table>
             <el-pagination
-              class="paging"
-              v-model:page-size="pageSize"
               v-model:current-page="currentPage"
+              v-model:page-size="pageSize"
+              v-model:total="total"
               :page-sizes="[5, 10, 15, 20]"
+              class="paging"
               layout="sizes,prev,pager,next,jumper,->,total"
               @current-change="handleCurrentChange"
               @size-change="handleSizeChange"
-              v-model:total="total"
             >
             </el-pagination>
           </el-card>
-          <el-dialog title="" v-model="dialogVisible" width="80%" append-to-body>
+          <el-dialog v-model="dialogVisible" append-to-body title="" width="80%">
             <div v-if="selectedBlog" style="text-align: center">
               <h1 style="padding-left: 40%; padding-right: 40%">{{ selectedBlog.title }}</h1>
-              <div v-html="selectedBlog.content" style="padding-left: 5%; padding-right: 5%"></div>
+              <div style="padding-left: 5%; padding-right: 5%" v-html="selectedBlog.content"></div>
             </div>
           </el-dialog>
-          <el-dialog title="" v-model="confirm" width="30%" style="">
+          <el-dialog v-model="confirm" style="" title="" width="30%">
             <div style="text-align: center">
               <h1>确认删除吗</h1>
             </div>
@@ -127,18 +130,18 @@
           </el-dialog>
         </div>
       </div>
-      <div class="main-content" v-else>
+      <div v-else class="main-content">
         <div class="stats2">
           <div style="height: 50px">
             <span>我的日志</span>
-            <button @click="switch_status" style="float: right">返回</button>
-            <button @click="handleSubmit" style="float: right">提交</button>
+            <button style="float: right" @click="switch_status">返回</button>
+            <button style="float: right" @click="handleSubmit">提交</button>
           </div>
         </div>
         <div class="main">
           <div>
             <h2>请输入标题：</h2>
-            <input type="text" v-model="title" class="title" maxlength="30" />
+            <input v-model="title" class="title" maxlength="30" type="text" />
           </div>
           <h2>请输入正文：</h2>
           <div class="editor">
@@ -159,11 +162,11 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { onMounted, ref, toRaw, nextTick } from 'vue'
+<script lang="ts" setup>
+import { nextTick, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import instance from '@/utils/axios'
-import { Quill, QuillEditor } from '@vueup/vue-quill'
+import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 let uid = localStorage.getItem('uid')
@@ -196,9 +199,11 @@ const edit = ref(false)
 function switch_status() {
   status_.value = !status_.value
 }
+
 function cancle() {
   window.location.href = '/profile'
 }
+
 const editProfile = async () => {
   try {
     const res = await instance.post(
@@ -265,6 +270,7 @@ const editProfile = async () => {
     window.location.href = '/profile'
   }
 }
+
 interface Blog {
   title: string
   content: string
@@ -381,6 +387,7 @@ async function searchByPage() {
       total.value = response.data.data.total
     })
 }
+
 function handleSizeChange(newSize: number) {
   currentPage.value = 1
   searchByPage()
@@ -495,6 +502,7 @@ onMounted(async () => {
 .card {
   margin: 0;
 }
+
 .editor {
   background-color: white;
   overflow: auto;
@@ -572,6 +580,7 @@ onMounted(async () => {
 .title {
   max-width: 97%;
 }
+
 .stats {
   background-color: #2b2b2b;
   padding: 20px;

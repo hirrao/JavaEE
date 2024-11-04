@@ -19,7 +19,7 @@ open class WebConfig @Autowired constructor(private val loginInterceptor: LoginI
     open fun corsConfigurer(): WebMvcConfigurer {
         return object : WebMvcConfigurer {
             override fun addCorsMappings(registry: CorsRegistry) {
-                registry.addMapping("/**").allowedOrigins(System.getenv("ORIGIN") ?: "") // 前端应用的地址
+                registry.addMapping("/**").allowedOrigins("http://localhost:8080") // 前端应用的地址
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*")
                     .allowCredentials(true)
             }

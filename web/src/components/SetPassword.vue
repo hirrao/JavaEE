@@ -3,12 +3,12 @@
     <form>
       <div class="form-group">
         <label for="password">请输入密码:</label>
-        <input type="password" id="password" v-model="password" required />
+        <input id="password" v-model="password" required type="password" />
       </div>
 
       <div class="form-group">
         <label for="password2">请再次确认密码:</label>
-        <input type="password" id="password2" v-model="password2" required />
+        <input id="password2" v-model="password2" required type="password" />
       </div>
 
       <button class="button1" @click="next">提交</button>
@@ -16,11 +16,12 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
 import router from '@/router'
 import instance from '@/utils/axios'
-import { ElMain, ElMessage } from 'element-plus'
+import { ElMessage } from 'element-plus'
+
 let password = ref('')
 let password2 = ref('')
 

@@ -2,7 +2,7 @@
   <div class="article-list-container">
     <el-row :gutter="20" class="article-list">
       <el-col v-for="article in paginatedArticles" :key="article.id" :span="24">
-        <el-card shadow="hover" class="article-item">
+        <el-card class="article-item" shadow="hover">
           <div class="article-content-wrapper" @click="viewArticle(article)">
             <img :src="article.image" alt="Article Image" class="article-image" />
             <div class="article-content">
@@ -18,14 +18,14 @@
       v-model="currentPage"
       :page-size="pageSize"
       :total="articles.length"
+      background
+      class="pagination"
+      hide-on-single-page
       layout="prev, pager, next"
       @current-change="handlePageChange"
-      background
-      hide-on-single-page
-      class="pagination"
     />
 
-    <el-dialog v-model="dialogVisible" width="50%" title="一言详情" append-to-body>
+    <el-dialog v-model="dialogVisible" append-to-body title="一言详情" width="50%">
       <div v-if="selectedArticle">
         <h2 style="text-align: center">{{ selectedArticle.title }}</h2>
         <!-- <h2>{{ selectedArticle.title }}</h2> -->
@@ -36,8 +36,8 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+<script lang="ts" setup>
+import { computed, onMounted, ref } from 'vue'
 import instance from '@/utils/axios'
 
 interface Article {
@@ -107,9 +107,8 @@ function viewArticle(article: Article) {
 
 .article-item {
   cursor: pointer;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: transform 0.3s ease,
+  box-shadow 0.3s ease;
   margin-bottom: 20px;
   border-radius: 12px;
   background-color: #ffffff;

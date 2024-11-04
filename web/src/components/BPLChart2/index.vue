@@ -4,8 +4,8 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { onMounted, ref, watch, type PropType } from 'vue'
+<script lang="ts" setup>
+import { onMounted, type PropType, ref, watch } from 'vue'
 import * as echarts from 'echarts'
 
 // 接收来自父组件的 chartData prop

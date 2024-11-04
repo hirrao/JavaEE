@@ -3,7 +3,7 @@
     <!--element版-->
     <el-form ref="form" label-width="80px">
       <el-form-item label="用户名" prop="username">
-        <el-input v-model="username" type="text" placeholder="请输入用户名"></el-input>
+        <el-input v-model="username" placeholder="请输入用户名" type="text"></el-input>
       </el-form-item>
       <el-form-item label="手机号" prop="phonenumber">
         <div class="form-group">
@@ -11,13 +11,13 @@
             <el-input
               id="phonenumber"
               v-model="phonenumber"
-              type="text"
               placeholder="请输入手机号"
+              type="text"
             ></el-input>
             <el-button
+              :disabled="isButtonDisabled"
               class="button1"
               type="primary"
-              :disabled="isButtonDisabled"
               @click="sendVerificationCode"
             >
               {{ isButtonDisabled ? `${countdown}秒后重发` : '发送验证码' }}
@@ -26,16 +26,16 @@
         </div>
       </el-form-item>
       <el-form-item label="验证码" prop="verificationCode">
-        <el-input v-model="verificationCode" type="text" placeholder="请输入验证码"></el-input>
+        <el-input v-model="verificationCode" placeholder="请输入验证码" type="text"></el-input>
       </el-form-item>
       <el-form-item align="center">
-        <el-button class="button2" type="primary" size="mini" @click="next">下一步</el-button>
+        <el-button class="button2" size="mini" type="primary" @click="next">下一步</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
 import router from '@/router'
 import instance from '@/utils/axios'

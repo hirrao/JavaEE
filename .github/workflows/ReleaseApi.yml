@@ -1,10 +1,8 @@
-name: Build and Release Workflow
+name: Build and Release Workflow For Api
 
 on:
-  release:
-    types:
-      - published
-
+  workflow_call:
+  
 permissions:
   contents: write
 
@@ -12,9 +10,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./api
+        
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Grant Execute Permission for gradlew
+        run: chmod +x gradlew
 
       - name: Set up Java JDK
         uses: actions/setup-java@v4.3.0
@@ -30,6 +35,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files:
-            ./build/libs/*.jar
+            ./api/build/libs/*.jar
         
       

@@ -1,0 +1,17 @@
+name: Upload Release Assets
+on:
+  release:
+    types:
+      - published
+      
+permissions:
+  contents: write
+      
+jobs: 
+  api: 
+    name: Release Api
+    uses: ./.github/workflows/ReleaseApi.yml
+
+  web:
+    name: Release Web
+    uses: ./.github/workflows/ReleaseWeb.yml

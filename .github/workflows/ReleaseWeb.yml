@@ -9,6 +9,10 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./web
         
     steps:
       - name: Checkout code
@@ -29,7 +33,7 @@ jobs:
         run: pnpm i && pnpm build
 
       - name: tar
-        run: cd ./web/web && tar -czvf ../web.tar.gz */*
+        run: cd ./web && tar -czvf ../web.tar.gz */*
         
       - name: Upload release assets
         uses: softprops/action-gh-release@v2.0.8

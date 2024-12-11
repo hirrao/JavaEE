@@ -5,7 +5,7 @@ on:
   
 permissions:
   contents: write
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,7 +33,7 @@ jobs:
       - name: Upload release assets
         uses: softprops/action-gh-release@v2.0.8
         if: startsWith(github.ref, 'refs/tags/')
-        with: 
+        with:
           files:
             ./api/build/libs/*.jar
         

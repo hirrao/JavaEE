@@ -2,87 +2,89 @@
   <div class="login-form">
     <el-form ref="form" label-width="80px" @submit.prevent="handleSubmit">
       <el-form-item label="用户名" prop="username">
-        <el-input v-model="username" type="text" placeholder="请输入用户名" required></el-input>
+        <el-input v-model="username" placeholder="请输入用户名" required type="text"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="password" type="password" placeholder="密码" required></el-input>
+        <el-input v-model="password" placeholder="密码" required type="password"></el-input>
       </el-form-item>
       <el-form-item align="center">
-        <el-button type="primary" size="mini" @click="handleSubmit">登录</el-button>
+        <el-button size="mini" type="primary" @click="handleSubmit">登录</el-button>
       </el-form-item>
 
-      <div class="tips" style="float:left;">
+      <div class="tips" style="float: left">
         <el-link underline="true" @click="retrievePWD">忘记密码</el-link>
       </div>
-      <div class="tips" style="float:right;">
+      <div class="tips" style="float: right">
         <el-link @click="regis">还没有账号？点击注册</el-link>
       </div>
     </el-form>
   </div>
-
 </template>
 
-<script setup lang="ts">
-import router from '../router';
-import { ref } from 'vue';
-import instance from '../axios';
-import md5 from 'crypto-js/md5';
-import { ElMessage } from 'element-plus';
+<script lang="ts" setup>
+import router from '@/router'
+import { ref } from 'vue'
+import instance from '@/utils/axios'
+import md5 from 'crypto-js/md5'
+import { ElMessage } from 'element-plus'
 
-const username = ref('');
-const password = ref('');
-const token = ref('');
+const username = ref('')
+const password = ref('')
+const token = ref('')
 const permission = ref('')
 const uid = ref('')
 
 // 定义提交处理函数
 const handleSubmit = async () => {
   try {
-    const newPwd = md5(password.value).toString();
-    const response = await instance.post('/user/auth/login', {
-      userName: username.value,
-      userPassword: newPwd,
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
+    const newPwd = md5(password.value).toString()
+    const response = await instance.post(
+      '/user/auth/login',
+      {
+        userName: username.value,
+        userPassword: newPwd
       },
-    });
-    const data = response.data.data;
-    if(response.data.code==106){
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    const data = response.data.data
+    if (response.data.code == 106) {
       ElMessage.error('该账号已被封禁！')
-      return;
-    }
-    else if (response.data.code==104) {
+      return
+    } else if (response.data.code == 104) {
       ElMessage.error('用户名或密码错误')
-      return;
+      return
     }
-    token.value = data.token;
-    permission.value = data.permission;
-    uid.value = data.uid;
-    localStorage.setItem('token', token.value);
-    localStorage.setItem('permission', permission.value);
-    const response2 = await instance.get('/user/userInfo');
+    token.value = data.token
+    permission.value = data.permission
+    uid.value = data.uid
+    localStorage.setItem('token', token.value)
+    localStorage.setItem('permission', permission.value)
+    const response2 = await instance.get('/user/userInfo')
     console.log(response2)
     localStorage.setItem('uid', response2.data.data.uid)
     localStorage.setItem('userName', response2.data.data.userName)
-    localStorage.setItem('sex', (response2.data.data.sex == '0' ? '女' : '男')) 
+    localStorage.setItem('sex', response2.data.data.sex == '0' ? '女' : '男')
     localStorage.setItem('birthday', response2.data.data.birthday)
-    window.location.href = '/';
+    window.location.href = '/'
   } catch (error) {
-    console.log(error);
+    console.log(error)
     ElMessage.error('网络错误！')
-    username.value = '';
-    password.value = '';
+    username.value = ''
+    password.value = ''
   }
-};
+}
 
 const retrievePWD = () => {
-  router.push('/forgetpassword');
-};
+  router.push('/forgetpassword')
+}
 
 const regis = () => {
-  router.push('/register');
-};
+  router.push('/register')
+}
 </script>
 
 <style>

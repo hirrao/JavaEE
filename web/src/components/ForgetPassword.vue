@@ -5,28 +5,38 @@
       <el-form-item label="手机号" prop="phonenumber">
         <div class="form-group">
           <div class="input-container">
-            <el-input id="phonenumber" v-model="phonenumber" type="text" placeholder="请输入手机号"></el-input>
-            <el-button class="button1" type="primary" :disabled="isButtonDisabled" @click="sendVerificationCode">
+            <el-input
+              id="phonenumber"
+              v-model="phonenumber"
+              placeholder="请输入手机号"
+              type="text"
+            ></el-input>
+            <el-button
+              :disabled="isButtonDisabled"
+              class="button1"
+              type="primary"
+              @click="sendVerificationCode"
+            >
               {{ isButtonDisabled ? `${countdown}秒后重发` : '发送验证码' }}
             </el-button>
           </div>
         </div>
       </el-form-item>
       <el-form-item label="验证码" prop="verificationCode">
-        <el-input v-model="verificationCode" type="text" placeholder="请输入验证码"></el-input>
+        <el-input v-model="verificationCode" placeholder="请输入验证码" type="text"></el-input>
       </el-form-item>
       <el-form-item align="center">
-        <el-button class="button2" type="primary" size="mini" @click="next">下一步</el-button>
+        <el-button class="button2" size="mini" type="primary" @click="next">下一步</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
 import router from '@/router'
-import instance from '@/axios';
-import { ElMessage } from 'element-plus';
+import instance from '@/utils/axios'
+import { ElMessage } from 'element-plus'
 // 定义响应式数据
 const phonenumber = ref('')
 const verificationCode = ref('')
@@ -36,41 +46,49 @@ let timer: ReturnType<typeof setInterval> | undefined
 
 const sendVerificationCode = async () => {
   if (isButtonDisabled.value) return
-  const phoneNumberPattern = /^1[3-9]\d{9}$/;
+  const phoneNumberPattern = /^1[3-9]\d{9}$/
   if (!phoneNumberPattern.test(phonenumber.value)) {
-    ElMessage("请输入正确的手机号")
+    ElMessage('请输入正确的手机号')
     return
   }
   try {
-    const response = await instance.post('user/auth/find', {
-      userName: "test",
-      phoneNumber: phonenumber.value,
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await instance.post(
+      'user/auth/find',
+      {
+        userName: 'test',
+        phoneNumber: phonenumber.value
       },
-    })
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
     if (response.data.code == 0) {
-      ElMessage("该手机号还未注册")
+      ElMessage('该手机号还未注册')
       phonenumber.value = ''
       return
     }
   } catch (error) {
-    ElMessage("未知错误")
+    ElMessage('未知错误')
     phonenumber.value = ''
     return
   }
 
   try {
-    const response = await instance.post('user/auth/messageSend', {
-      phoneNumber: phonenumber.value,
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await instance.post(
+      'user/auth/messageSend',
+      {
+        phoneNumber: phonenumber.value
       },
-    })
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
 
-    console.log(phonenumber);
+    console.log(phonenumber)
     ElMessage.success(`${response.data.message}`)
 
     // 禁用按钮并开始倒计时
@@ -85,29 +103,33 @@ const sendVerificationCode = async () => {
       }
     }, 1000)
   } catch (error) {
-    ElMessage("网络错误")
+    ElMessage('网络错误')
     phonenumber.value = ''
   }
 }
 const next = async () => {
-  if (phonenumber.value == "") {
-    ElMessage("请输入手机号")
+  if (phonenumber.value == '') {
+    ElMessage('请输入手机号')
     return
   }
-  if (verificationCode.value == "") {
-    ElMessage("请输入验证码")
+  if (verificationCode.value == '') {
+    ElMessage('请输入验证码')
     return
   }
   try {
-    const response = await instance.post('/user/auth/message', {
-      phoneNumber: phonenumber.value,
-      messageCode: verificationCode.value,
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await instance.post(
+      '/user/auth/message',
+      {
+        phoneNumber: phonenumber.value,
+        messageCode: verificationCode.value
       },
-    });
-    const code = response.data.code;
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    const code = response.data.code
     if (code != 0) {
       ElMessage('验证码错误')
       verificationCode.value = ''
@@ -116,8 +138,7 @@ const next = async () => {
     localStorage.setItem('phoneNumber', phonenumber.value)
     localStorage.setItem('messageCode', verificationCode.value)
     router.push('/setPassword')
-  }
-  catch (error) {
+  } catch (error) {
     ElMessage('网络错误')
     verificationCode.value = ''
   }

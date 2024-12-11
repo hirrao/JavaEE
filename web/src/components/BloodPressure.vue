@@ -4,13 +4,13 @@
       <h2>这是您最近七天的血压数据</h2>
       <el-button
         id="dialogVisbleBtn"
-        type="primary"
         size="large"
         style="width: 10%"
+        type="primary"
         @click="DialogVisble"
-        >上传新的血压数据</el-button
-      >
-      <el-dialog title="添加血压记录" v-model="addDialogVisble" width="80%">
+        >上传新的血压数据
+      </el-button>
+      <el-dialog v-model="addDialogVisble" title="添加血压记录" width="80%">
         <el-form ref="form" :model="addBloodPressure" label-width="80px">
           <el-form-item label="高压（收缩压）" prop="SBP">
             <el-input-number
@@ -27,14 +27,14 @@
           <el-form-item label="测量时间" prop="" recordTime>
             <el-date-picker
               v-model="addBloodPressure.recordTime"
+              placeholder="请选择测量时间"
               type="datetime"
               value-format="YYYY-MM-DD HH:mm:ss"
-              placeholder="请选择测量时间"
             ></el-date-picker>
           </el-form-item>
           <el-form-item align="center">
-            <el-button type="primary" size="mini" @click="AddRecord">添加</el-button>
-            <el-button type="info" size="mini" @click="CloseDialog">取消</el-button>
+            <el-button size="mini" type="primary" @click="AddRecord">添加</el-button>
+            <el-button size="mini" type="info" @click="CloseDialog">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -83,12 +83,12 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
+<script lang="ts" setup>
+import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import instance from '../axios'
-import BPLChart1 from './BPLChart1/index.vue'
-import BPLChart2 from './BPLChart2/index.vue'
+import instance from '@/utils/axios'
+import BPLChart1 from '@/components/BPLChart1/index.vue'
+import BPLChart2 from '@/components/BPLChart2/index.vue'
 
 let addDialogVisble = ref(false)
 let uid = localStorage.getItem('uid')
@@ -140,12 +140,14 @@ let avgPP = ref(30)
 function DialogVisble() {
   addDialogVisble.value = true
 }
+
 function CloseDialog() {
   addDialogVisble.value = false
   addBloodPressure.value.SBP = null
   addBloodPressure.value.DBP = null
   addBloodPressure.value.recordTime = ''
 }
+
 function AddRecord() {
   //校验填写表单中的数据
   if (!addBloodPressure.value.SBP) {
@@ -319,6 +321,7 @@ function getTableData() {
     avgPP.value = data.avgPP
   })
 }
+
 onMounted(() => {
   getChartData1()
   getChartData2()
@@ -332,6 +335,7 @@ onMounted(() => {
   width: 100px;
   height: 30px;
 }
+
 .blood-pressure-log-chart {
   display: flex;
   justify-content: center;

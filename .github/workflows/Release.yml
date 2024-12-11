@@ -4,6 +4,9 @@ on:
     types:
       - published
       
+permissions:
+  contents: write
+      
 jobs: 
   api: 
     name: Release Api

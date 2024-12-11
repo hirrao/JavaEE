@@ -9,14 +9,13 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./web
         
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Change directory
+        run: cd web
         
       - name: Install pnpm
         uses: pnpm/action-setup@v4

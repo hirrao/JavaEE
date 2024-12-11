@@ -13,9 +13,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Change directory
-        run: cd web
         
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -27,17 +24,16 @@ jobs:
         uses: actions/setup-node@v4.0.3
         with:
           node-version: 20.x
-          cache: 'pnpm'
           
       - name: pnpm build
         run: pnpm i && pnpm build
 
       - name: tar
-        run: cd web && tar -czvf ../web.tar.gz */*
+        run: cd ./web/web && tar -czvf ../web.tar.gz */*
         
       - name: Upload release assets
         uses: softprops/action-gh-release@v2.0.8
         if: startsWith(github.ref, 'refs/tags/')
         with: 
           files:
-            web.tar.gz
+            ./web/web.tar.gz

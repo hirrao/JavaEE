@@ -1,5 +1,5 @@
 plugins {
-    id("org.springframework.boot") version "3.3.3"
+    id("org.springframework.boot") version "3.4.0"
     id("io.spring.dependency-management") version "1.1.6"
     kotlin("jvm") version "2.0.21"
 }
@@ -21,7 +21,7 @@ dependencies {
     implementation("org.mybatis:mybatis:3.5.16")
     implementation("com.baomidou:mybatis-plus-spring-boot3-starter:3.5.5")
     implementation("com.alibaba:druid-spring-boot-3-starter:1.2.18")
-    implementation("com.aliyun:dysmsapi20170525:3.0.0")
+    //implementation("com.aliyun:dysmsapi20170525:3.0.0")
     implementation("org.springframework.data:spring-data-redis:3.3.3")
     implementation("com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7")
 

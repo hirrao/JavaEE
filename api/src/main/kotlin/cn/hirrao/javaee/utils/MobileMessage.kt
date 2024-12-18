@@ -1,4 +1,4 @@
-package cn.hirrao.javaee.utils
+package cn.hirrao.javaee.utils/*
 
 import com.aliyun.dysmsapi20170525.Client
 import com.aliyun.dysmsapi20170525.models.SendSmsRequest
@@ -52,3 +52,4 @@ object MobileMessage {
         return ((Math.random() * 9 + 1) * 1000).toInt().toString()
     }
 }
+ */

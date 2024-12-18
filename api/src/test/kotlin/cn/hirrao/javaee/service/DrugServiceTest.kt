@@ -24,7 +24,7 @@ internal open class DrugServiceTest @Autowired constructor(
 
     @Test
     fun pageDrugInfo() {
-        drugService.getPageDrugInfo(1049164671497670656L, 1, 5)
+        drugService.getPageDrugInfo(10491, 1, 5)
     }
 
     @Test

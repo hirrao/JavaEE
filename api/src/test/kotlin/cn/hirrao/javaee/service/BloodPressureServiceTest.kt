@@ -32,7 +32,7 @@ internal open class BloodPressureServiceTest @Autowired constructor(
     fun bloodPressureTable() {
         bloodPressureService.insertBloodPressure(1, 1, 120f, 80f, "2021-01-01 12:00:00", "正常", "低风险")
         bloodPressureService.insertBloodPressure(2, 1, 130f, 90f, "2021-01-02 12:00:00", "正常", "中风险")
-        println(bloodPressureService.getBloodPressureTable(LocalDate.parse("2021-01-01"), 1L))
+        println(bloodPressureService.getBloodPressureTable(LocalDate.parse("2021-01-01"), 1))
     }
 
 

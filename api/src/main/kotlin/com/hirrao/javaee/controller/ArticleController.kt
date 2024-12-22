@@ -1,5 +1,6 @@
 package com.hirrao.javaee.controller
 
+import com.hirrao.javaee.dto.AddArticleDto
 import com.hirrao.javaee.entity.Article
 import com.hirrao.javaee.entity.Result
 import com.hirrao.javaee.service.ArticleService
@@ -17,12 +18,8 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     }
 
     @PostMapping("/add")
-    fun addArticle(@RequestBody map: Map<String?, String?>): Result {
-        val title = map["title"]
-        val description = map["description"]
-        val image = map["image"]
-        val content = map["content"]
-        articleService.addArticle(title, description, image, content)
+    fun addArticle(@RequestBody article: AddArticleDto): Result {
+        articleService.addArticle(article.title, article.description, article.image, article.content)
         return success()
     }
 

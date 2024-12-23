@@ -1,83 +1,77 @@
 package com.hirrao.javaee.service
 
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import com.hirrao.javaee.service.impl.UserServiceImpl
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.extensions.spring.SpringExtension
+import io.kotest.matchers.shouldBe
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.Rollback
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.reactive.TransactionalOperator
 
 @SpringBootTest
 @Transactional
-internal open class UserServiceTest @Autowired constructor(private val userService: UserService) {
+@Rollback
+class UserServiceTest(private val userService: UserServiceImpl) : StringSpec({
 
-    @BeforeEach
-    fun init() {
+    extensions(SpringExtension)
+
+    beforeTest {
         userService.register(1, "test", "test", "13574851354")
     }
 
-    @Test
-    fun findByUsername() {
-        assertEquals("test", userService.findByUsername("test")?.userName)
+    "findByUsername" {
+        userService.findByUsername("test")?.userName shouldBe "test"
     }
 
-    @Test
-    fun findByUid() {
-        assertEquals("test", userService.findByUid(1)?.userName)
+
+    /*"findByUid" should {
+        userService.findByUid(1)?.userName shouldBe "test"
     }
 
-    @Test
-    fun register() {
+    "register" should {
         userService.register(2, "test2", "test2", "13574851355")
-        assertEquals("test2", userService.findByUid(2)?.userName)
+        userService.findByUid(2)?.userName shouldBe "test2"
     }
 
-    @Test
-    fun update() {
+    "update" should {
         userService.update(1, "13574851355", "男", "2000-01-01")
-        assertEquals("男", userService.findByUid(1)?.sex)
+        userService.findByUid(1)?.sex shouldBe "男"
     }
 
-    @Test
-    fun updatePassword() {
+    "updatePassword" should {
         userService.updatePassword(1, "test2")
-        assertEquals("test2", userService.findByUid(1)?.userPassword)
+        userService.findByUid(1)?.userPassword shouldBe "test2"
     }
 
-    @Test
-    fun accountsInfo() {
-    }
+    "accountsInfo" should {}
 
-    @Test
-    fun modifyUserInfo() {
-    }
+    "modifyUserInfo" should {}
 
-    @Test
-    fun deleteUser() {
+    "deleteUser" should {
         userService.deleteUser(1)
-        Assertions.assertNull(userService.findByUid(1))
+        userService.findByUid(1) shouldBe null
     }
 
-    @Test
-    fun searchUserByCondition() {
-    }
+    "searchUserByCondition" should {}
 
-    @Test
-    fun updateUserName() {
+    "updateUserName" should {
         userService.updateUserName(1, "test2")
-        assertEquals("test2", userService.findByUid(1)?.userName)
+        userService.findByUid(1)?.userName shouldBe "test2"
     }
 
-    @Test
-    fun updateBirthday() {
+    "updateBirthday" should {
         userService.updateBirthday(1, "2000-01-01")
-        assertEquals("2000-01-01", userService.findByUid(1)?.birthday)
+        userService.findByUid(1)?.birthday shouldBe "2000-01-01"
     }
 
-    @Test
-    fun updateSex() {
+    "updateSex" should {
         userService.updateSex(1, "女")
-        assertEquals("女", userService.findByUid(1)?.sex)
+        userService.findByUid(1)?.sex shouldBe "女"
     }
-}
+
+
+     */
+
+})

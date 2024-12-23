@@ -2,6 +2,7 @@ plugins {
     id("org.springframework.boot") version "3.4.0"
     id("io.spring.dependency-management") version "1.1.6"
     kotlin("jvm") version "2.0.21"
+    kotlin("plugin.spring") version "2.0.21"
 }
 
 group = "com.hirrao"
@@ -17,6 +18,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("io.jsonwebtoken:jjwt:0.12.6")
     implementation("org.mybatis:mybatis:3.5.16")
     implementation("com.baomidou:mybatis-plus-spring-boot3-starter:3.5.5")
@@ -25,6 +27,11 @@ dependencies {
     implementation("org.springframework.data:spring-data-redis:3.3.3")
     implementation("com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7")
 
+    var kotestVersion = "5.9.1"
+    testImplementation("io.kotest:kotest-property:$kotestVersion")
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
     testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
@@ -47,9 +54,10 @@ tasks.withType<JavaCompile> {
     includeEmptyDirs = false
 }*/
 
-tasks.test {
+tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
+
 kotlin {
     jvmToolchain(21)
 }

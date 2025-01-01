@@ -33,7 +33,7 @@ jobs:
         run: pnpm i && pnpm build
 
       - name: tar
-        run: cd ./web && tar -czvf ../web.tar.gz */*
+        run: tar -czvf ../web.tar.gz */*
         
       - name: Upload release assets
         uses: softprops/action-gh-release@v2.0.8

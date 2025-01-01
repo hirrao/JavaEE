@@ -1,12 +1,15 @@
 plugins {
-    id("org.springframework.boot") version "3.4.0"
+    id("org.springframework.boot") version "3.4.1"
     id("io.spring.dependency-management") version "1.1.6"
-    kotlin("jvm") version "2.0.21"
+    kotlin("jvm") version "2.1.0"
+    kotlin("plugin.spring") version "2.1.0"
 }
 
 group = "com.hirrao"
 version = "1.0.0"
-
+val springBootVersion = "3.4.1"
+val kotestVersion = "5.9.1"
+val kotlinVersion = "2.1.0"
 repositories {
     mavenLocal()
     mavenCentral()
@@ -14,23 +17,24 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    implementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     implementation("io.jsonwebtoken:jjwt:0.12.6")
-    implementation("org.mybatis:mybatis:3.5.16")
+    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4")
     implementation("com.baomidou:mybatis-plus-spring-boot3-starter:3.5.5")
     implementation("com.alibaba:druid-spring-boot-3-starter:1.2.18")
     //implementation("com.aliyun:dysmsapi20170525:3.0.0")
-    implementation("org.springframework.data:spring-data-redis:3.3.3")
     implementation("com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7")
+    testImplementation("io.kotest:kotest-property:$kotestVersion")
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 
-    testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.xerial:sqlite-jdbc:3.46.1.3")
 
-    runtimeOnly("org.xerial:sqlite-jdbc:3.46.1.3")
-
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib:$kotlinVersion"))
 }
 
 tasks.withType<JavaCompile> {
@@ -47,9 +51,10 @@ tasks.withType<JavaCompile> {
     includeEmptyDirs = false
 }*/
 
-tasks.test {
+tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
+
 kotlin {
     jvmToolchain(21)
 }

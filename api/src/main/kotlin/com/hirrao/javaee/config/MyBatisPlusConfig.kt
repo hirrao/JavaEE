@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-open class MyBatisPlusConfig {
+class MyBatisPlusConfig {
     @Bean
-    open fun paginationInterceptor(): MybatisPlusInterceptor {
+    fun paginationInterceptor(): MybatisPlusInterceptor {
         val interceptor = MybatisPlusInterceptor()
         val paginationInnerInterceptor = PaginationInnerInterceptor(DbType.MYSQL)
         interceptor.addInnerInterceptor(paginationInnerInterceptor)

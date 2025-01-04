@@ -295,8 +295,7 @@ function checkIsEat(eatTime: string) {
   const date = new Date()
   if (date.getFullYear() - parseInt(eatDate[0]) > 0) return false
   if (date.getMonth() + 1 - parseInt(eatDate[1]) > 0) return false
-  if (date.getDay() + 1 - parseInt(eatDate[2]) > 0) return false
-  return true
+  return date.getDay() + 1 - parseInt(eatDate[2]) <= 0
 }
 
 async function eatDrugConfirm(row: any) {
@@ -371,8 +370,7 @@ async function searchByPage() {
       drugs.value = response.data.data
       if (drugs.value != undefined) {
         for (let i = 0; i < drugs.value.length; ++i) {
-          let isEat = checkIsEat(drugs.value[i].eatTime)
-          drugs.value[i]['isEat'] = isEat
+          drugs.value[i]['isEat'] = checkIsEat(drugs.value[i].eatTime)
         }
       }
     })

@@ -33,8 +33,8 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item align="center">
-            <el-button size="mini" type="primary" @click="AddRecord">添加</el-button>
-            <el-button size="mini" type="info" @click="CloseDialog">取消</el-button>
+            <el-button  type="primary" @click="AddRecord">添加</el-button>
+            <el-button  type="info" @click="CloseDialog">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>

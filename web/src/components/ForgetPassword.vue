@@ -26,7 +26,7 @@
         <el-input v-model="verificationCode" placeholder="请输入验证码" type="text"></el-input>
       </el-form-item>
       <el-form-item align="center">
-        <el-button class="button2" size="mini" type="primary" @click="next">下一步</el-button>
+        <el-button class="button2" type="primary" @click="next">下一步</el-button>
       </el-form-item>
     </el-form>
   </div>

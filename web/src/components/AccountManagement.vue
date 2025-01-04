@@ -49,7 +49,7 @@
         <el-table-column label="生日" prop="birthday" />
         <el-table-column label="权限" prop="permission" width="75" />
         <el-table-column align="center" header-align="center" label="操作">
-          <template v-slot="scoped">
+          <template #default="scoped">
             <el-button
               class="tableButton"
               icon="el-icon-edit"

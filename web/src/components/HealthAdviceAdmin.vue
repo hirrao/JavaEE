@@ -76,7 +76,7 @@
         <el-table-column label="标题" prop="title" width="180" />
         <el-table-column label="描述" prop="description" width="300" />
         <el-table-column label="图片" prop="image" width="180">
-          <template v-slot="scoped">
+          <template #default="scoped">
             <img
               :src="scoped.row.image"
               alt="Article Image"
@@ -86,7 +86,7 @@
         </el-table-column>
         <el-table-column label="内容" prop="content" />
         <el-table-column align="center" header-align="center" label="操作">
-          <template v-slot="scoped">
+          <template #default="scoped">
             <el-button
               class="tableButton"
               icon="el-icon-edit"

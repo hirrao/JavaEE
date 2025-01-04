@@ -73,7 +73,7 @@
               <el-table-column label="发布时间" prop="createTime" width="180" />
               <el-table-column label="最后更改" prop="updateTime" width="180" />
               <el-table-column align="center" header-align="center" label="操作">
-                <template v-slot="scoped">
+                <template #default="scoped">
                   <el-button
                     class="tableButton"
                     icon="el-icon-edit"
@@ -146,7 +146,7 @@
               ref="editorRef"
               v-model:content="content"
               :options="options"
-              contentType="html"
+              content-type="html"
             ></quill-editor>
           </div>
           <div>
@@ -175,7 +175,7 @@ onMounted(async () => {
   const user = await instance.get('/intro/get')
   intro.value = user.data.data.intro
   console.log(user.data)
-  searchByPage()
+  await searchByPage()
 })
 
 const status_ = ref(true)
@@ -324,7 +324,7 @@ const handleSubmit = async () => {
       return
     }
     if (ok.value) {
-      instance.post(
+      await instance.post(
         '/profile/update',
         {
           blogId: blogId.value,

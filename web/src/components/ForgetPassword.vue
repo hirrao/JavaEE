@@ -195,8 +195,7 @@ input:focus {
 
 .button1 {
   width: 40%;
-  padding: 10px 10px;
-  padding-left: 20px;
+  padding: 10px 10px 10px 20px;
   font-size: 16px;
   background-color: #007bff;
   color: #ffffff;

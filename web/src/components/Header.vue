@@ -53,7 +53,7 @@ const isLoggedIn = ref(false)
       }
     })
     isLoggedIn.value = response.status === 200
-    if (!isLoggedIn) localStorage.clear()
+    if (!isLoggedIn.value) localStorage.clear()
   } catch (error) {
     isLoggedIn.value = false
     localStorage.clear()
@@ -98,7 +98,7 @@ function isAdmin() {
   align-items: center;
   background-color: rgb(0, 0, 0);
   color: white;
-  padding: 0px 20px;
+  padding: 0 20px;
 }
 
 nav {

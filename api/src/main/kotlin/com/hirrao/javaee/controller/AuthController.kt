@@ -6,7 +6,6 @@ import com.hirrao.javaee.utils.IdGen
 import com.hirrao.javaee.utils.Jwt.createToken
 import com.hirrao.javaee.utils.Result.error
 import com.hirrao.javaee.utils.Result.success
-import com.hirrao.javaee.utils.StringUtil.isEmpty
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,7 +24,13 @@ class AuthController @Autowired constructor(
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
     private val idGen = IdGen(8)
 
+    data class DataFind(val userName: String, val phoneNumber: String)
+    data class DataRegister(val userName: String, val userPassword: String, val phoneNumber: String)
+    data class DataLogin(val userName: String, val userPassword: String)
+    data class DataResetPassword(val phoneNumber: String, val messageCode: String, val newPassword: String)
+
     @PostMapping("/message")
+    @Deprecated("弃用")
     fun message(@RequestBody map: Map<String?, String?>?): Result {
         return success()
     }
@@ -33,11 +38,10 @@ class AuthController @Autowired constructor(
 
     //查找手机号或者名字是否已被占用
     @PostMapping("/find")
-    fun find(@RequestBody map: Map<String?, String?>): Result {
-        logger.debug("/find接受请求{}", map)
-        val userName = map["userName"]
-        val phoneNumber = map["phoneNumber"]
-        if (isEmpty(userName) || isEmpty(phoneNumber)) {
+    fun find(dataFind: DataFind): Result {
+        logger.debug("/find接受请求{}", dataFind)
+        val (userName, phoneNumber) = dataFind
+        if (userName.isEmpty() || phoneNumber.isEmpty()) {
             return error(101, "非法用户名或手机号")
         }
         val user = userService.findByUsername(userName)
@@ -49,15 +53,14 @@ class AuthController @Autowired constructor(
             return error(103, "用户名或手机号已被占用")
         }
         return success()
+
     }
 
     @PostMapping("/register")
-    fun register(@RequestBody map: Map<String?, String?>): Result {
-        logger.debug("/register接受请求{}", map)
-        val userName = map["userName"]
-        val userPassword = map["userPassword"]
-        val phoneNumber = map["phoneNumber"]
-        if (isEmpty(userName) || isEmpty(userPassword) || !userName!!.matches("^[a-zA-Z0-9_]{3,20}$".toRegex()) || !userPassword!!.matches(
+    fun register(dataRegister: DataRegister): Result {
+        logger.debug("/register接受请求{}", dataRegister)
+        val (userName, userPassword, phoneNumber) = dataRegister
+        if (userName.isEmpty() || userPassword.isEmpty() || !userName.matches("^[a-zA-Z0-9_]{3,20}$".toRegex()) || !userPassword.matches(
                 "^[a-zA-Z0-9_]{6,20}$".toRegex()
             )
         ) {
@@ -75,19 +78,20 @@ class AuthController @Autowired constructor(
         userService.register(uid, userName, password, phoneNumber)
         logger.info("注册成功 用户名:{} 手机号:{}", userName, phoneNumber)
         return success()
+
     }
 
     @PostMapping("/messageSend")
+    @Deprecated("弃用")
     fun messageSend(@RequestBody map: Map<String?, String?>?): Result {
         return success()
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody map: Map<String?, String?>): Result {
-        logger.debug("/login接受请求{}", map)
-        val userName = map["userName"]
-        val userPassword = map["userPassword"]
-        if (isEmpty(userName) || isEmpty(userPassword)) {
+    fun login(@RequestBody dataLogin: DataLogin): Result {
+        val (userName, userPassword) = dataLogin
+        logger.debug("/login接受请求{}", dataLogin)
+        if (userName.isEmpty() || userPassword.isEmpty()) {
             return error(104, "用户名或密码错误")
         }
         val user = userService.findByUsername(userName)
@@ -109,16 +113,18 @@ class AuthController @Autowired constructor(
             } else {
                 return error(104, "用户名密码错误")
             }
+
         }
     }
 
     @PostMapping("/resetPassword")
-    fun resetPassword(@RequestBody map: Map<String?, String?>): Result {
-        logger.debug("/resetPassword接受请求{}", map)
-        val phoneNumber = map["phoneNumber"]
-        val messageCode = map["messageCode"]
-        val newPassword = map["newPassword"]
-        if (isEmpty(phoneNumber) || isEmpty(messageCode) || isEmpty(newPassword) || !newPassword!!.matches("^[a-zA-Z0-9_]{6,20}$".toRegex())) {
+    fun resetPassword(dataResetPassword: DataResetPassword): Result {
+        logger.debug("/resetPassword接受请求{}", dataResetPassword)
+        val (phoneNumber, messageCode, newPassword) = dataResetPassword
+        if (phoneNumber.isEmpty() || messageCode.isEmpty() || newPassword.isEmpty() || !newPassword.matches(
+                "^[a-zA-Z0-9_]{6,20}$".toRegex()
+            )
+        ) {
             return error(101, "非法手机号或验证码或密码")
         }
         val user = userService.findByPhoneNumber(phoneNumber)
@@ -130,4 +136,5 @@ class AuthController @Autowired constructor(
         logger.info("重置密码成功 用户名:{} 手机号:{}", user.userName, phoneNumber)
         return success()
     }
+
 }

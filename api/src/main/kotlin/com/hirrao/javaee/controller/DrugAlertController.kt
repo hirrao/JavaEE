@@ -18,40 +18,43 @@ import java.time.LocalTime
 class DrugAlertController @Autowired internal constructor(private val drugAlertService: DrugAlertService) {
     private val snowFlake = SnowFlake(1, 5)
 
+    data class DataInsertDrug(val drugId: Long, val alertTimeRow: String)
+    data class DataUpdateDrugAlertIsActiveById(val alertId: Long, val isActive: Int)
+    data class DataUpdateDrugAlertEatTimeById(val alertId: Long, val eatTimeRow: String)
+    data class DataDeleteDrugAlertById(val alertId: Long, val drugId: Long)
+
     @PostMapping("/insertDrug")
-    fun insertDrug(@RequestBody map: Map<String?, String>): Result {
+    fun insertDrug(dataInsertDrug: DataInsertDrug): Result {
         val alertId = snowFlake.nextId()
         val user = get()
         val uid = user.uid
-        val drugId = map["drugId"]!!.toLong()
-        val alertTime = map["alertTime"]?.let { LocalTime.parse(it) }
+        val (drugId, alertTimeRow) = dataInsertDrug
+        val alertTime = alertTimeRow.let { LocalTime.parse(it) }
         val eatTime = LocalDate.parse("2000-01-01")
         drugAlertService.insertDrugAlert(alertId, uid, drugId, alertTime, eatTime)
         return success()
     }
 
     @PostMapping("/updateDrugAlertIsActiveById")
-    fun updateDrugAlertIsActiveById(@RequestBody map: Map<String?, String>): Result {
-        val alertId = map["alertId"]!!.toLong()
-        val isActive = map["isActive"]!!.toInt()
+    fun updateDrugAlertIsActiveById(@RequestBody dataUpdateDrugAlertIsActiveById: DataUpdateDrugAlertIsActiveById): Result {
+        val (alertId, isActive) = dataUpdateDrugAlertIsActiveById
         drugAlertService.updateDrugAlertIsActiveById(alertId, isActive)
         return success()
     }
 
     @PostMapping("/updateDrugAlertEatTimeById")
-    fun updateDrugAlertEatTimeById(@RequestBody map: Map<String?, String>): Result {
-        val alertId = map["alertId"]!!.toLong()
-        val eatTime = map["eatTime"]?.let { LocalDate.parse(it) }
+    fun updateDrugAlertEatTimeById(@RequestBody dataUpdateDrugAlertEatTimeById: DataUpdateDrugAlertEatTimeById): Result {
+        val (alertId, eatTimeRow) = dataUpdateDrugAlertEatTimeById
+        val eatTime = eatTimeRow.let { LocalDate.parse(it) }
         drugAlertService.updateDrugAlertEatTimeById(alertId, eatTime)
         return success()
     }
 
     @PostMapping("/deleteDrugAlertById")
-    fun deleteDrugAlertById(@RequestBody map: Map<String?, String>): Result {
-        val alertId = map["alertId"]!!.toLong()
+    fun deleteDrugAlertById(@RequestBody dataDeleteDrugAlertById: DataDeleteDrugAlertById): Result {
+        val (alertId, drugId) = dataDeleteDrugAlertById
         val user = get()
         val uid = user.uid
-        val drugId = map["drugId"]!!.toLong()
         drugAlertService.deleteDrugAlertById(alertId, uid, drugId)
         return success()
     }

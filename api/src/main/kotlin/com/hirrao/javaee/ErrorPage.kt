@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class ErrorPage {
     @GetMapping("/error")
-    fun error(): String {
-        return "Error Page"
-    }
+    fun error() = "Error Page"
+
 }

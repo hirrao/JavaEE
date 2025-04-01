@@ -19,28 +19,44 @@ class DrugController @Autowired internal constructor(
     private val drugService: DrugService, private val drugAlertService: DrugAlertService
 ) {
     private val snowFlakeDrug = SnowFlake(1, 4)
-
     private val snowFlakeDrugAlert = SnowFlake(1, 5)
-
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
+    data class DataGetPageDrugsInfo(val curPage: Int, val size: Int)
+    data class DataGetPageDrugsInfoByDrugName(val curPage: Int, val size: Int, val drugName: String)
+    data class DataGetPageDrugsAlertInfo(val curPage: Int, val size: Int)
+    data class DataGetPageDrugsAlertInfoByDrugName(val curPage: Int, val size: Int, val drugName: String)
+    data class DataInsertDrug(
+        val drugName: String, val frequency: String, val unit: String, val dosage: Float, val isActive: Int
+    )
+
+    data class DataInsertDrugAndAlert(
+        val drugName: String,
+        val frequency: String,
+        val unit: String,
+        val dosage: Float,
+        val isActive: Int,
+        val alertTimeRow: String
+    )
+
+    data class DataUpdateDrugIsActiveById(val drugId: Long, val isActive: Int)
+    data class DataUpdateDrugAlertIsActiveById(val alertId: Long, val drugId: Long)
+
+
     @PostMapping("/getPageDrugsInfo")
-    fun getPageDrugsInfo(@RequestBody map: Map<String?, String>): Result {
+    fun getPageDrugsInfo(@RequestBody getPageDrugsInfo: DataGetPageDrugsInfo): Result {
+        val (curPage, size) = getPageDrugsInfo
         val user = get()
         val uid = user.uid
-        val curPage = map["curPage"]!!.toInt()
-        val size = map["size"]!!.toInt()
         return success(drugService.getPageDrugInfo(uid, curPage, size))
     }
 
     @PostMapping("/getPageDrugsInfoByDrugName")
-    fun getPageDrugsInfoByDrugName(@RequestBody map: Map<String?, String>): Result {
+    fun getPageDrugsInfoByDrugName(@RequestBody dataGetPageDrugsInfoByDrugName: DataGetPageDrugsInfoByDrugName): Result {
+        val (curPage, size, drugName) = dataGetPageDrugsInfoByDrugName
         val user = get()
         val uid = user.uid
-        val curPage = map["curPage"]!!.toInt()
-        val size = map["size"]!!.toInt()
-        val drugName = map["drugName"]
-        if (drugName!!.isNotEmpty()) {
+        if (drugName.isNotEmpty()) {
             println("notEmpty")
             return success(drugService.getPageDrugInfoByDrugName(uid, curPage, size, drugName))
         } else {
@@ -57,11 +73,10 @@ class DrugController @Autowired internal constructor(
     }
 
     @PostMapping("/getPageDrugInfoTotalByDrugName")
-    fun getPageDrugInfoTotalByDrugName(@RequestBody map: Map<String?, String?>): Result {
+    fun getPageDrugInfoTotalByDrugName(@RequestBody drugName: String): Result {
         val user = get()
         val uid = user.uid
-        val drugName = map["drugName"]
-        return if (drugName!!.isNotEmpty()) {
+        return if (drugName.isNotEmpty()) {
             success(drugService.getPageDrugInfoTotalByDrugName(uid, drugName))
         } else {
             success(drugService.getPageDrugInfoTotal(uid))
@@ -69,22 +84,19 @@ class DrugController @Autowired internal constructor(
     }
 
     @PostMapping("/getPageDrugsAlertInfo")
-    fun getPageDrugsAlertInfo(@RequestBody map: Map<String?, String>): Result {
+    fun getPageDrugsAlertInfo(@RequestBody dataGetPageDrugsAlertInfo: DataGetPageDrugsAlertInfo): Result {
         val user = get()
         val uid = user.uid
-        val curPage = map["curPage"]!!.toInt()
-        val size = map["size"]!!.toInt()
+        val (curPage, size) = dataGetPageDrugsAlertInfo
         return success(drugService.getPageDrugAlertInfo(uid, curPage, size))
     }
 
     @PostMapping("/getPageDrugsAlertInfoByDrugName")
-    fun getPageDrugsAlertInfoByDrugName(@RequestBody map: Map<String?, String>): Result {
+    fun getPageDrugsAlertInfoByDrugName(@RequestBody dataGetPageDrugAlertInfoByDrugName: DataGetPageDrugsAlertInfoByDrugName): Result {
         val user = get()
         val uid = user.uid
-        val curPage = map["curPage"]!!.toInt()
-        val size = map["size"]!!.toInt()
-        val drugName = map["drugName"]
-        if (drugName!!.isNotEmpty()) {
+        val (curPage, size, drugName) = dataGetPageDrugAlertInfoByDrugName
+        if (drugName.isNotEmpty()) {
             println("notEmpty")
             return success(drugService.getPageDrugAlertInfoByDrugName(uid, curPage, size, drugName))
         } else {
@@ -102,11 +114,10 @@ class DrugController @Autowired internal constructor(
 
 
     @PostMapping("/getPageDrugAlertInfoTotalByDrugName")
-    fun getPageDrugAlertInfoTotalByDrugName(@RequestBody map: Map<String?, String?>): Result {
+    fun getPageDrugAlertInfoTotalByDrugName(@RequestBody drugName: String): Result {
         val user = get()
         val uid = user.uid
-        val drugName = map["drugName"]
-        return if (drugName!!.isNotEmpty()) {
+        return if (drugName.isNotEmpty()) {
             success(drugService.getPageDrugAlertInfoTotalByDrugName(uid, drugName))
         } else {
             success(drugService.getPageDrugAlertInfoTotal(uid))
@@ -114,63 +125,53 @@ class DrugController @Autowired internal constructor(
     }
 
     @PostMapping("/insertDrug")
-    fun insertDrug(@RequestBody map: Map<String?, String>): Result {
+    fun insertDrug(@RequestBody dataInsertDrug: DataInsertDrug): Result {
+        val (drugName, frequency, unit, dosage, isActive) = dataInsertDrug
         val drugId = snowFlakeDrug.nextId()
         val user = get()
         val uid = user.uid
-        val drugName = map["drugName"]
-        val frequency = map["frequency"]
-        val unit = map["unit"]
-        val dosage = map["dosage"]!!.toFloat()
-        val isActive = map["isActive"]!!.toInt()
         drugService.insertDrug(drugId, uid, drugName, frequency, unit, dosage, isActive)
         return success()
     }
 
     @PostMapping("/insertDrugAndAlert")
-    fun insertDrugAndAlert(@RequestBody map: Map<String?, String>): Result {
+    fun insertDrugAndAlert(@RequestBody dataInsertDrugAndAlert: DataInsertDrugAndAlert): Result {
+        val (drugName, frequency, unit, dosage, isActive, alertTimeRow) = dataInsertDrugAndAlert
         val drugId = snowFlakeDrug.nextId()
         val user = get()
         val uid = user.uid
-        val drugName = map["drugName"]
-        val frequency = map["frequency"]
-        val unit = map["unit"]
-        val dosage = map["dosage"]!!.toFloat()
-        val isActive = map["isActive"]!!.toInt()
         logger.debug("uid{}", uid)
         drugService.insertDrug(drugId, uid, drugName, frequency, unit, dosage, isActive)
         val alertId = snowFlakeDrugAlert.nextId()
-        val alertTime = map["alertTime"]?.let { LocalTime.parse(it) }
+        val alertTime = alertTimeRow.let { LocalTime.parse(it) }
         val eatTime = LocalDate.parse("2000-01-01")
         drugAlertService.insertDrugAlert(alertId, uid, drugId, alertTime, eatTime)
         return success()
     }
 
+
     @PostMapping("/updateDrugIsActiveById")
-    fun updateDrugIsActiveById(@RequestBody map: Map<String?, String>): Result {
-        val drugId = map["drugId"]!!.toLong()
+    fun updateDrugIsActiveById(@RequestBody dataUpdateDrugIsActiveById: DataUpdateDrugIsActiveById): Result {
+        val (drugId, isActive) = dataUpdateDrugIsActiveById
         val user = get()
         val uid = user.uid
-        val isActive = map["isActive"]!!.toInt()
         drugService.updateDrugIsActiveById(drugId, uid, isActive)
         return success()
     }
 
     @PostMapping("/deleteDrugById")
-    fun deleteDrugById(@RequestBody map: Map<String?, String>): Result {
+    fun deleteDrugById(@RequestBody drugId: Long): Result {
         val user = get()
         val uid = user.uid
-        val drugId = map["drugId"]!!.toLong()
         drugService.deleteDrugById(uid, drugId)
         return success()
     }
 
     @PostMapping("/deleteDrugAndDrugAlertById")
-    fun deleteDrugAndDrugAlertById(@RequestBody map: Map<String?, String>): Result {
-        val alertId = map["alertId"]!!.toLong()
+    fun deleteDrugAndDrugAlertById(@RequestBody dataUpdateDrugAlertIsActiveById: DataUpdateDrugAlertIsActiveById): Result {
+        val (alertId, drugId) = dataUpdateDrugAlertIsActiveById
         val user = get()
         val uid = user.uid
-        val drugId = map["drugId"]!!.toLong()
         drugService.deleteDrugById(uid, drugId)
         drugAlertService.deleteDrugAlertById(alertId, uid, drugId)
         return success()

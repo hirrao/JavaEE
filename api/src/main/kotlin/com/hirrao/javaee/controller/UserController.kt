@@ -14,6 +14,20 @@ import org.springframework.web.bind.annotation.*
 class UserController @Autowired constructor(private val userService: UserService) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
+    data class DataUpdate(val phoneNumber: String, val sex: String, val birthday: String)
+    data class DataModifyUserInfo(
+        val uid: Long,
+        val userName: String,
+        val phoneNumber: String,
+        val sex: String,
+        val birthday: String,
+        val permission: Int
+    )
+
+    data class DataSearchUserByCondition(
+        val curPage: Int, val size: Int, val searchCondition: String, val conditionValue: String
+    )
+
     @GetMapping("/userInfo")
     fun userInfo(): Result {
         val user = get()
@@ -22,13 +36,11 @@ class UserController @Autowired constructor(private val userService: UserService
     }
 
     @PutMapping("/update")
-    fun update(@RequestBody map: Map<String?, String?>): Result {
-        logger.debug("更新用户信息{}", map)
+    fun update(@RequestBody dataUpdate: DataUpdate): Result {
+        val (phoneNumber, sex, birthday) = dataUpdate
+        logger.debug("更新用户信息{}", dataUpdate)
         val user = get()
         val uid = user.uid
-        val phoneNumber = map["phoneNumber"]
-        val sex = map["sex"]
-        val birthday = map["birthday"]
         userService.update(uid, phoneNumber, sex, birthday)
         return success()
     }
@@ -41,73 +53,46 @@ class UserController @Autowired constructor(private val userService: UserService
     }
 
     @PostMapping("/modifyUserInfo")
-    fun modifyUserInfo(@RequestBody map: Map<String?, String>): Result {
-//        User user = ThreadLocalUtil.get();
-//        var uid = user.uid;
-        val uid = map["uid"]!!.toLong()
-        val userName = map["userName"]
-        val phoneNumber = map["phoneNumber"]
-        val sex = map["sex"]
-        val birthday = map["birthday"]
-        val permission = map["permission"]!!.toInt()
-        println("modifyUserInfo uid:$uid")
-        println("modifyUserInfo userName:$userName")
-        println("modifyUserInfo sex:$sex")
-        println("modifyUserInfo birthday:$birthday")
-        println("modifyUserInfo permission:$permission")
-
+    fun modifyUserInfo(@RequestBody dataModifyUserInfo: DataModifyUserInfo): Result {
+        val (uid, userName, phoneNumber, sex, birthday, permission) = dataModifyUserInfo
         userService.modifyUserInfo(uid, userName, phoneNumber, sex, birthday, permission)
         return success()
     }
 
     @PostMapping("/updateUserName")
-    fun updateUserName(@RequestBody map: Map<String?, String?>): Result {
+    fun updateUserName(@RequestBody userName: String): Result {
         val user = get()
         val uid = user.uid
-        val userName = map["userName"]
         userService.updateUserName(uid, userName)
         return success()
     }
 
     @PostMapping("/updateSex")
-    fun updateSex(@RequestBody map: Map<String?, String?>): Result {
+    fun updateSex(@RequestBody sex: String): Result {
         val user = get()
         val uid = user.uid
-        val sex = map["sex"]
         userService.updateSex(uid, sex)
         return success()
     }
 
     @PostMapping("/updateBirthday")
-    fun updateBirthday(@RequestBody map: Map<String?, String?>): Result {
+    fun updateBirthday(@RequestBody birthday: String): Result {
         val user = get()
         val uid = user.uid
-        val birthday = map["birthday"]
         userService.updateBirthday(uid, birthday)
         return success()
     }
 
     @PostMapping("/deleteUser")
-    fun deleteUser(@RequestBody map: Map<String?, String>): Result {
-//        System.out.println(map.size());
-//        User user = ThreadLocalUtil.get();
-        val uid = map["uid"]!!.toLong()
+    fun deleteUser(@RequestBody uid: Long): Result {
         userService.deleteUser(uid)
-        println("delete uid:$uid")
         return success()
     }
 
     @PostMapping("/searchUserByCondition")
-    fun searchUserByCondition(@RequestBody map: Map<String?, String>): Result {
-        val curPage = map["curPage"]!!.toInt()
-        val size = map["size"]!!.toInt()
-        val searchCondition = map["searchCondition"]
-        val conditionValue = map["conditionValue"]
-        println("curPage:$curPage")
-        println("size:$size")
-        println("searchCondition:$searchCondition")
-        println("conditionValue:$conditionValue")
-        return if (!searchCondition!!.isEmpty() && !conditionValue!!.isEmpty()) {
+    fun searchUserByCondition(@RequestBody dataSearchUserByCondition: DataSearchUserByCondition): Result {
+        val (curPage, size, searchCondition, conditionValue) = dataSearchUserByCondition
+        return if (searchCondition.isNotEmpty() && conditionValue.isNotEmpty()) {
             success(
                 userService.searchUserByCondition(
                     curPage, size, searchCondition, conditionValue

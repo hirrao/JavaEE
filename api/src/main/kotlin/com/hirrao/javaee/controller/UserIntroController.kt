@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*
 class UserIntroController @Autowired constructor(private val userIntroService: UserIntroService) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
+    data class DataUpdate(val uid: Long, val intro: String)
+
     @GetMapping("/get")
     fun get(): Result {
         val user = ThreadLocalUtil.get()
@@ -25,10 +27,9 @@ class UserIntroController @Autowired constructor(private val userIntroService: U
     }
 
     @PostMapping("/update")
-    fun update(@RequestBody map: Map<String?, String>): Result {
-        logger.debug("intro/update接受请求 {}", map)
-        val uid = map["uid"]!!.toLong()
-        val userIntro = map["intro"]
+    fun update(@RequestBody dataUpdate: DataUpdate): Result {
+        logger.debug("intro/update接受请求 {}", dataUpdate)
+        val (uid, userIntro) = dataUpdate
         userIntroService.updateUserIntro(uid, userIntro)
         return success("修改成功")
     }

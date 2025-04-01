@@ -24,7 +24,7 @@
               placeholder="请输入低压（舒张压）"
             ></el-input-number>
           </el-form-item>
-          <el-form-item label="测量时间" prop="" recordTime>
+          <el-form-item label="测量时间" prop="" record-time>
             <el-date-picker
               v-model="addBloodPressure.recordTime"
               placeholder="请选择测量时间"
@@ -33,8 +33,8 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item align="center">
-            <el-button size="mini" type="primary" @click="AddRecord">添加</el-button>
-            <el-button size="mini" type="info" @click="CloseDialog">取消</el-button>
+            <el-button  type="primary" @click="AddRecord">添加</el-button>
+            <el-button  type="info" @click="CloseDialog">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -42,10 +42,10 @@
 
     <div style="display: flex; align-items: center; width: 99vw">
       <div class="blood-pressure-log-chart" style="width: 80%">
-        <BPLChart1 :chartData="chartData1" />
+        <BPLChart1 :chart-data="chartData1" />
       </div>
       <div class="blood-pressure-log-chart" style="width: 20%">
-        <BPLChart2 :chartData="riskLevel" />
+        <BPLChart2 :chart-data="riskLevel" />
       </div>
     </div>
     <div class="blood-pressure-log-detail-table">

@@ -40,7 +40,7 @@
         <el-table-column label="用量" prop="dosage" width="100" />
         <el-table-column label="单位" prop="unit" width="100" />
         <el-table-column align="center" header-align="center" label="是否食用" prop="isEat">
-          <template v-slot="scoped">
+          <template #default="scoped">
             <el-radio-group
               v-model="scoped.row.isEat"
               :disabled="scoped.row.isEat"
@@ -106,7 +106,7 @@
 
       <el-table :data="drugAlerts" class="table">
         <el-table-column type="expand">
-          <template v-slot="props">
+          <template #default="props">
             <div>
               <p style="margin-left: 20px">提醒id: {{ props.row.alertId }}</p>
               <p style="margin-left: 20px">药物id: {{ props.row.drugId }}</p>
@@ -121,7 +121,7 @@
         <el-table-column label="时间" prop="alertTime" />
         <el-table-column label="药物名" prop="drugName" />
         <el-table-column label="是否启用" prop="isActive">
-          <template v-slot="scoped">
+          <template #default="scoped">
             <el-switch
               v-model="scoped.row.isActive"
               :active-value="1"
@@ -261,7 +261,7 @@ const addDrugAlert = ref({
 })
 const drugManageVisible = ref(false)
 
-function checkIsForget(alertTime: String) {
+function checkIsForget(alertTime: string) {
   console.log(alertTime)
   const eatDate = alertTime.split(':')
   const date = new Date()
@@ -289,14 +289,13 @@ function showDrugManage() {
   drugManageVisible.value = !drugManageVisible.value
 }
 
-function checkIsEat(eatTime: String) {
+function checkIsEat(eatTime: string) {
   console.log(eatTime)
   const eatDate = eatTime.split('-')
   const date = new Date()
   if (date.getFullYear() - parseInt(eatDate[0]) > 0) return false
   if (date.getMonth() + 1 - parseInt(eatDate[1]) > 0) return false
-  if (date.getDay() + 1 - parseInt(eatDate[2]) > 0) return false
-  return true
+  return date.getDay() + 1 - parseInt(eatDate[2]) <= 0
 }
 
 async function eatDrugConfirm(row: any) {
@@ -350,7 +349,7 @@ async function searchTotalDrug() {
 
 async function searchByPage() {
   console.log('uid:' + localStorage.getItem('uid'))
-  searchTotalDrug()
+  await searchTotalDrug()
   instance
     .post(
       '/drug/getPageDrugsInfoByDrugName',
@@ -371,8 +370,7 @@ async function searchByPage() {
       drugs.value = response.data.data
       if (drugs.value != undefined) {
         for (let i = 0; i < drugs.value.length; ++i) {
-          let isEat = checkIsEat(drugs.value[i].eatTime)
-          drugs.value[i]['isEat'] = isEat
+          drugs.value[i]['isEat'] = checkIsEat(drugs.value[i].eatTime)
         }
       }
     })
@@ -401,7 +399,7 @@ async function searchTotalDrugAlert() {
 
 async function searchAlertByPage() {
   console.log('uid:' + localStorage.getItem('uid'))
-  searchTotalDrug()
+  await searchTotalDrug()
   instance
     .post(
       '/drug/getPageDrugsAlertInfoByDrugName',
@@ -603,10 +601,7 @@ async function saveDrugAlert() {
 
 .card {
   padding: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 20px auto;
   width: 90%;
   min-height: 80%;
 }

@@ -165,10 +165,7 @@ p {
   width: 40%;
   height: auto;
   object-fit: cover;
-  margin-top: 10px;
-  margin-left: 250px;
-  margin-right: auto;
-  margin-bottom: 10px;
+  margin: 10px auto 10px 250px;
   border-radius: 10px;
 }
 

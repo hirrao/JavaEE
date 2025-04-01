@@ -1,12 +1,23 @@
 plugins {
+    java
     id("org.springframework.boot") version "3.4.1"
     id("io.spring.dependency-management") version "1.1.6"
     kotlin("jvm") version "2.1.0"
     kotlin("plugin.spring") version "2.1.0"
 }
 
+
+val getGitTag = {
+    try {
+        ProcessBuilder("git", "describe", "--tags").start().inputStream.bufferedReader().readText().trim()
+            .ifEmpty { "unknown" }
+    }catch (e: Exception){
+        "unknown"
+    }
+}
+
 group = "com.hirrao"
-version = "1.0.0"
+version = getGitTag()
 val springBootVersion = "3.4.1"
 val kotestVersion = "5.9.1"
 val kotlinVersion = "2.1.0"

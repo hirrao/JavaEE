@@ -48,8 +48,8 @@
       <el-dialog v-model="addArticlesDialogVisible" title="添加文章" width="50%">
         <el-form
           ref="form"
-          :model="addArticle"
           label-width="150px"
+          :model="addArticle"
           style="margin-left: auto; margin-right: auto"
         >
           <el-form-item class="dialogInput" label="标题" prop="title">
@@ -71,15 +71,15 @@
         </el-form>
       </el-dialog>
 
-      <el-table :data="articles" class="table">
+      <el-table class="table" :data="articles">
         <el-table-column label="ID" prop="id" width="80" />
         <el-table-column label="标题" prop="title" width="180" />
         <el-table-column label="描述" prop="description" width="300" />
         <el-table-column label="图片" prop="image" width="180">
           <template #default="scoped">
             <img
-              :src="scoped.row.image"
               alt="Article Image"
+              :src="scoped.row.image"
               style="width: 100px; height: 60px; object-fit: cover"
             />
           </template>
@@ -106,12 +106,12 @@
       </el-table>
 
       <el-pagination
+        class="paging"
         :current-page="currentPage"
+        layout="sizes,prev,pager,next,jumper,->,total"
         :page-size="pageSize"
         :page-sizes="[5, 10, 15, 20]"
         :total="total"
-        class="paging"
-        layout="sizes,prev,pager,next,jumper,->,total"
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
       >
@@ -121,8 +121,8 @@
     <el-dialog v-model="dialogVisible" title="修改文章信息" width="50%">
       <el-form
         ref="form"
-        :model="modifyArticle"
         label-width="150px"
+        :model="modifyArticle"
         style="margin-left: auto; margin-right: auto"
       >
         <el-form-item class="dialogInput" label="ID" prop="id">

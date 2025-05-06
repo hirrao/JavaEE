@@ -32,7 +32,7 @@
         </el-button>
       </div>
 
-      <el-table :data="drugs" :row-class-name="tableRowClassName" class="table" row-key="drugId">
+      <el-table class="table" :data="drugs" :row-class-name="tableRowClassName" row-key="drugId">
         <el-table-column label="Id" prop="drugId" width="200" />
         <el-table-column label="药物名" prop="drugName" width="250" />
         <el-table-column label="用药时间" prop="alertTime" width="150" />
@@ -46,20 +46,20 @@
               :disabled="scoped.row.isEat"
               @change="eatDrugConfirm(scoped.row)"
             >
-              <el-radio :value="true" label="true" size="small">是</el-radio>
-              <el-radio :value="false" label="false" size="small">否</el-radio>
+              <el-radio label="true" size="small" :value="true">是</el-radio>
+              <el-radio label="false" size="small" :value="false">否</el-radio>
             </el-radio-group>
           </template>
         </el-table-column>
       </el-table>
 
       <el-pagination
+        class="paging"
         :current-page="currentPage"
+        layout="sizes,prev,pager,next,jumper,->,total"
         :page-size="pageSize"
         :page-sizes="[5, 10, 15, 20]"
         :total="total"
-        class="paging"
-        layout="sizes,prev,pager,next,jumper,->,total"
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
       >
@@ -104,7 +104,7 @@
         </el-button>
       </div>
 
-      <el-table :data="drugAlerts" class="table">
+      <el-table class="table" :data="drugAlerts">
         <el-table-column type="expand">
           <template #default="props">
             <div>
@@ -124,10 +124,10 @@
           <template #default="scoped">
             <el-switch
               v-model="scoped.row.isActive"
-              :active-value="1"
-              :inactive-value="0"
               active-text="是"
+              :active-value="1"
               inactive-text="否"
+              :inactive-value="0"
               @change="updateIsAvtive(scoped.row)"
             />
           </template>
@@ -135,12 +135,12 @@
       </el-table>
 
       <el-pagination
+        class="paging"
         :current-page="currentPageAlert"
+        layout="sizes,prev,pager,next,jumper,->,total"
         :page-size="pageSizeAlert"
         :page-sizes="[5, 10, 15, 20]"
         :total="totalAlert"
-        class="paging"
-        layout="sizes,prev,pager,next,jumper,->,total"
         @current-change="handleCurrentChangeAlert"
         @size-change="handleSizeChangeAlert"
       >
@@ -150,8 +150,8 @@
     <el-dialog v-model="addDrugsDialogVisible" title="添加用药提醒" width="50%">
       <el-form
         ref="form"
-        :model="addDrugAlert"
         label-width="150px"
+        :model="addDrugAlert"
         style="margin-left: auto; margin-right: auto"
       >
         <el-form-item class="dialogInput" label="药物名" prop="drugName">

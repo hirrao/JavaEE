@@ -5,9 +5,9 @@
     </header>
 
     <el-menu
+      class="el-menu-demo"
       :default-active="currentRoute"
       :ellipsis="false"
-      class="el-menu-demo"
       mode="horizontal"
       router
       unique-opened

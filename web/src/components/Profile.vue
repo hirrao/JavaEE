@@ -29,8 +29,8 @@
       <el-dialog v-model="edit" title="修改个人资料" width="50%">
         <el-form
           ref="form"
-          :model="edit"
           label-width="150px"
+          :model="edit"
           style="margin-left: auto; margin-right: auto"
         >
           <el-form-item class="dialogInput" label="用户名" prop="userName">
@@ -68,7 +68,7 @@
         </div>
         <div>
           <el-card class="card">
-            <el-table :data="Blog" class="table">
+            <el-table class="table" :data="Blog">
               <el-table-column label="标题" prop="title" width="200" />
               <el-table-column label="发布时间" prop="createTime" width="180" />
               <el-table-column label="最后更改" prop="updateTime" width="180" />
@@ -92,7 +92,7 @@
                     class="tableButton"
                     icon="el-icon-delete"
                     type="danger"
-                    @click="(confirm = true), setBlog(scoped.row)"
+                    @click="((confirm = true), setBlog(scoped.row))"
                     >删除
                   </el-button>
                 </template>
@@ -102,9 +102,9 @@
               v-model:current-page="currentPage"
               v-model:page-size="pageSize"
               v-model:total="total"
-              :page-sizes="[5, 10, 15, 20]"
               class="paging"
               layout="sizes,prev,pager,next,jumper,->,total"
+              :page-sizes="[5, 10, 15, 20]"
               @current-change="handleCurrentChange"
               @size-change="handleSizeChange"
             >
@@ -145,8 +145,8 @@
             <quill-editor
               ref="editorRef"
               v-model:content="content"
-              :options="options"
               content-type="html"
+              :options="options"
             ></quill-editor>
           </div>
           <div>
@@ -262,7 +262,7 @@ const editProfile = async () => {
     if (birthday.value != null) localStorage.setItem('birthday', birthday.value)
     ElMessage('修改成功')
     window.location.href = '/profile'
-  } catch (error) {
+  } catch (_) {
     ElMessage.error('修改失败')
     window.location.href = '/profile'
   }

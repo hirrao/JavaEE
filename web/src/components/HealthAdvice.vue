@@ -1,10 +1,10 @@
 <template>
   <div class="article-list-container">
-    <el-row :gutter="20" class="article-list">
+    <el-row class="article-list" :gutter="20">
       <el-col v-for="article in paginatedArticles" :key="article.id" :span="24">
         <el-card class="article-item" shadow="hover">
           <div class="article-content-wrapper" @click="viewArticle(article)">
-            <img :src="article.image" alt="Article Image" class="article-image" />
+            <img alt="Article Image" class="article-image" :src="article.image" />
             <div class="article-content">
               <h3>{{ article.title }}</h3>
               <p>{{ article.description }}</p>
@@ -16,12 +16,12 @@
 
     <el-pagination
       v-model="currentPage"
-      :page-size="pageSize"
-      :total="articles.length"
       background
       class="pagination"
       hide-on-single-page
       layout="prev, pager, next"
+      :page-size="pageSize"
+      :total="articles.length"
       @current-change="handlePageChange"
     />
 
@@ -29,7 +29,7 @@
       <div v-if="selectedArticle">
         <h2 style="text-align: center">{{ selectedArticle.title }}</h2>
         <!-- <h2>{{ selectedArticle.title }}</h2> -->
-        <img :src="selectedArticle.image" alt="Article Image" class="dialog-article-image" />
+        <img alt="Article Image" class="dialog-article-image" :src="selectedArticle.image" />
         <p class="indented-text">{{ selectedArticle.content }}</p>
       </div>
     </el-dialog>

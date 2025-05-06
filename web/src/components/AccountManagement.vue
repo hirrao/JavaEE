@@ -41,7 +41,7 @@
         </el-button>
       </div>
 
-      <el-table :data="Account" class="table">
+      <el-table class="table" :data="Account">
         <el-table-column label="uid" prop="uid" width="200" />
         <el-table-column label="用户名" prop="userName" width="180" />
         <el-table-column label="电话号码" prop="phoneNumber" width="160" />
@@ -71,9 +71,9 @@
         v-model:current-page="currentPage"
         v-model:page-size="pageSize"
         v-model:total="total"
-        :page-sizes="[5, 10, 15, 20]"
         class="paging"
         layout="sizes,prev,pager,next,jumper,->,total"
+        :page-sizes="[5, 10, 15, 20]"
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
       >
@@ -83,8 +83,8 @@
     <el-dialog v-model="dialogVisble" title="修改账号信息" width="50%">
       <el-form
         ref="form"
-        :model="modifyAccount"
         label-width="150px"
+        :model="modifyAccount"
         style="margin-left: auto; margin-right: auto"
       >
         <el-form-item class="dialogInput" label="id" prop="uid">
@@ -113,9 +113,9 @@
         </el-form-item>
         <el-form-item label="权限" prop="permission">
           <el-radio-group v-model="modifyAccount.permission">
-            <el-radio :value="-1" label="-1" size="large">封禁</el-radio>
-            <el-radio :value="0" label="0" size="large">普通用户</el-radio>
-            <el-radio :value="1" label="1" size="large">管理员</el-radio>
+            <el-radio label="-1" size="large" :value="-1">封禁</el-radio>
+            <el-radio label="0" size="large" :value="0">普通用户</el-radio>
+            <el-radio label="1" size="large" :value="1">管理员</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item align="center">

@@ -11,7 +11,7 @@
         >上传新的血压数据
       </el-button>
       <el-dialog v-model="addDialogVisble" title="添加血压记录" width="80%">
-        <el-form ref="form" :model="addBloodPressure" label-width="80px">
+        <el-form ref="form" label-width="80px" :model="addBloodPressure">
           <el-form-item label="高压（收缩压）" prop="SBP">
             <el-input-number
               v-model="addBloodPressure.SBP"
@@ -33,8 +33,8 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item align="center">
-            <el-button  type="primary" @click="AddRecord">添加</el-button>
-            <el-button  type="info" @click="CloseDialog">取消</el-button>
+            <el-button type="primary" @click="AddRecord">添加</el-button>
+            <el-button type="info" @click="CloseDialog">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>

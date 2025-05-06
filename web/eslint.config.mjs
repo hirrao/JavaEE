@@ -5,20 +5,27 @@ import vueEslintParser from 'vue-eslint-parser'
 import { parser } from 'typescript-eslint'
 
 export default [
- ...pluginVue.configs['flat/recommended'],
- prettier,
- ...tseslint.configs['recommended'],
+  ...pluginVue.configs['flat/recommended'],
+  prettier,
+  ...tseslint.configs['recommended'],
   {
     languageOptions: {
-      parser: vueEslintParser, 
+      parser: vueEslintParser,
       parserOptions: {
         parser: parser,
         ecmaVersion: 2020,
         sourceType: 'module'
       }
     },
-    rules:{
-      '@typescript-eslint/no-unused-vars': 'warn'
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'warn',
+      'vue/multi-word-component-names': 'off',
+      'vue/attributes-order': [
+        'error',
+        {
+          alphabetical: true
+        }
+      ]
     }
   }
 ]

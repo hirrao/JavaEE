@@ -12,8 +12,8 @@
               type="text"
             ></el-input>
             <el-button
-              :disabled="isButtonDisabled"
               class="button1"
+              :disabled="isButtonDisabled"
               type="primary"
               @click="sendVerificationCode"
             >

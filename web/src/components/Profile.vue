@@ -1,164 +1,3 @@
-<template>
-  <div class="main-profile">
-    <section class="profile">
-      <div class="sidebar">
-        <button @click="edit = true">编辑个人资料</button>
-        <div class="detail">
-          <h2>{{ userName }}</h2>
-          <p>性别：{{ sex }}</p>
-          <p>出生日期：{{ birthday }}</p>
-        </div>
-        <p>uid：{{ uid }}</p>
-        <p>
-          个性签名：
-          <br />
-          {{ intro }}
-        </p>
-      </div>
-
-      <el-dialog v-model="confirm" style="" title="" width="30%">
-        <div style="text-align: center">
-          <h1>确认删除吗</h1>
-        </div>
-        <div v-if="selectedBlog" style="display: flex; justify-content: center; gap: 10px">
-          <button @click="cancle">取消</button>
-          <button @click="deleteBlog(selectedBlog)">确认</button>
-        </div>
-      </el-dialog>
-
-      <el-dialog v-model="edit" title="修改个人资料" width="50%">
-        <el-form
-          ref="form"
-          label-width="150px"
-          :model="edit"
-          style="margin-left: auto; margin-right: auto"
-        >
-          <el-form-item class="dialogInput" label="用户名" prop="userName">
-            <el-input v-model="userName" placeholder="请输入用户名"></el-input>
-          </el-form-item>
-          <el-form-item class="dialogInput" label="个性签名" prop="intro">
-            <el-input v-model="intro" placeholder="请输入个性签名"></el-input>
-          </el-form-item>
-          <el-form-item label="性别" prop="sex">
-            <el-radio-group v-model="sex">
-              <el-radio label="男" size="large" value="男">男</el-radio>
-              <el-radio label="女" size="large" value="女">女</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="生日" prop="birthday">
-            <el-date-picker
-              v-model="birthday"
-              default-value="2022-01-30"
-              placeholder="请选择生日"
-              type="datetime"
-              value-format="YYYY-MM-DD"
-            ></el-date-picker>
-          </el-form-item>
-          <el-form-item align="center">
-            <el-button size="small" type="primary" @click="editProfile">更改</el-button>
-            <el-button size="small" type="info" @click="edit = false">取消</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
-
-      <div v-if="status_" class="main-content">
-        <div class="stats">
-          <h3>我的日志</h3>
-          <button @click="switch_status">增加日志</button>
-        </div>
-        <div>
-          <el-card class="card">
-            <el-table class="table" :data="Blog">
-              <el-table-column label="标题" prop="title" width="200" />
-              <el-table-column label="发布时间" prop="createTime" width="180" />
-              <el-table-column label="最后更改" prop="updateTime" width="180" />
-              <el-table-column align="center" header-align="center" label="操作">
-                <template #default="scoped">
-                  <el-button
-                    class="tableButton"
-                    icon="el-icon-edit"
-                    type="primary"
-                    @click="viewBlog(scoped.row)"
-                    >查看
-                  </el-button>
-                  <el-button
-                    class="tableButton"
-                    icon="el-icon-edit"
-                    type="primary"
-                    @click="updateBlog(scoped.row)"
-                    >更改
-                  </el-button>
-                  <el-button
-                    class="tableButton"
-                    icon="el-icon-delete"
-                    type="danger"
-                    @click="((confirm = true), setBlog(scoped.row))"
-                    >删除
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-            <el-pagination
-              v-model:current-page="currentPage"
-              v-model:page-size="pageSize"
-              v-model:total="total"
-              class="paging"
-              layout="sizes,prev,pager,next,jumper,->,total"
-              :page-sizes="[5, 10, 15, 20]"
-              @current-change="handleCurrentChange"
-              @size-change="handleSizeChange"
-            >
-            </el-pagination>
-          </el-card>
-          <el-dialog v-model="dialogVisible" append-to-body title="" width="80%">
-            <div v-if="selectedBlog" style="text-align: center">
-              <h1 style="padding-left: 40%; padding-right: 40%">{{ selectedBlog.title }}</h1>
-              <div style="padding-left: 5%; padding-right: 5%" v-html="selectedBlog.content"></div>
-            </div>
-          </el-dialog>
-          <el-dialog v-model="confirm" style="" title="" width="30%">
-            <div style="text-align: center">
-              <h1>确认删除吗</h1>
-            </div>
-            <div v-if="selectedBlog" style="display: flex; justify-content: center; gap: 10px">
-              <button @click="confirm = false">取消</button>
-              <button @click="deleteBlog(selectedBlog)">确认</button>
-            </div>
-          </el-dialog>
-        </div>
-      </div>
-      <div v-else class="main-content">
-        <div class="stats2">
-          <div style="height: 50px">
-            <span>我的日志</span>
-            <button style="float: right" @click="switch_status">返回</button>
-            <button style="float: right" @click="handleSubmit">提交</button>
-          </div>
-        </div>
-        <div class="main">
-          <div>
-            <h2>请输入标题：</h2>
-            <input v-model="title" class="title" maxlength="30" type="text" />
-          </div>
-          <h2>请输入正文：</h2>
-          <div class="editor">
-            <quill-editor
-              ref="editorRef"
-              v-model:content="content"
-              content-type="html"
-              :options="options"
-            ></quill-editor>
-          </div>
-          <div>
-            <!-- <button @click="print">click me</button> -->
-          </div>
-        </div>
-        <!-- <div v-html="content" style="width: 100px;"></div> -->
-      </div>
-    </section>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { nextTick, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
@@ -486,6 +325,167 @@ onMounted(async () => {
   initTitle()
 })
 </script>
+
+<template>
+  <div class="main-profile">
+    <section class="profile">
+      <div class="sidebar">
+        <button @click="edit = true">编辑个人资料</button>
+        <div class="detail">
+          <h2>{{ userName }}</h2>
+          <p>性别：{{ sex }}</p>
+          <p>出生日期：{{ birthday }}</p>
+        </div>
+        <p>uid：{{ uid }}</p>
+        <p>
+          个性签名：
+          <br />
+          {{ intro }}
+        </p>
+      </div>
+
+      <el-dialog v-model="confirm" style="" title="" width="30%">
+        <div style="text-align: center">
+          <h1>确认删除吗</h1>
+        </div>
+        <div v-if="selectedBlog" style="display: flex; justify-content: center; gap: 10px">
+          <button @click="cancle">取消</button>
+          <button @click="deleteBlog(selectedBlog)">确认</button>
+        </div>
+      </el-dialog>
+
+      <el-dialog v-model="edit" title="修改个人资料" width="50%">
+        <el-form
+          ref="form"
+          label-width="150px"
+          :model="edit"
+          style="margin-left: auto; margin-right: auto"
+        >
+          <el-form-item class="dialogInput" label="用户名" prop="userName">
+            <el-input v-model="userName" placeholder="请输入用户名"></el-input>
+          </el-form-item>
+          <el-form-item class="dialogInput" label="个性签名" prop="intro">
+            <el-input v-model="intro" placeholder="请输入个性签名"></el-input>
+          </el-form-item>
+          <el-form-item label="性别" prop="sex">
+            <el-radio-group v-model="sex">
+              <el-radio label="男" size="large" value="男">男</el-radio>
+              <el-radio label="女" size="large" value="女">女</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="生日" prop="birthday">
+            <el-date-picker
+              v-model="birthday"
+              default-value="2022-01-30"
+              placeholder="请选择生日"
+              type="datetime"
+              value-format="YYYY-MM-DD"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item align="center">
+            <el-button size="small" type="primary" @click="editProfile">更改</el-button>
+            <el-button size="small" type="info" @click="edit = false">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+
+      <div v-if="status_" class="main-content">
+        <div class="stats">
+          <h3>我的日志</h3>
+          <button @click="switch_status">增加日志</button>
+        </div>
+        <div>
+          <el-card class="card">
+            <el-table class="table" :data="Blog">
+              <el-table-column label="标题" prop="title" width="200" />
+              <el-table-column label="发布时间" prop="createTime" width="180" />
+              <el-table-column label="最后更改" prop="updateTime" width="180" />
+              <el-table-column align="center" header-align="center" label="操作">
+                <template #default="scoped">
+                  <el-button
+                    class="tableButton"
+                    icon="el-icon-edit"
+                    type="primary"
+                    @click="viewBlog(scoped.row)"
+                    >查看
+                  </el-button>
+                  <el-button
+                    class="tableButton"
+                    icon="el-icon-edit"
+                    type="primary"
+                    @click="updateBlog(scoped.row)"
+                    >更改
+                  </el-button>
+                  <el-button
+                    class="tableButton"
+                    icon="el-icon-delete"
+                    type="danger"
+                    @click="((confirm = true), setBlog(scoped.row))"
+                    >删除
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-pagination
+              v-model:current-page="currentPage"
+              v-model:page-size="pageSize"
+              v-model:total="total"
+              class="paging"
+              layout="sizes,prev,pager,next,jumper,->,total"
+              :page-sizes="[5, 10, 15, 20]"
+              @current-change="handleCurrentChange"
+              @size-change="handleSizeChange"
+            >
+            </el-pagination>
+          </el-card>
+          <el-dialog v-model="dialogVisible" append-to-body title="" width="80%">
+            <div v-if="selectedBlog" style="text-align: center">
+              <h1 style="padding-left: 40%; padding-right: 40%">{{ selectedBlog.title }}</h1>
+              <div style="padding-left: 5%; padding-right: 5%" v-html="selectedBlog.content"></div>
+            </div>
+          </el-dialog>
+          <el-dialog v-model="confirm" style="" title="" width="30%">
+            <div style="text-align: center">
+              <h1>确认删除吗</h1>
+            </div>
+            <div v-if="selectedBlog" style="display: flex; justify-content: center; gap: 10px">
+              <button @click="confirm = false">取消</button>
+              <button @click="deleteBlog(selectedBlog)">确认</button>
+            </div>
+          </el-dialog>
+        </div>
+      </div>
+      <div v-else class="main-content">
+        <div class="stats2">
+          <div style="height: 50px">
+            <span>我的日志</span>
+            <button style="float: right" @click="switch_status">返回</button>
+            <button style="float: right" @click="handleSubmit">提交</button>
+          </div>
+        </div>
+        <div class="main">
+          <div>
+            <h2>请输入标题：</h2>
+            <input v-model="title" class="title" maxlength="30" type="text" />
+          </div>
+          <h2>请输入正文：</h2>
+          <div class="editor">
+            <quill-editor
+              ref="editorRef"
+              v-model:content="content"
+              content-type="html"
+              :options="options"
+            ></quill-editor>
+          </div>
+          <div>
+            <!-- <button @click="print">click me</button> -->
+          </div>
+        </div>
+        <!-- <div v-html="content" style="width: 100px;"></div> -->
+      </div>
+    </section>
+  </div>
+</template>
 
 <style>
 .main-profile {

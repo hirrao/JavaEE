@@ -1,40 +1,3 @@
-<template>
-  <div class="header-nav-container">
-    <header>
-      <h2>智慧心康</h2>
-    </header>
-
-    <el-menu
-      class="el-menu-demo"
-      :default-active="currentRoute"
-      :ellipsis="false"
-      mode="horizontal"
-      router
-      unique-opened
-      @select="handleSelect"
-    >
-      <el-menu-item index="/">首页</el-menu-item>
-      <template v-if="isAdmin()">
-        <el-menu-item index="/accountManagement">账号管理</el-menu-item>
-        <el-menu-item index="/healthAdviceAdmin">文章管理</el-menu-item>
-      </template>
-      <template v-else>
-        <el-menu-item index="/bloodPressure">血压管理</el-menu-item>
-        <el-menu-item index="/medicine">药物管理</el-menu-item>
-        <el-menu-item index="/healthAdvice">健康一言</el-menu-item>
-      </template>
-      <template v-if="isLoggedIn">
-        <el-menu-item index="/profile">{{ userName }}</el-menu-item>
-        <el-menu-item @click="logout">登出</el-menu-item>
-      </template>
-      <template v-else>
-        <el-menu-item index="/login">登录</el-menu-item>
-        <el-menu-item index="/register">注册</el-menu-item>
-      </template>
-    </el-menu>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -90,6 +53,43 @@ function isAdmin() {
   return false
 }
 </script>
+
+<template>
+  <div class="header-nav-container">
+    <header>
+      <h2>智慧心康</h2>
+    </header>
+
+    <el-menu
+      class="el-menu-demo"
+      :default-active="currentRoute"
+      :ellipsis="false"
+      mode="horizontal"
+      router
+      unique-opened
+      @select="handleSelect"
+    >
+      <el-menu-item index="/">首页</el-menu-item>
+      <template v-if="isAdmin()">
+        <el-menu-item index="/accountManagement">账号管理</el-menu-item>
+        <el-menu-item index="/healthAdviceAdmin">文章管理</el-menu-item>
+      </template>
+      <template v-else>
+        <el-menu-item index="/bloodPressure">血压管理</el-menu-item>
+        <el-menu-item index="/medicine">药物管理</el-menu-item>
+        <el-menu-item index="/healthAdvice">健康一言</el-menu-item>
+      </template>
+      <template v-if="isLoggedIn">
+        <el-menu-item index="/profile">{{ userName }}</el-menu-item>
+        <el-menu-item @click="logout">登出</el-menu-item>
+      </template>
+      <template v-else>
+        <el-menu-item index="/login">登录</el-menu-item>
+        <el-menu-item index="/register">注册</el-menu-item>
+      </template>
+    </el-menu>
+  </div>
+</template>
 
 <style>
 .header-nav-container {

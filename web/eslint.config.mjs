@@ -25,6 +25,12 @@ export default [
         {
           alphabetical: true
         }
+      ],
+      'vue/component-tags-order': [
+        'error',
+        {
+          order: ['script', 'template', 'style']
+        }
       ]
     }
   }

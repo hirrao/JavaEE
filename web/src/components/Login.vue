@@ -1,26 +1,3 @@
-<template>
-  <div class="login-form">
-    <el-form ref="form" label-width="80px" @submit.prevent="handleSubmit">
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="username" placeholder="请输入用户名" required type="text"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="password" placeholder="密码" required type="password"></el-input>
-      </el-form-item>
-      <el-form-item align="center">
-        <el-button size="mini" type="primary" @click="handleSubmit">登录</el-button>
-      </el-form-item>
-
-      <div class="tips" style="float: left">
-        <el-link underline="true" @click="retrievePWD">忘记密码</el-link>
-      </div>
-      <div class="tips" style="float: right">
-        <el-link @click="regis">还没有账号？点击注册</el-link>
-      </div>
-    </el-form>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import router from '@/router'
 import { ref } from 'vue'
@@ -86,6 +63,29 @@ const regis = () => {
   router.push('/register')
 }
 </script>
+
+<template>
+  <div class="login-form">
+    <el-form ref="form" label-width="80px" @submit.prevent="handleSubmit">
+      <el-form-item label="用户名" prop="username">
+        <el-input v-model="username" placeholder="请输入用户名" required type="text"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="password" placeholder="密码" required type="password"></el-input>
+      </el-form-item>
+      <el-form-item align="center">
+        <el-button size="mini" type="primary" @click="handleSubmit">登录</el-button>
+      </el-form-item>
+
+      <div class="tips" style="float: left">
+        <el-link underline="true" @click="retrievePWD">忘记密码</el-link>
+      </div>
+      <div class="tips" style="float: right">
+        <el-link @click="regis">还没有账号？点击注册</el-link>
+      </div>
+    </el-form>
+  </div>
+</template>
 
 <style>
 .login-form {

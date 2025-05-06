@@ -1,88 +1,3 @@
-<template>
-  <div style="display: flex; flex-direction: column; align-items: center">
-    <div style="background: white; width: 99vw; text-align: center; margin-top: 2.5%">
-      <h2>这是您最近七天的血压数据</h2>
-      <el-button
-        id="dialogVisbleBtn"
-        size="large"
-        style="width: 10%"
-        type="primary"
-        @click="DialogVisble"
-        >上传新的血压数据
-      </el-button>
-      <el-dialog v-model="addDialogVisble" title="添加血压记录" width="80%">
-        <el-form ref="form" label-width="80px" :model="addBloodPressure">
-          <el-form-item label="高压（收缩压）" prop="SBP">
-            <el-input-number
-              v-model="addBloodPressure.SBP"
-              placeholder="请输入高压（收缩压）"
-            ></el-input-number>
-          </el-form-item>
-          <el-form-item label="低压（舒张压）" prop="DBP">
-            <el-input-number
-              v-model="addBloodPressure.DBP"
-              placeholder="请输入低压（舒张压）"
-            ></el-input-number>
-          </el-form-item>
-          <el-form-item label="测量时间" prop="" record-time>
-            <el-date-picker
-              v-model="addBloodPressure.recordTime"
-              placeholder="请选择测量时间"
-              type="datetime"
-              value-format="YYYY-MM-DD HH:mm:ss"
-            ></el-date-picker>
-          </el-form-item>
-          <el-form-item align="center">
-            <el-button type="primary" @click="AddRecord">添加</el-button>
-            <el-button type="info" @click="CloseDialog">取消</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
-    </div>
-
-    <div style="display: flex; align-items: center; width: 99vw">
-      <div class="blood-pressure-log-chart" style="width: 80%">
-        <BPLChart1 :chart-data="chartData1" />
-      </div>
-      <div class="blood-pressure-log-chart" style="width: 20%">
-        <BPLChart2 :chart-data="riskLevel" />
-      </div>
-    </div>
-    <div class="blood-pressure-log-detail-table">
-      <table>
-        <thead>
-          <tr>
-            <th>指标</th>
-            <th>最高</th>
-            <th>最低</th>
-            <th>平均</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>收缩压</td>
-            <td>{{ maxSBP }}</td>
-            <td>{{ minSBP }}</td>
-            <td>{{ avgSBP }}</td>
-          </tr>
-          <tr>
-            <td>舒张压</td>
-            <td>{{ maxDBP }}</td>
-            <td>{{ minDBP }}</td>
-            <td>{{ avgDBP }}</td>
-          </tr>
-          <tr>
-            <td>脉压差</td>
-            <td>{{ maxPP }}</td>
-            <td>{{ minPP }}</td>
-            <td>{{ avgPP }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
@@ -329,6 +244,91 @@ onMounted(() => {
   getTableData()
 })
 </script>
+
+<template>
+  <div style="display: flex; flex-direction: column; align-items: center">
+    <div style="background: white; width: 99vw; text-align: center; margin-top: 2.5%">
+      <h2>这是您最近七天的血压数据</h2>
+      <el-button
+        id="dialogVisbleBtn"
+        size="large"
+        style="width: 10%"
+        type="primary"
+        @click="DialogVisble"
+        >上传新的血压数据
+      </el-button>
+      <el-dialog v-model="addDialogVisble" title="添加血压记录" width="80%">
+        <el-form ref="form" label-width="80px" :model="addBloodPressure">
+          <el-form-item label="高压（收缩压）" prop="SBP">
+            <el-input-number
+              v-model="addBloodPressure.SBP"
+              placeholder="请输入高压（收缩压）"
+            ></el-input-number>
+          </el-form-item>
+          <el-form-item label="低压（舒张压）" prop="DBP">
+            <el-input-number
+              v-model="addBloodPressure.DBP"
+              placeholder="请输入低压（舒张压）"
+            ></el-input-number>
+          </el-form-item>
+          <el-form-item label="测量时间" prop="" record-time>
+            <el-date-picker
+              v-model="addBloodPressure.recordTime"
+              placeholder="请选择测量时间"
+              type="datetime"
+              value-format="YYYY-MM-DD HH:mm:ss"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item align="center">
+            <el-button type="primary" @click="AddRecord">添加</el-button>
+            <el-button type="info" @click="CloseDialog">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
+
+    <div style="display: flex; align-items: center; width: 99vw">
+      <div class="blood-pressure-log-chart" style="width: 80%">
+        <BPLChart1 :chart-data="chartData1" />
+      </div>
+      <div class="blood-pressure-log-chart" style="width: 20%">
+        <BPLChart2 :chart-data="riskLevel" />
+      </div>
+    </div>
+    <div class="blood-pressure-log-detail-table">
+      <table>
+        <thead>
+          <tr>
+            <th>指标</th>
+            <th>最高</th>
+            <th>最低</th>
+            <th>平均</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>收缩压</td>
+            <td>{{ maxSBP }}</td>
+            <td>{{ minSBP }}</td>
+            <td>{{ avgSBP }}</td>
+          </tr>
+          <tr>
+            <td>舒张压</td>
+            <td>{{ maxDBP }}</td>
+            <td>{{ minDBP }}</td>
+            <td>{{ avgDBP }}</td>
+          </tr>
+          <tr>
+            <td>脉压差</td>
+            <td>{{ maxPP }}</td>
+            <td>{{ minPP }}</td>
+            <td>{{ avgPP }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
 
 <style>
 .el-button {

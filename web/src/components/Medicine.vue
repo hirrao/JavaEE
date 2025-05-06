@@ -1,219 +1,3 @@
-<template>
-  <div>
-    <el-card body-style="justify-content: center;" class="card">
-      <h2 class="tital">用药提醒</h2>
-
-      <div class="searchConditionDiv">
-        <p style="margin-top: auto; margin-bottom: auto">根据药物名称查询：</p>
-        <el-input
-          v-model="conditionValue"
-          class="conditionInput"
-          clearable
-          placeholder=""
-          size="small"
-        ></el-input>
-        <el-button
-          style="height: 40px; margin-right: 5px; margin-top: auto; margin-bottom: auto"
-          type="primary"
-          @click="searchByCondition"
-          >搜索
-        </el-button>
-        <el-button
-          style="height: 40px; margin-top: auto; margin-bottom: auto"
-          type="danger"
-          @click="clearSearchCondition"
-          >清空
-        </el-button>
-        <el-button
-          style="height: 40px; margin-left: auto; margin-top: auto; margin-bottom: auto"
-          type="primary"
-          @click="showDrugManage"
-          >用药管理
-        </el-button>
-      </div>
-
-      <el-table class="table" :data="drugs" :row-class-name="tableRowClassName" row-key="drugId">
-        <el-table-column label="Id" prop="drugId" width="200" />
-        <el-table-column label="药物名" prop="drugName" width="250" />
-        <el-table-column label="用药时间" prop="alertTime" width="150" />
-        <el-table-column label="频率" prop="frequency" width="100" />
-        <el-table-column label="用量" prop="dosage" width="100" />
-        <el-table-column label="单位" prop="unit" width="100" />
-        <el-table-column align="center" header-align="center" label="是否食用" prop="isEat">
-          <template #default="scoped">
-            <el-radio-group
-              v-model="scoped.row.isEat"
-              :disabled="scoped.row.isEat"
-              @change="eatDrugConfirm(scoped.row)"
-            >
-              <el-radio label="true" size="small" :value="true">是</el-radio>
-              <el-radio label="false" size="small" :value="false">否</el-radio>
-            </el-radio-group>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <el-pagination
-        class="paging"
-        :current-page="currentPage"
-        layout="sizes,prev,pager,next,jumper,->,total"
-        :page-size="pageSize"
-        :page-sizes="[5, 10, 15, 20]"
-        :total="total"
-        @current-change="handleCurrentChange"
-        @size-change="handleSizeChange"
-      >
-      </el-pagination>
-    </el-card>
-
-    <br />
-    <br />
-
-    <el-card v-show="drugManageVisible" class="card">
-      <h2 class="tital">提醒管理</h2>
-
-      <div class="searchConditionDiv">
-        <p style="margin-top: auto; margin-bottom: auto">根据药物名称查询：</p>
-        <el-input
-          v-model="conditionValue"
-          class="conditionInput"
-          clearable
-          placeholder=""
-          size="small"
-        ></el-input>
-        <el-button
-          class="drugAlertBtn"
-          style="height: 40px; margin-right: 5px"
-          type="primary"
-          @click="searchByConditionAlert"
-          >搜索
-        </el-button>
-        <el-button
-          class="drugAlertBtn"
-          style="height: 40px"
-          type="danger"
-          @click="clearSearchConditionAlert"
-          >清空
-        </el-button>
-        <el-button
-          class="drugAlertBtn"
-          style="height: 40px; margin-left: auto"
-          type="primary"
-          @click="addDrugAlertsDialog"
-          >添加用药提醒
-        </el-button>
-      </div>
-
-      <el-table class="table" :data="drugAlerts">
-        <el-table-column type="expand">
-          <template #default="props">
-            <div>
-              <p style="margin-left: 20px">提醒id: {{ props.row.alertId }}</p>
-              <p style="margin-left: 20px">药物id: {{ props.row.drugId }}</p>
-              <p style="margin-left: 20px">频率: {{ props.row.frequency }}</p>
-              <p style="margin-left: 20px">剂量: {{ props.row.dosage }} {{ props.row.unit }}</p>
-              <el-button style="margin-left: 20px" type="danger" @click="deleteDrugAlert(props.row)"
-                >删除
-              </el-button>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="时间" prop="alertTime" />
-        <el-table-column label="药物名" prop="drugName" />
-        <el-table-column label="是否启用" prop="isActive">
-          <template #default="scoped">
-            <el-switch
-              v-model="scoped.row.isActive"
-              active-text="是"
-              :active-value="1"
-              inactive-text="否"
-              :inactive-value="0"
-              @change="updateIsAvtive(scoped.row)"
-            />
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <el-pagination
-        class="paging"
-        :current-page="currentPageAlert"
-        layout="sizes,prev,pager,next,jumper,->,total"
-        :page-size="pageSizeAlert"
-        :page-sizes="[5, 10, 15, 20]"
-        :total="totalAlert"
-        @current-change="handleCurrentChangeAlert"
-        @size-change="handleSizeChangeAlert"
-      >
-      </el-pagination>
-    </el-card>
-
-    <el-dialog v-model="addDrugsDialogVisible" title="添加用药提醒" width="50%">
-      <el-form
-        ref="form"
-        label-width="150px"
-        :model="addDrugAlert"
-        style="margin-left: auto; margin-right: auto"
-      >
-        <el-form-item class="dialogInput" label="药物名" prop="drugName">
-          <el-input v-model="addDrugAlert.drugName" placeholder="请输入药物名"></el-input>
-        </el-form-item>
-        <el-form-item class="dialogInput" label="用药频次" prop="frequency">
-          <el-select
-            v-model="addDrugAlert.frequency"
-            class="selectCon"
-            placeholder="用药频次"
-            size="small"
-          >
-            <el-option label="每天" value="每天" />
-            <el-option label="每两天" value="每两天" />
-            <el-option label="每三天" value="每三天" />
-            <el-option label="每四天" value="每四天" />
-            <el-option label="每五天" value="每五天" />
-            <el-option label="每六天" value="每六天" />
-            <el-option label="每周" value="每周" />
-          </el-select>
-        </el-form-item>
-        <el-form-item class="dialogInput" label="单位" prop="unit">
-          <el-select v-model="addDrugAlert.unit" class="selectCon" placeholder="单位" size="small">
-            <el-option label="毫克" value="毫克" />
-            <el-option label="毫升" value="毫升" />
-            <el-option label="微克" value="微克" />
-            <el-option label="克" value="克" />
-            <el-option label="片" value="片" />
-            <el-option label="支" value="支" />
-            <el-option label="粒" value="粒" />
-            <el-option label="包" value="包" />
-            <el-option label="瓶" value="瓶" />
-          </el-select>
-        </el-form-item>
-        <el-form-item class="dialogInput" label="剂量" prop="dosage">
-          <el-input v-model="addDrugAlert.dosage" placeholder="请输入剂量(小数)"></el-input>
-        </el-form-item>
-        <el-form-item class="dialogInput" label="是否启用" prop="isActive">
-          <el-switch
-            v-model="addDrugAlert.isActive"
-            active-text="是"
-            active-value="1"
-            inactive-text="否"
-            inactive-value="0"
-          />
-        </el-form-item>
-        <el-form-item class="dialogInput" label="提醒时间" prop="alertTime">
-          <el-time-picker
-            v-model="addDrugAlert.alertTime"
-            placeholder="提醒时间"
-            value-format="HH:mm:ss"
-          />
-        </el-form-item>
-        <el-form-item align="center">
-          <el-button size="small" type="primary" @click="saveDrugAlert">添加</el-button>
-          <el-button size="small" type="info" @click="closeAddDialog">取消</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { ElMessage } from 'element-plus'
 import instance from '@/utils/axios'
@@ -593,6 +377,222 @@ async function saveDrugAlert() {
   addDrugsDialogVisible.value = false
 }
 </script>
+
+<template>
+  <div>
+    <el-card body-style="justify-content: center;" class="card">
+      <h2 class="tital">用药提醒</h2>
+
+      <div class="searchConditionDiv">
+        <p style="margin-top: auto; margin-bottom: auto">根据药物名称查询：</p>
+        <el-input
+          v-model="conditionValue"
+          class="conditionInput"
+          clearable
+          placeholder=""
+          size="small"
+        ></el-input>
+        <el-button
+          style="height: 40px; margin-right: 5px; margin-top: auto; margin-bottom: auto"
+          type="primary"
+          @click="searchByCondition"
+          >搜索
+        </el-button>
+        <el-button
+          style="height: 40px; margin-top: auto; margin-bottom: auto"
+          type="danger"
+          @click="clearSearchCondition"
+          >清空
+        </el-button>
+        <el-button
+          style="height: 40px; margin-left: auto; margin-top: auto; margin-bottom: auto"
+          type="primary"
+          @click="showDrugManage"
+          >用药管理
+        </el-button>
+      </div>
+
+      <el-table class="table" :data="drugs" :row-class-name="tableRowClassName" row-key="drugId">
+        <el-table-column label="Id" prop="drugId" width="200" />
+        <el-table-column label="药物名" prop="drugName" width="250" />
+        <el-table-column label="用药时间" prop="alertTime" width="150" />
+        <el-table-column label="频率" prop="frequency" width="100" />
+        <el-table-column label="用量" prop="dosage" width="100" />
+        <el-table-column label="单位" prop="unit" width="100" />
+        <el-table-column align="center" header-align="center" label="是否食用" prop="isEat">
+          <template #default="scoped">
+            <el-radio-group
+              v-model="scoped.row.isEat"
+              :disabled="scoped.row.isEat"
+              @change="eatDrugConfirm(scoped.row)"
+            >
+              <el-radio label="true" size="small" :value="true">是</el-radio>
+              <el-radio label="false" size="small" :value="false">否</el-radio>
+            </el-radio-group>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-pagination
+        class="paging"
+        :current-page="currentPage"
+        layout="sizes,prev,pager,next,jumper,->,total"
+        :page-size="pageSize"
+        :page-sizes="[5, 10, 15, 20]"
+        :total="total"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+      >
+      </el-pagination>
+    </el-card>
+
+    <br />
+    <br />
+
+    <el-card v-show="drugManageVisible" class="card">
+      <h2 class="tital">提醒管理</h2>
+
+      <div class="searchConditionDiv">
+        <p style="margin-top: auto; margin-bottom: auto">根据药物名称查询：</p>
+        <el-input
+          v-model="conditionValue"
+          class="conditionInput"
+          clearable
+          placeholder=""
+          size="small"
+        ></el-input>
+        <el-button
+          class="drugAlertBtn"
+          style="height: 40px; margin-right: 5px"
+          type="primary"
+          @click="searchByConditionAlert"
+          >搜索
+        </el-button>
+        <el-button
+          class="drugAlertBtn"
+          style="height: 40px"
+          type="danger"
+          @click="clearSearchConditionAlert"
+          >清空
+        </el-button>
+        <el-button
+          class="drugAlertBtn"
+          style="height: 40px; margin-left: auto"
+          type="primary"
+          @click="addDrugAlertsDialog"
+          >添加用药提醒
+        </el-button>
+      </div>
+
+      <el-table class="table" :data="drugAlerts">
+        <el-table-column type="expand">
+          <template #default="props">
+            <div>
+              <p style="margin-left: 20px">提醒id: {{ props.row.alertId }}</p>
+              <p style="margin-left: 20px">药物id: {{ props.row.drugId }}</p>
+              <p style="margin-left: 20px">频率: {{ props.row.frequency }}</p>
+              <p style="margin-left: 20px">剂量: {{ props.row.dosage }} {{ props.row.unit }}</p>
+              <el-button style="margin-left: 20px" type="danger" @click="deleteDrugAlert(props.row)"
+                >删除
+              </el-button>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="时间" prop="alertTime" />
+        <el-table-column label="药物名" prop="drugName" />
+        <el-table-column label="是否启用" prop="isActive">
+          <template #default="scoped">
+            <el-switch
+              v-model="scoped.row.isActive"
+              active-text="是"
+              :active-value="1"
+              inactive-text="否"
+              :inactive-value="0"
+              @change="updateIsAvtive(scoped.row)"
+            />
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-pagination
+        class="paging"
+        :current-page="currentPageAlert"
+        layout="sizes,prev,pager,next,jumper,->,total"
+        :page-size="pageSizeAlert"
+        :page-sizes="[5, 10, 15, 20]"
+        :total="totalAlert"
+        @current-change="handleCurrentChangeAlert"
+        @size-change="handleSizeChangeAlert"
+      >
+      </el-pagination>
+    </el-card>
+
+    <el-dialog v-model="addDrugsDialogVisible" title="添加用药提醒" width="50%">
+      <el-form
+        ref="form"
+        label-width="150px"
+        :model="addDrugAlert"
+        style="margin-left: auto; margin-right: auto"
+      >
+        <el-form-item class="dialogInput" label="药物名" prop="drugName">
+          <el-input v-model="addDrugAlert.drugName" placeholder="请输入药物名"></el-input>
+        </el-form-item>
+        <el-form-item class="dialogInput" label="用药频次" prop="frequency">
+          <el-select
+            v-model="addDrugAlert.frequency"
+            class="selectCon"
+            placeholder="用药频次"
+            size="small"
+          >
+            <el-option label="每天" value="每天" />
+            <el-option label="每两天" value="每两天" />
+            <el-option label="每三天" value="每三天" />
+            <el-option label="每四天" value="每四天" />
+            <el-option label="每五天" value="每五天" />
+            <el-option label="每六天" value="每六天" />
+            <el-option label="每周" value="每周" />
+          </el-select>
+        </el-form-item>
+        <el-form-item class="dialogInput" label="单位" prop="unit">
+          <el-select v-model="addDrugAlert.unit" class="selectCon" placeholder="单位" size="small">
+            <el-option label="毫克" value="毫克" />
+            <el-option label="毫升" value="毫升" />
+            <el-option label="微克" value="微克" />
+            <el-option label="克" value="克" />
+            <el-option label="片" value="片" />
+            <el-option label="支" value="支" />
+            <el-option label="粒" value="粒" />
+            <el-option label="包" value="包" />
+            <el-option label="瓶" value="瓶" />
+          </el-select>
+        </el-form-item>
+        <el-form-item class="dialogInput" label="剂量" prop="dosage">
+          <el-input v-model="addDrugAlert.dosage" placeholder="请输入剂量(小数)"></el-input>
+        </el-form-item>
+        <el-form-item class="dialogInput" label="是否启用" prop="isActive">
+          <el-switch
+            v-model="addDrugAlert.isActive"
+            active-text="是"
+            active-value="1"
+            inactive-text="否"
+            inactive-value="0"
+          />
+        </el-form-item>
+        <el-form-item class="dialogInput" label="提醒时间" prop="alertTime">
+          <el-time-picker
+            v-model="addDrugAlert.alertTime"
+            placeholder="提醒时间"
+            value-format="HH:mm:ss"
+          />
+        </el-form-item>
+        <el-form-item align="center">
+          <el-button size="small" type="primary" @click="saveDrugAlert">添加</el-button>
+          <el-button size="small" type="info" @click="closeAddDialog">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+  </div>
+</template>
 
 <style>
 .tital {

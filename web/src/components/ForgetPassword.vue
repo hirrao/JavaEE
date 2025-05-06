@@ -1,37 +1,3 @@
-<template>
-  <div class="login-form">
-    <!--element版-->
-    <el-form ref="form" label-width="80px">
-      <el-form-item label="手机号" prop="phonenumber">
-        <div class="form-group">
-          <div class="input-container">
-            <el-input
-              id="phonenumber"
-              v-model="phonenumber"
-              placeholder="请输入手机号"
-              type="text"
-            ></el-input>
-            <el-button
-              class="button1"
-              :disabled="isButtonDisabled"
-              type="primary"
-              @click="sendVerificationCode"
-            >
-              {{ isButtonDisabled ? `${countdown}秒后重发` : '发送验证码' }}
-            </el-button>
-          </div>
-        </div>
-      </el-form-item>
-      <el-form-item label="验证码" prop="verificationCode">
-        <el-input v-model="verificationCode" placeholder="请输入验证码" type="text"></el-input>
-      </el-form-item>
-      <el-form-item align="center">
-        <el-button class="button2" type="primary" @click="next">下一步</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { ref } from 'vue'
 import router from '@/router'
@@ -144,6 +110,40 @@ const next = async () => {
   }
 }
 </script>
+
+<template>
+  <div class="login-form">
+    <!--element版-->
+    <el-form ref="form" label-width="80px">
+      <el-form-item label="手机号" prop="phonenumber">
+        <div class="form-group">
+          <div class="input-container">
+            <el-input
+              id="phonenumber"
+              v-model="phonenumber"
+              placeholder="请输入手机号"
+              type="text"
+            ></el-input>
+            <el-button
+              class="button1"
+              :disabled="isButtonDisabled"
+              type="primary"
+              @click="sendVerificationCode"
+            >
+              {{ isButtonDisabled ? `${countdown}秒后重发` : '发送验证码' }}
+            </el-button>
+          </div>
+        </div>
+      </el-form-item>
+      <el-form-item label="验证码" prop="verificationCode">
+        <el-input v-model="verificationCode" placeholder="请输入验证码" type="text"></el-input>
+      </el-form-item>
+      <el-form-item align="center">
+        <el-button class="button2" type="primary" @click="next">下一步</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+</template>
 
 <style scoped>
 .login-form {

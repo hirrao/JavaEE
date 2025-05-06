@@ -1,9 +1,3 @@
-<template>
-  <div class="ring-chart">
-    <div ref="echartsContainer" class="echarts-container" />
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { onMounted, type PropType, ref, watch } from 'vue'
 import * as echarts from 'echarts'
@@ -97,6 +91,12 @@ onMounted(() => {
   }
 })
 </script>
+
+<template>
+  <div class="ring-chart">
+    <div ref="echartsContainer" class="echarts-container" />
+  </div>
+</template>
 
 <style scoped>
 .ring-chart {

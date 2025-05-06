@@ -1,3 +1,5 @@
+<script lang="ts" setup></script>
+
 <template>
   <div>
     <section class="hero">
@@ -25,8 +27,6 @@
     </section>
   </div>
 </template>
-
-<script lang="ts" setup></script>
 
 <style>
 body {

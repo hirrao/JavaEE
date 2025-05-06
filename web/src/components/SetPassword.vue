@@ -1,21 +1,3 @@
-<template>
-  <div class="login-form">
-    <form>
-      <div class="form-group">
-        <label for="password">请输入密码:</label>
-        <input id="password" v-model="password" required type="password" />
-      </div>
-
-      <div class="form-group">
-        <label for="password2">请再次确认密码:</label>
-        <input id="password2" v-model="password2" required type="password" />
-      </div>
-
-      <button class="button1" @click="next">提交</button>
-    </form>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { ref } from 'vue'
 import router from '@/router'
@@ -76,6 +58,24 @@ const next = async () => {
   }
 }
 </script>
+
+<template>
+  <div class="login-form">
+    <form>
+      <div class="form-group">
+        <label for="password">请输入密码:</label>
+        <input id="password" v-model="password" required type="password" />
+      </div>
+
+      <div class="form-group">
+        <label for="password2">请再次确认密码:</label>
+        <input id="password2" v-model="password2" required type="password" />
+      </div>
+
+      <button class="button1" @click="next">提交</button>
+    </form>
+  </div>
+</template>
 
 <style scoped>
 .login-form {

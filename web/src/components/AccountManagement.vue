@@ -1,132 +1,3 @@
-<template>
-  <div>
-    <!-- <h2 class="tital">账号管理</h2> -->
-    <el-card body-style="justify-content: center;" class="card">
-      <h2 class="tital">账号管理</h2>
-
-      <div class="searchConditionDiv">
-        <p style="margin-top: auto; margin-bottom: auto">查询条件：</p>
-        <el-select
-          v-model="searchCondition"
-          class="selectCon"
-          clearable
-          placeholder="查询条件"
-          size="large"
-          style="width: 10%; margin-top: auto; margin-bottom: auto"
-        >
-          <el-option label="uid" value="uid" />
-          <el-option label="用户名" value="userName" />
-          <el-option label="性别" value="sex" />
-          <el-option label="权限" value="permission" />
-        </el-select>
-        <el-input
-          v-model="conditionValue"
-          class="conditionInput"
-          clearable
-          placeholder=""
-          size="small"
-          style="margin-top: auto; margin-bottom: auto"
-        ></el-input>
-        <el-button
-          style="height: 40px; margin-right: 5px; margin-top: auto; margin-bottom: auto"
-          type="primary"
-          @click="searchByCondition"
-          >搜索
-        </el-button>
-        <el-button
-          style="height: 40px; margin-top: auto; margin-bottom: auto"
-          type="danger"
-          @click="claerSearchCondition"
-          >清空
-        </el-button>
-      </div>
-
-      <el-table class="table" :data="Account">
-        <el-table-column label="uid" prop="uid" width="200" />
-        <el-table-column label="用户名" prop="userName" width="180" />
-        <el-table-column label="电话号码" prop="phoneNumber" width="160" />
-        <el-table-column label="性别" prop="sex" width="75" />
-        <el-table-column label="生日" prop="birthday" />
-        <el-table-column label="权限" prop="permission" width="75" />
-        <el-table-column align="center" header-align="center" label="操作">
-          <template #default="scoped">
-            <el-button
-              class="tableButton"
-              icon="el-icon-edit"
-              type="primary"
-              @click="updateAccount(scoped.row)"
-              >更新
-            </el-button>
-            <el-button
-              class="tableButton"
-              icon="el-icon-delete"
-              type="danger"
-              @click="deleteAccount(scoped.row.uid)"
-              >删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize"
-        v-model:total="total"
-        class="paging"
-        layout="sizes,prev,pager,next,jumper,->,total"
-        :page-sizes="[5, 10, 15, 20]"
-        @current-change="handleCurrentChange"
-        @size-change="handleSizeChange"
-      >
-      </el-pagination>
-    </el-card>
-
-    <el-dialog v-model="dialogVisble" title="修改账号信息" width="50%">
-      <el-form
-        ref="form"
-        label-width="150px"
-        :model="modifyAccount"
-        style="margin-left: auto; margin-right: auto"
-      >
-        <el-form-item class="dialogInput" label="id" prop="uid">
-          <el-input v-model="modifyAccount.uid" disabled placeholder="请输入id"></el-input>
-        </el-form-item>
-        <el-form-item class="dialogInput" label="姓名" prop="userName">
-          <el-input v-model="modifyAccount.userName" placeholder="请输入姓名"></el-input>
-        </el-form-item>
-        <el-form-item class="dialogInput" label="电话号码" prop="phoneNumber">
-          <el-input v-model="modifyAccount.phoneNumber" placeholder="请输入电话号码"></el-input>
-        </el-form-item>
-        <el-form-item label="性别" prop="sex">
-          <el-radio-group v-model="modifyAccount.sex">
-            <el-radio label="男" size="large" value="男">男</el-radio>
-            <el-radio label="女" size="large" value="女">女</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="生日" prop="birthday">
-          <el-date-picker
-            v-model="modifyAccount.birthday"
-            default-value="2022-01-30 12:45:30"
-            placeholder="请选择生日"
-            type="datetime"
-            value-format="YYYY-MM-DD HH:mm:ss"
-          ></el-date-picker>
-        </el-form-item>
-        <el-form-item label="权限" prop="permission">
-          <el-radio-group v-model="modifyAccount.permission">
-            <el-radio label="-1" size="large" :value="-1">封禁</el-radio>
-            <el-radio label="0" size="large" :value="0">普通用户</el-radio>
-            <el-radio label="1" size="large" :value="1">管理员</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item align="center">
-          <el-button size="small" type="primary" @click="AddRecord">更改</el-button>
-          <el-button size="small" type="info" @click="CloseDialog">取消</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { ElMessage } from 'element-plus'
 import instance from '@/utils/axios'
@@ -288,6 +159,135 @@ function CloseDialog() {
   dialogVisble.value = false
 }
 </script>
+
+<template>
+  <div>
+    <!-- <h2 class="tital">账号管理</h2> -->
+    <el-card body-style="justify-content: center;" class="card">
+      <h2 class="tital">账号管理</h2>
+
+      <div class="searchConditionDiv">
+        <p style="margin-top: auto; margin-bottom: auto">查询条件：</p>
+        <el-select
+          v-model="searchCondition"
+          class="selectCon"
+          clearable
+          placeholder="查询条件"
+          size="large"
+          style="width: 10%; margin-top: auto; margin-bottom: auto"
+        >
+          <el-option label="uid" value="uid" />
+          <el-option label="用户名" value="userName" />
+          <el-option label="性别" value="sex" />
+          <el-option label="权限" value="permission" />
+        </el-select>
+        <el-input
+          v-model="conditionValue"
+          class="conditionInput"
+          clearable
+          placeholder=""
+          size="small"
+          style="margin-top: auto; margin-bottom: auto"
+        ></el-input>
+        <el-button
+          style="height: 40px; margin-right: 5px; margin-top: auto; margin-bottom: auto"
+          type="primary"
+          @click="searchByCondition"
+          >搜索
+        </el-button>
+        <el-button
+          style="height: 40px; margin-top: auto; margin-bottom: auto"
+          type="danger"
+          @click="claerSearchCondition"
+          >清空
+        </el-button>
+      </div>
+
+      <el-table class="table" :data="Account">
+        <el-table-column label="uid" prop="uid" width="200" />
+        <el-table-column label="用户名" prop="userName" width="180" />
+        <el-table-column label="电话号码" prop="phoneNumber" width="160" />
+        <el-table-column label="性别" prop="sex" width="75" />
+        <el-table-column label="生日" prop="birthday" />
+        <el-table-column label="权限" prop="permission" width="75" />
+        <el-table-column align="center" header-align="center" label="操作">
+          <template #default="scoped">
+            <el-button
+              class="tableButton"
+              icon="el-icon-edit"
+              type="primary"
+              @click="updateAccount(scoped.row)"
+              >更新
+            </el-button>
+            <el-button
+              class="tableButton"
+              icon="el-icon-delete"
+              type="danger"
+              @click="deleteAccount(scoped.row.uid)"
+              >删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        v-model:total="total"
+        class="paging"
+        layout="sizes,prev,pager,next,jumper,->,total"
+        :page-sizes="[5, 10, 15, 20]"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+      >
+      </el-pagination>
+    </el-card>
+
+    <el-dialog v-model="dialogVisble" title="修改账号信息" width="50%">
+      <el-form
+        ref="form"
+        label-width="150px"
+        :model="modifyAccount"
+        style="margin-left: auto; margin-right: auto"
+      >
+        <el-form-item class="dialogInput" label="id" prop="uid">
+          <el-input v-model="modifyAccount.uid" disabled placeholder="请输入id"></el-input>
+        </el-form-item>
+        <el-form-item class="dialogInput" label="姓名" prop="userName">
+          <el-input v-model="modifyAccount.userName" placeholder="请输入姓名"></el-input>
+        </el-form-item>
+        <el-form-item class="dialogInput" label="电话号码" prop="phoneNumber">
+          <el-input v-model="modifyAccount.phoneNumber" placeholder="请输入电话号码"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" prop="sex">
+          <el-radio-group v-model="modifyAccount.sex">
+            <el-radio label="男" size="large" value="男">男</el-radio>
+            <el-radio label="女" size="large" value="女">女</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="生日" prop="birthday">
+          <el-date-picker
+            v-model="modifyAccount.birthday"
+            default-value="2022-01-30 12:45:30"
+            placeholder="请选择生日"
+            type="datetime"
+            value-format="YYYY-MM-DD HH:mm:ss"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="权限" prop="permission">
+          <el-radio-group v-model="modifyAccount.permission">
+            <el-radio label="-1" size="large" :value="-1">封禁</el-radio>
+            <el-radio label="0" size="large" :value="0">普通用户</el-radio>
+            <el-radio label="1" size="large" :value="1">管理员</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item align="center">
+          <el-button size="small" type="primary" @click="AddRecord">更改</el-button>
+          <el-button size="small" type="info" @click="CloseDialog">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+  </div>
+</template>
 
 <style>
 .tital {

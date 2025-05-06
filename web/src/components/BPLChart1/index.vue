@@ -1,9 +1,3 @@
-<template>
-  <div class="pressure">
-    <div ref="pressurechart" class="pressurechart" />
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
 import * as echarts from 'echarts'
@@ -92,6 +86,12 @@ onMounted(() => {
   }
 })
 </script>
+
+<template>
+  <div class="pressure">
+    <div ref="pressurechart" class="pressurechart" />
+  </div>
+</template>
 
 <style scoped>
 .pressure {

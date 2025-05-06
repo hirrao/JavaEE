@@ -1,41 +1,3 @@
-<template>
-  <div class="article-list-container">
-    <el-row class="article-list" :gutter="20">
-      <el-col v-for="article in paginatedArticles" :key="article.id" :span="24">
-        <el-card class="article-item" shadow="hover">
-          <div class="article-content-wrapper" @click="viewArticle(article)">
-            <img alt="Article Image" class="article-image" :src="article.image" />
-            <div class="article-content">
-              <h3>{{ article.title }}</h3>
-              <p>{{ article.description }}</p>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-
-    <el-pagination
-      v-model="currentPage"
-      background
-      class="pagination"
-      hide-on-single-page
-      layout="prev, pager, next"
-      :page-size="pageSize"
-      :total="articles.length"
-      @current-change="handlePageChange"
-    />
-
-    <el-dialog v-model="dialogVisible" append-to-body title="一言详情" width="50%">
-      <div v-if="selectedArticle">
-        <h2 style="text-align: center">{{ selectedArticle.title }}</h2>
-        <!-- <h2>{{ selectedArticle.title }}</h2> -->
-        <img alt="Article Image" class="dialog-article-image" :src="selectedArticle.image" />
-        <p class="indented-text">{{ selectedArticle.content }}</p>
-      </div>
-    </el-dialog>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
 import instance from '@/utils/axios'
@@ -89,6 +51,44 @@ function viewArticle(article: Article) {
   console.log('Dialog visible:', dialogVisible.value) // 调试输出
 }
 </script>
+
+<template>
+  <div class="article-list-container">
+    <el-row class="article-list" :gutter="20">
+      <el-col v-for="article in paginatedArticles" :key="article.id" :span="24">
+        <el-card class="article-item" shadow="hover">
+          <div class="article-content-wrapper" @click="viewArticle(article)">
+            <img alt="Article Image" class="article-image" :src="article.image" />
+            <div class="article-content">
+              <h3>{{ article.title }}</h3>
+              <p>{{ article.description }}</p>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <el-pagination
+      v-model="currentPage"
+      background
+      class="pagination"
+      hide-on-single-page
+      layout="prev, pager, next"
+      :page-size="pageSize"
+      :total="articles.length"
+      @current-change="handlePageChange"
+    />
+
+    <el-dialog v-model="dialogVisible" append-to-body title="一言详情" width="50%">
+      <div v-if="selectedArticle">
+        <h2 style="text-align: center">{{ selectedArticle.title }}</h2>
+        <!-- <h2>{{ selectedArticle.title }}</h2> -->
+        <img alt="Article Image" class="dialog-article-image" :src="selectedArticle.image" />
+        <p class="indented-text">{{ selectedArticle.content }}</p>
+      </div>
+    </el-dialog>
+  </div>
+</template>
 
 <style scoped>
 .article-list-container {

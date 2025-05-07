@@ -17,7 +17,7 @@ const isLoggedIn = ref(false)
     })
     isLoggedIn.value = response.status === 200
     if (!isLoggedIn.value) localStorage.clear()
-  } catch (error) {
+  } catch {
     isLoggedIn.value = false
     localStorage.clear()
   }

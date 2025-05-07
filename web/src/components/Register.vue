@@ -84,7 +84,7 @@ const next = async () => {
       verificationCode.value = ''
       return
     }
-  } catch (error) {
+  } catch {
     ElMessage('网络错误')
     username.value = ''
     phonenumber.value = ''
@@ -116,7 +116,7 @@ const next = async () => {
     localStorage.setItem('userName', username.value)
     localStorage.setItem('messageCode', verificationCode.value)
     router.push('/setPassword')
-  } catch (error) {
+  } catch {
     ElMessage('网络错误')
     verificationCode.value = ''
   }

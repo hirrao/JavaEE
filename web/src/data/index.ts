@@ -1,17 +1,17 @@
-import { createAuthRepository } from "./stores";
+import { createAuthRepository, createUserRepository } from './stores'
 
 const lazy = <T>(factory: () => T) => {
-    let value: T;
-    const get = () => {
-      if (value === undefined) {
-        value = factory();
-      }
-      return value;
-    };
-    return get;
-  };
-  
+  let value: T
+  const get = () => {
+    if (value === undefined) {
+      value = factory()
+    }
+    return value
+  }
+  return get
+}
 
-const Locator = {
-    authRespository: lazy(createAuthRepository)
+export const Locator = {
+  authRespository: lazy(createAuthRepository),
+  userRepository: lazy(createUserRepository)
 }

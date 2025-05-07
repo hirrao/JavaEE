@@ -10,6 +10,10 @@ export const createAuthRepository = () => {
     messageCode: ''
   })
 
+  const set = (data: AuthData) => {
+    ref.value = data
+  }
+
   const clear = () => {
     ref.value = {
       phoneNumber: '',
@@ -17,5 +21,5 @@ export const createAuthRepository = () => {
     }
   }
 
-  return { ref, clear }
+  return { ref, set, clear }
 }

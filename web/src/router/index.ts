@@ -15,59 +15,65 @@ import HealthAdviceAdmin from '@/components/HealthAdviceAdmin.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/bloodPressure',
-    name: 'BloodPressure',
-    component: BloodPressure
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: Register
-  },
-  {
-    path: '/forgetPassword',
-    name: 'ForgetPassword',
-    component: ForgetPassword
-  },
-  {
-    path: '/healthAdvice',
-    name: 'HealthAdvice',
-    component: HealthAdvice
-  },
-  {
-    path: '/medicine',
-    name: 'Medicine',
-    component: Medicine
-  },
-  {
-    path: '/setPassword',
-    name: 'SetPassword',
-    component: SetPassword
-  },
-  {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile
-  },
-  {
-    path: '/accountManagement',
-    name: 'AccountManagement',
-    component: AccountManagement
-  },
-  {
-    path: '/healthAdviceAdmin',
-    name: 'HealthAdviceAdmin',
-    component: HealthAdviceAdmin
+    path: '/*',
+    component: () => import('@/pages/MainLayout.vue'),
+    children: [
+      {
+        path: '/',
+        name: 'Home',
+        component: Home
+      },
+      {
+        path: '/login',
+        name: 'Login',
+        component: Login
+      },
+      {
+        path: '/bloodPressure',
+        name: 'BloodPressure',
+        component: BloodPressure
+      },
+      {
+        path: '/register',
+        name: 'Register',
+        component: Register
+      },
+      {
+        path: '/forgetPassword',
+        name: 'ForgetPassword',
+        component: ForgetPassword
+      },
+      {
+        path: '/healthAdvice',
+        name: 'HealthAdvice',
+        component: HealthAdvice
+      },
+      {
+        path: '/medicine',
+        name: 'Medicine',
+        component: Medicine
+      },
+      {
+        path: '/setPassword',
+        name: 'SetPassword',
+        component: SetPassword
+      },
+      {
+        path: '/profile',
+        name: 'Profile',
+        component: Profile
+      },
+      {
+        path: '/accountManagement',
+        name: 'AccountManagement',
+        component: AccountManagement
+      },
+      {
+        path: '/healthAdviceAdmin',
+        name: 'HealthAdviceAdmin',
+        component: HealthAdviceAdmin
+      }
+    ]
   }
 ]
 

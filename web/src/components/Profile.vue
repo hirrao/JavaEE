@@ -101,7 +101,7 @@ const editProfile = async () => {
     if (birthday.value != null) localStorage.setItem('birthday', birthday.value)
     ElMessage('修改成功')
     window.location.href = '/profile'
-  } catch (_) {
+  } catch {
     ElMessage.error('修改失败')
     window.location.href = '/profile'
   }
@@ -158,7 +158,7 @@ const handleSubmit = async () => {
         ElMessage.error('标题或内容不能为空')
         return
       }
-    } catch (error) {
+    } catch {
       ElMessage.error('标题或内容不能为空')
       return
     }
@@ -197,7 +197,7 @@ const handleSubmit = async () => {
       ElMessage('提交成功')
       window.location.href = '/profile'
     }
-  } catch (error) {
+  } catch {
     ElMessage.error('提交失败')
   }
 }

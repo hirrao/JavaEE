@@ -35,7 +35,7 @@ const sendVerificationCode = async () => {
       phonenumber.value = ''
       return
     }
-  } catch (error) {
+  } catch {
     ElMessage('未知错误')
     phonenumber.value = ''
     return
@@ -68,7 +68,7 @@ const sendVerificationCode = async () => {
         isButtonDisabled.value = false
       }
     }, 1000)
-  } catch (error) {
+  } catch {
     ElMessage('网络错误')
     phonenumber.value = ''
   }
@@ -104,7 +104,7 @@ const next = async () => {
     localStorage.setItem('phoneNumber', phonenumber.value)
     localStorage.setItem('messageCode', verificationCode.value)
     router.push('/setPassword')
-  } catch (error) {
+  } catch {
     ElMessage('网络错误')
     verificationCode.value = ''
   }

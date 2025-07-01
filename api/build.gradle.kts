@@ -1,7 +1,7 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.5.3"
-    id("io.spring.dependency-management") version "1.1.6"
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.dependency.management)
 }
 
 group = "com.hirrao"
@@ -14,29 +14,29 @@ repositories {
 }
 
 java {
-    val sourceCompatibility = JavaVersion.VERSION_21
-    val targetCompatibility = JavaVersion.VERSION_21
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    implementation("io.jsonwebtoken:jjwt:0.12.6")
-    implementation("org.mybatis:mybatis:3.5.16")
-    implementation("com.baomidou:mybatis-plus-spring-boot3-starter:3.5.5")
-    implementation("com.alibaba:druid-spring-boot-3-starter:1.2.18")
-    implementation("com.aliyun:dysmsapi20170525:3.0.0")
-    implementation("org.springframework.data:spring-data-redis:3.3.3")
-    implementation("com.github.pagehelper:pagehelper-spring-boot-starter:1.3.1")
+    implementation(libs.spring.boot.starter.web)
+    implementation(libs.spring.boot.starter.data.redis)
+    implementation(libs.jjwt.api)
+    implementation(libs.druid.spring.boot.starter)
+    implementation(libs.mybatis.plus.starter)
+    implementation(libs.mybatis.plus.jsqlparser)
+    implementation(libs.dysmsapi20170525)
+    implementation(libs.pagehelper.starter)
 
-    testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation(libs.mybatis.plus.starter.test)
+    testImplementation(libs.spring.boot.starter.test)
 
-    compileOnly("org.projectlombok:lombok")
+    compileOnly(libs.lombok)
 
-    runtimeOnly("com.mysql:mysql-connector-j")
-    
-    annotationProcessor("org.projectlombok:lombok")
+    runtimeOnly(libs.mysql.connector)
+
+    annotationProcessor(libs.lombok)
 }
 
 tasks.withType<JavaCompile> {

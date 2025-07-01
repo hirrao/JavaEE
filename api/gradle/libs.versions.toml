@@ -1,0 +1,28 @@
+[versions]
+spring-boot = "3.5.3"
+dependency-management = "1.1.7"
+lombok = "1.18.38"
+druid = "1.2.25"
+jjwt = "0.12.6"
+mybatis-plus = "3.5.12"
+dysmsapi20170525 = "4.1.1"
+pagehelper = "2.1.1"
+mysql = "9.3.0"
+
+[libraries]
+spring-boot-starter-web = { group = "org.springframework.boot", name = "spring-boot-starter-web", version.ref = "spring-boot" }
+spring-boot-starter-data-redis = { group = "org.springframework.boot", name = "spring-boot-starter-data-redis", version.ref = "spring-boot" }
+spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test", version.ref = "spring-boot" }
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+druid-spring-boot-starter = { group = "com.alibaba", name = "druid-spring-boot-3-starter", version.ref = "druid" }
+jjwt-api = { group = "io.jsonwebtoken", name = "jjwt-api", version.ref = "jjwt" }
+mybatis-plus-starter = { group = "com.baomidou", name = "mybatis-plus-spring-boot3-starter", version.ref = "mybatis-plus" }
+mybatis-plus-jsqlparser = { group = "com.baomidou", name = "mybatis-plus-jsqlparser", version.ref = "mybatis-plus" }
+mybatis-plus-starter-test = { group = "com.baomidou", name = "mybatis-plus-spring-boot3-starter-test", version.ref = "mybatis-plus" }
+dysmsapi20170525 = { group = "com.aliyun", name = "dysmsapi20170525", version.ref = "dysmsapi20170525" }
+pagehelper-starter = { group = "com.github.pagehelper", name = "pagehelper-spring-boot-starter", version.ref = "pagehelper" }
+mysql-connector = { group = "com.mysql", name = "mysql-connector-j", version.ref = "mysql" }
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+dependency-management = { id = "io.spring.dependency-management", version.ref = "dependency-management" }

@@ -15,7 +15,7 @@ export const Client = () => {
       return instance.get(url)
     }
     const token = UserRepository.ref.value.token
-    if (token !== '') {
+    if (token) {
       return instance.get(url, {
         headers: {
           Authorization: `Bearer ${token}`

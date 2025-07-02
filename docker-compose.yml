@@ -1,0 +1,25 @@
+networks:
+  default:
+    name: health
+    driver: bridge
+
+services:
+  #实际镜像暂时留空
+  redis:
+    image: redis:8.0.2
+    ports:
+      - "6379:6379"
+
+  mysql:
+    image: mysql:8.4.5
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+    volumes:
+      - ./data/mysql/data:/var/lib/mysql
+      - ./data/mysql/conf:/etc/mysql/conf.d
+      - ./data/mysql/log:/var/log/mysql
+    ports:
+      - "3306:3306"

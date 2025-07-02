@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import AppHeader from './components/Header.vue';
+import AppHeader from '@/components/Header.vue'
 </script>
 
 <template>
@@ -11,6 +11,4 @@
   </div>
 </template>
 
-<style>
-
-</style>
+<style></style>

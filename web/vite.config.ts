@@ -6,7 +6,7 @@ import vue from '@vitejs/plugin-vue'
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
-    outDir: 'web'
+    outDir: 'dirt'
   },
   plugins: [vue()],
   resolve: {
@@ -15,7 +15,6 @@ export default defineConfig({
     }
   },
   server: {
-    port: 5173,
-    open: true
+    port: 5173
   }
 })

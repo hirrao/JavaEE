@@ -4,8 +4,15 @@
       <h2>智慧心康</h2>
     </header>
 
-    <el-menu :default-active="currentRoute" class="el-menu-demo" mode="horizontal" :ellipsis="false"
-      @select="handleSelect" unique-opened router>
+    <el-menu
+      :default-active="currentRoute"
+      class="el-menu-demo"
+      mode="horizontal"
+      :ellipsis="false"
+      @select="handleSelect"
+      unique-opened
+      router
+    >
       <el-menu-item index="/">首页</el-menu-item>
       <template v-if="isAdmin()">
         <el-menu-item index="/accountManagement">账号管理</el-menu-item>
@@ -29,48 +36,47 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import instance from '@/axios';
+import { ref, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import instance from '@/axios'
 
-const router = useRouter();
-const route = useRoute();
+const router = useRouter()
+const route = useRoute()
 
-const isLoggedIn = ref(false);
+const isLoggedIn = ref(false)
 
-(async () => {
+;(async () => {
   try {
     const response = await instance.get('/user/userInfo', {
       headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    isLoggedIn.value = response.status === 200;
-    if(!isLoggedIn) localStorage.clear();
+        'Content-Type': 'application/json'
+      }
+    })
+    isLoggedIn.value = response.status === 200
+    if (!isLoggedIn) localStorage.clear()
   } catch (error) {
-    isLoggedIn.value = false;
-    localStorage.clear();
+    isLoggedIn.value = false
+    localStorage.clear()
   }
-})();
+})()
 
-
-const currentRoute = computed(() => route.path);
+const currentRoute = computed(() => route.path)
 
 let userName = localStorage.getItem('userName')
 
 function handleSelect(index: string) {
-  router.push(index);
+  router.push(index)
 }
 
 function logout() {
-  localStorage.clear();
-  isLoggedIn.value=false;
-  router.push("/");
+  localStorage.clear()
+  isLoggedIn.value = false
+  router.push('/')
 }
 
 function isAdmin() {
-  console.log("permission" + localStorage.getItem('permission'))
-  console.log("token" + localStorage.getItem('token'))
+  console.log('permission' + localStorage.getItem('permission'))
+  console.log('token' + localStorage.getItem('token'))
   if (localStorage.getItem('permission') == null) {
     console.log("localStorage.getItem('permission')==null")
     return false
@@ -91,7 +97,6 @@ function isAdmin() {
   justify-content: space-between;
   align-items: center;
   background-color: rgb(0, 0, 0);
-  ;
   color: white;
   padding: 0px 20px;
 }
@@ -108,7 +113,6 @@ nav a {
 
 .el-menu {
   --el-menu-bg-color: rgba(20, 1, 1);
-  ;
   --el-menu-text-color: white;
 }
 

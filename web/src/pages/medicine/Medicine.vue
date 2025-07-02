@@ -205,7 +205,7 @@
             placeholder="提醒时间"
           />
         </el-form-item>
-        <el-form-item align="center">
+        <el-form-item>
           <el-button type="primary" size="small" @click="saveDrugAlert">添加</el-button>
           <el-button type="info" size="small" @click="closeAddDialog">取消</el-button>
         </el-form-item>
@@ -216,7 +216,7 @@
 
 <script setup lang="ts">
 import { ElMessage } from 'element-plus'
-import instance from '../axios'
+import { Client } from '@/data'
 import { onMounted, ref } from 'vue'
 
 interface drug {
@@ -275,9 +275,9 @@ function checkIsForget(alertTime: String) {
 }
 
 const tableRowClassName = ({ row, rowIndex }: { row: drug; rowIndex: number }) => {
-  if (row.isEat === false && checkIsForget(row.alertTime)) {
+  if (!row.isEat && checkIsForget(row.alertTime)) {
     return 'warning-row'
-  } else if (row.isEat === true) {
+  } else if (row.isEat) {
     return 'success-row'
   }
   return ''
@@ -294,8 +294,7 @@ function checkIsEat(eatTime: String) {
   const date = new Date()
   if (date.getFullYear() - parseInt(eatDate[0]) > 0) return false
   if (date.getMonth() + 1 - parseInt(eatDate[1]) > 0) return false
-  if (date.getDay() + 1 - parseInt(eatDate[2]) > 0) return false
-  return true
+  return date.getDay() + 1 - parseInt(eatDate[2]) <= 0
 }
 
 async function eatDrugConfirm(row: any) {
@@ -309,7 +308,7 @@ async function eatDrugConfirm(row: any) {
     const day = date.getDay() + 1
     row.eatTime = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`
     console.log('row.eatTime' + row.eatTime)
-    await instance.post(
+    await Client.post(
       '/drugAlert/updateDrugAlertEatTimeById',
       {
         alertId: row.alertId,
@@ -327,99 +326,90 @@ async function eatDrugConfirm(row: any) {
 }
 
 async function searchTotalDrug() {
-  await instance
-    .post(
-      '/drug/getPageDrugInfoTotalByDrugName',
-      {
-        uid: localStorage.getItem('uid'),
-        drugName: conditionValue.value
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+  await Client.post(
+    '/drug/getPageDrugInfoTotalByDrugName',
+    {
+      uid: localStorage.getItem('uid'),
+      drugName: conditionValue.value
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
-    .then((response) => {
-      console.log(response)
-      total.value = response.data.data
-      console.log(total.value)
-    })
+    }
+  ).then((response) => {
+    console.log(response)
+    total.value = response.data.data
+    console.log(total.value)
+  })
 }
 
 async function searchByPage() {
   console.log('uid:' + localStorage.getItem('uid'))
   searchTotalDrug()
-  instance
-    .post(
-      '/drug/getPageDrugsInfoByDrugName',
-      {
-        uid: localStorage.getItem('uid'),
-        curPage: currentPage.value,
-        size: pageSize.value,
-        drugName: conditionValue.value
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+  Client.post(
+    '/drug/getPageDrugsInfoByDrugName',
+    {
+      uid: localStorage.getItem('uid'),
+      curPage: currentPage.value,
+      size: pageSize.value,
+      drugName: conditionValue.value
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
-    .then((response) => {
-      console.log(response)
-      drugs.value = response.data.data
-      if (drugs.value != undefined) {
-        for (let i = 0; i < drugs.value.length; ++i) {
-          let isEat = checkIsEat(drugs.value[i].eatTime)
-          drugs.value[i]['isEat'] = isEat
-        }
+    }
+  ).then((response) => {
+    console.log(response)
+    drugs.value = response.data.data
+    if (drugs.value != undefined) {
+      for (let i = 0; i < drugs.value.length; ++i) {
+        drugs.value[i]['isEat'] = checkIsEat(drugs.value[i].eatTime)
       }
-    })
+    }
+  })
 }
 
 async function searchTotalDrugAlert() {
-  await instance
-    .post(
-      '/drug/getPageDrugAlertInfoTotalByDrugName',
-      {
-        uid: localStorage.getItem('uid'),
-        drugName: conditionValue.value
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+  await Client.post(
+    '/drug/getPageDrugAlertInfoTotalByDrugName',
+    {
+      uid: localStorage.getItem('uid'),
+      drugName: conditionValue.value
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
-    .then((response) => {
-      console.log(response)
-      totalAlert.value = response.data.data
-      console.log(totalAlert.value)
-    })
+    }
+  ).then((response) => {
+    console.log(response)
+    totalAlert.value = response.data.data
+    console.log(totalAlert.value)
+  })
 }
 
 async function searchAlertByPage() {
   console.log('uid:' + localStorage.getItem('uid'))
   searchTotalDrug()
-  instance
-    .post(
-      '/drug/getPageDrugsAlertInfoByDrugName',
-      {
-        uid: localStorage.getItem('uid'),
-        curPage: currentPageAlert.value,
-        size: pageSizeAlert.value,
-        drugName: conditionValue.value
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+  Client.post(
+    '/drug/getPageDrugsAlertInfoByDrugName',
+    {
+      uid: localStorage.getItem('uid'),
+      curPage: currentPageAlert.value,
+      size: pageSizeAlert.value,
+      drugName: conditionValue.value
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
-    .then((response) => {
-      console.log(response)
-      drugAlerts.value = response.data.data
-    })
+    }
+  ).then((response) => {
+    console.log(response)
+    drugAlerts.value = response.data.data
+  })
 }
 
 onMounted(() => {
@@ -464,20 +454,19 @@ function closeAddDialog() {
 
 async function updateIsAvtive(row: { drugId: any; uid: any; isActive: any }) {
   console.log(row.isActive)
-  await instance
-    .post(
-      '/drug/updateDrugIsActiveById',
-      {
-        drugId: row.drugId,
-        uid: localStorage.getItem('uid'),
-        isActive: row.isActive
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+  await Client.post(
+    '/drug/updateDrugIsActiveById',
+    {
+      drugId: row.drugId,
+      uid: localStorage.getItem('uid'),
+      isActive: row.isActive
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
+    }
+  )
     .then(() => {
       currentPage.value = 1
       searchTotalDrug()
@@ -489,20 +478,19 @@ async function updateIsAvtive(row: { drugId: any; uid: any; isActive: any }) {
 }
 
 async function deleteDrugAlert(row: { alertId: any; drugId: any }) {
-  await instance
-    .post(
-      '/drug/deleteDrugAndDrugAlertById',
-      {
-        alertId: row.alertId,
-        uid: localStorage.getItem('uid'),
-        drugId: row.drugId
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+  await Client.post(
+    '/drug/deleteDrugAndDrugAlertById',
+    {
+      alertId: row.alertId,
+      uid: localStorage.getItem('uid'),
+      drugId: row.drugId
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
+    }
+  )
     .then(() => {
       ElMessage.success('添加成功')
       currentPage.value = 1
@@ -552,24 +540,23 @@ async function saveDrugAlert() {
   if (addDrugAlert.value.alertTime == '') {
     ElMessage.error('提醒时间不能为空')
   }
-  await instance
-    .post(
-      '/drug/insertDrugAndAlert',
-      {
-        uid: localStorage.getItem('uid'),
-        drugName: addDrugAlert.value.drugName,
-        frequency: addDrugAlert.value.frequency,
-        unit: addDrugAlert.value.unit,
-        dosage: addDrugAlert.value.dosage,
-        isActive: addDrugAlert.value.isActive,
-        alertTime: addDrugAlert.value.alertTime
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+  await Client.post(
+    '/drug/insertDrugAndAlert',
+    {
+      uid: localStorage.getItem('uid'),
+      drugName: addDrugAlert.value.drugName,
+      frequency: addDrugAlert.value.frequency,
+      unit: addDrugAlert.value.unit,
+      dosage: addDrugAlert.value.dosage,
+      isActive: addDrugAlert.value.isActive,
+      alertTime: addDrugAlert.value.alertTime
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
+    }
+  )
     .then(() => {
       ElMessage.success('更新成功')
       if (addDrugAlert.value.isActive == '1') {

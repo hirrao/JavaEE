@@ -18,9 +18,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import router from '../router'
-import instance from '../axios'
-import { ElMain, ElMessage } from 'element-plus'
+import router from '../../router'
+import { Client } from '@/data'
+import { ElMessage } from 'element-plus'
 let password = ref('')
 let password2 = ref('')
 
@@ -39,7 +39,7 @@ const next = async () => {
     //通过用户名是否为空判断当前是注册还是重设密码
     if (userName != null) {
       try {
-        instance.post('user/auth/register', {
+        Client.post('user/auth/register', {
           userName: userName,
           phoneNumber: phoneNumber,
           userPassword: password.value,
@@ -55,7 +55,7 @@ const next = async () => {
       }
     } else {
       try {
-        const response = await instance.post('user/auth/resetPassword', {
+        const response = await Client.post('user/auth/resetPassword', {
           phoneNumber: phoneNumber,
           newPassword: password.value,
           messageCode: messageCode

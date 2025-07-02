@@ -54,7 +54,7 @@
               placeholder="请选择生日"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item align="center">
+          <el-form-item>
             <el-button type="primary" size="small" @click="editProfile">更改</el-button>
             <el-button type="info" size="small" @click="edit = false">取消</el-button>
           </el-form-item>
@@ -160,13 +160,11 @@
 </template>
 
 <script setup lang="ts">
-import router from '../router'
-import { onMounted, ref, toRaw, nextTick } from 'vue'
+import { onMounted, ref, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
-import instance from '../axios'
-import { Quill, QuillEditor } from '@vueup/vue-quill'
+import { Client } from '@/data'
+import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import axios from 'axios'
 
 let uid = localStorage.getItem('uid')
 const userName = ref(localStorage.getItem('userName'))
@@ -174,7 +172,7 @@ const sex = ref(localStorage.getItem('sex'))
 const birthday = ref(localStorage.getItem('birthday'))
 const intro = ref('')
 onMounted(async () => {
-  const user = await instance.get('/intro/get')
+  const user = await Client.get('/intro/get')
   intro.value = user.data.data.intro
   console.log(user.data)
   searchByPage()
@@ -203,7 +201,7 @@ function cancle() {
 }
 const editProfile = async () => {
   try {
-    const res = await instance.post(
+    const res = await Client.post(
       '/user/updateUserName',
       {
         uid: uid,
@@ -221,7 +219,7 @@ const editProfile = async () => {
       window.location.href = '/profile'
       return
     }
-    await instance.post(
+    await Client.post(
       '/user/updateSex',
       {
         uid: uid,
@@ -233,7 +231,7 @@ const editProfile = async () => {
         }
       }
     )
-    await instance.post(
+    await Client.post(
       '/user/updateBirthday',
       {
         uid: uid,
@@ -245,7 +243,7 @@ const editProfile = async () => {
         }
       }
     )
-    await instance.post(
+    await Client.post(
       '/intro/update',
       {
         uid: uid,
@@ -294,7 +292,7 @@ function updateBlog(blog: Blog) {
 
 async function deleteBlog(blog: Blog) {
   selectedBlog.value = blog
-  await instance.post(
+  await Client.post(
     '/profile/delete',
     {
       blogId: selectedBlog.value.blogId
@@ -323,7 +321,7 @@ const handleSubmit = async () => {
       return
     }
     if (ok.value) {
-      instance.post(
+      Client.post(
         '/profile/update',
         {
           blogId: blogId.value,
@@ -341,7 +339,7 @@ const handleSubmit = async () => {
       window.location.href = '/profile'
     } else {
       uid = localStorage.getItem('uid')
-      const response = await instance.post(
+      const response = await Client.post(
         '/profile/add',
         {
           uid: uid,
@@ -363,25 +361,23 @@ const handleSubmit = async () => {
 }
 
 async function searchByPage() {
-  const res = await instance
-    .post(
-      '/profile/search',
-      {
-        curPage: currentPage.value,
-        size: pageSize.value,
-        uid: uid
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+  const res = await Client.post(
+    '/profile/search',
+    {
+      curPage: currentPage.value,
+      size: pageSize.value,
+      uid: uid
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
-    .then((response) => {
-      console.log(response.data)
-      Blog.value = response.data.data.records
-      total.value = response.data.data.total
-    })
+    }
+  ).then((response) => {
+    console.log(response.data)
+    Blog.value = response.data.data.records
+    total.value = response.data.data.total
+  })
 }
 function handleSizeChange(newSize: number) {
   currentPage.value = 1

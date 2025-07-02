@@ -17,7 +17,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
     private final UserService userService;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
 
     @Autowired
     private LoginInterceptor(UserService userService) {
@@ -29,14 +29,14 @@ public class LoginInterceptor implements HandlerInterceptor {
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             return true;
         }
-        System.out.println(request.getHeader("Authorization"));
+        logger.debug(request.getHeader("Authorization"));
         //获取请求头中的token
         String token = request.getHeader("Authorization");
         logger.debug("token={}", token);
         //先验证token
         try {
             String Uid = Jwt.parseToken(token);
-            System.out.println(Uid);
+            logger.debug(Uid);
             User user = userService.findByUid(Long.parseLong(Uid));
             ThreadLocalUtil.set(user);
             return true;

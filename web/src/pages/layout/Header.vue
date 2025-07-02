@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import instance from '@/axios'
+import { Client } from '@/data'
 
 const router = useRouter()
 const route = useRoute()
@@ -47,7 +47,7 @@ const isLoggedIn = ref(false)
 
 ;(async () => {
   try {
-    const response = await instance.get('/user/userInfo', {
+    const response = await Client.get('/user/userInfo', {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -98,7 +98,7 @@ function isAdmin() {
   align-items: center;
   background-color: rgb(0, 0, 0);
   color: white;
-  padding: 0px 20px;
+  padding: 0 20px;
 }
 
 nav {

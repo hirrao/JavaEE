@@ -32,9 +32,9 @@
               placeholder="请选择测量时间"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item align="center">
-            <el-button type="primary" size="mini" @click="AddRecord">添加</el-button>
-            <el-button type="info" size="mini" @click="CloseDialog">取消</el-button>
+          <el-form-item>
+            <el-button type="primary" @click="AddRecord">添加</el-button>
+            <el-button type="info" @click="CloseDialog">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -86,9 +86,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
-import instance from '../axios'
-import BPLChart1 from './BPLChart1/index.vue'
-import BPLChart2 from './BPLChart2/index.vue'
+import { Client } from '@/data'
+import BPLChart1 from '@/pages/bloodpressure/BPLChart1/index.vue'
+import BPLChart2 from '@/pages/bloodpressure/BPLChart2/index.vue'
 
 let addDialogVisble = ref(false)
 let uid = localStorage.getItem('uid')
@@ -182,8 +182,7 @@ function AddRecord() {
     let date = addBloodPressure.value.recordTime
 
     //上传血压数据
-    instance
-      .post('/bp/record/insert', { userId: userId, sbp: sbp, dbp: dbp, date: date })
+    Client.post('/bp/record/insert', { userId: userId, sbp: sbp, dbp: dbp, date: date })
       .then((response) => {
         // 处理成功响应
         ElMessage.success('血压记录已成功添加')
@@ -244,8 +243,7 @@ function getChartData1() {
     // 将日期递增一天
     pastDate.setDate(pastDate.getDate() + 1)
   }
-  instance
-    .post('/bp/record/uid', { date: now })
+  Client.post('/bp/record/uid', { date: now })
     .then((res: any) => {
       let data = mapBackendDataToChart(res.data.data, categories)
       console.log(data)
@@ -264,7 +262,7 @@ function getChartData2() {
   let month = (date.getMonth() + 1).toString().padStart(2, '0') // 月份补零
   let day = date.getDate().toString().padStart(2, '0') // 日期补零
   let now = year + '-' + month + '-' + day
-  instance.post('/bp/record/riskLevel', { date: now }).then((res: any) => {
+  Client.post('/bp/record/riskLevel', { date: now }).then((res: any) => {
     console.log(res)
     // 初始化风险级别计数对象
     let riskLevelCounts: {
@@ -305,7 +303,7 @@ function getTableData() {
   let day = date.getDate().toString().padStart(2, '0') // 日期补零
   let now = year + '-' + month + '-' + day
   //TODO:图表后端逻辑
-  instance.post('/bp/record/table', { date: now }).then((res: any) => {
+  Client.post('/bp/record/table', { date: now }).then((res: any) => {
     console.log('图表的数据是:', res)
     let data = res.data.data
     maxSBP.value = data.maxSBP

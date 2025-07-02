@@ -3,6 +3,8 @@ package com.hirrao.javaee.controller;
 import com.hirrao.javaee.entity.Article;
 import com.hirrao.javaee.entity.Result;
 import com.hirrao.javaee.service.ArticleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/articles")
 public class ArticleController {
+    private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
     @Autowired
     private ArticleService articleService;
 
@@ -46,11 +49,11 @@ public class ArticleController {
         var image = map.get("image");
         var content = map.get("content");
 
-        System.out.println("modifyArticleInfo id:" + id);
-        System.out.println("modifyArticleInfo title:" + title);
-        System.out.println("modifyArticleInfo description:" + description);
-        System.out.println("modifyArticleInfo image:" + image);
-        System.out.println("modifyArticleInfo content:" + content);
+        logger.debug("modifyArticleInfo id:{}", id);
+        logger.debug("modifyArticleInfo title:{}", title);
+        logger.debug("modifyArticleInfo description:{}", description);
+        logger.debug("modifyArticleInfo image:{}", image);
+        logger.debug("modifyArticleInfo content:{}", content);
 
         articleService.modifyArticleInfo(id, title, description, image, content);
         return Result.success();
@@ -60,7 +63,7 @@ public class ArticleController {
     public Result deleteArticle(@RequestBody Map<String, String> map){
         var id = Long.parseLong(map.get("id"));
         articleService.deleteArticle(id);
-        System.out.println("delete id:" + id);
+        logger.debug("delete id:" + id);
         return Result.success();
     }
 
@@ -71,10 +74,10 @@ public class ArticleController {
         var searchCondition = map.get("searchCondition");
         var conditionValue = map.get("conditionValue");
 
-        System.out.println("curPage:" + curPage);
-        System.out.println("size:" + size);
-        System.out.println("searchCondition:" + searchCondition);
-        System.out.println("conditionValue:" + conditionValue);
+        logger.debug("curPage:{}", curPage);
+        logger.debug("size:{}", size);
+        logger.debug("searchCondition:{}", searchCondition);
+        logger.debug("conditionValue:{}", conditionValue);
 
         if(!searchCondition.isEmpty() && !conditionValue.isEmpty()){
 //            return Result.success();

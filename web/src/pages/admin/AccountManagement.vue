@@ -118,7 +118,7 @@
             <el-radio :value="1" size="large" label="1">管理员</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item align="center">
+        <el-form-item>
           <el-button type="primary" size="small" @click="AddRecord">更改</el-button>
           <el-button type="info" size="small" @click="CloseDialog">取消</el-button>
         </el-form-item>
@@ -129,7 +129,7 @@
 
 <script setup lang="ts">
 import { ElMessage } from 'element-plus'
-import instance from '../axios'
+import { Client } from '@/data'
 import { onMounted, ref } from 'vue'
 
 let Account = ref([])
@@ -165,29 +165,53 @@ function updateAccount(row: {
 async function deleteAccount(id: any) {
   let conf = confirm('是否删除')
   if (conf) {
-    await instance
-      .post(
-        '/user/deleteUser',
-        {
-          uid: id.toString()
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
+    await Client.post(
+      '/user/deleteUser',
+      {
+        uid: id.toString()
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
         }
-      )
-      .catch((error) => {
-        ElMessage.error(error)
-      })
+      }
+    ).catch((error) => {
+      ElMessage.error(error)
+    })
     ElMessage('删除成功')
     searchByPage()
   }
 }
 
 function searchByPage() {
-  instance
-    .post(
+  Client.post(
+    '/user/searchUserByCondition',
+    {
+      curPage: currentPage.value,
+      size: pageSize.value,
+      searchCondition: searchCondition.value,
+      conditionValue: conditionValue.value
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  ).then((response) => {
+    console.log(response.data)
+    //   Account=response.data.data.records;
+    //   total=response.data.data.total;
+    Account.value = response.data.data.records
+    total.value = response.data.data.total
+    console.log(Account)
+  })
+}
+
+function searchByCondition() {
+  if (searchCondition.value == '') ElMessage.error('请选择查询条件')
+  else if (conditionValue.value == '') ElMessage.error('请输入搜索值')
+  else {
+    Client.post(
       '/user/searchUserByCondition',
       {
         curPage: currentPage.value,
@@ -200,42 +224,12 @@ function searchByPage() {
           'Content-Type': 'application/json'
         }
       }
-    )
-    .then((response) => {
+    ).then((response) => {
       console.log(response.data)
-      //   Account=response.data.data.records;
-      //   total=response.data.data.total;
       Account.value = response.data.data.records
       total.value = response.data.data.total
       console.log(Account)
     })
-}
-
-function searchByCondition() {
-  if (searchCondition.value == '') ElMessage.error('请选择查询条件')
-  else if (conditionValue.value == '') ElMessage.error('请输入搜索值')
-  else {
-    instance
-      .post(
-        '/user/searchUserByCondition',
-        {
-          curPage: currentPage.value,
-          size: pageSize.value,
-          searchCondition: searchCondition.value,
-          conditionValue: conditionValue.value
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      )
-      .then((response) => {
-        console.log(response.data)
-        Account.value = response.data.data.records
-        total.value = response.data.data.total
-        console.log(Account)
-      })
   }
 }
 
@@ -260,26 +254,24 @@ function handleCurrentChange(newPage: number) {
 }
 
 async function AddRecord() {
-  await instance
-    .post(
-      '/user/modifyUserInfo',
-      {
-        uid: modifyAccount.value.uid.toString(),
-        userName: modifyAccount.value.userName,
-        phoneNumber: modifyAccount.value.phoneNumber,
-        sex: modifyAccount.value.sex,
-        birthday: modifyAccount.value.birthday,
-        permission: modifyAccount.value.permission
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+  await Client.post(
+    '/user/modifyUserInfo',
+    {
+      uid: modifyAccount.value.uid.toString(),
+      userName: modifyAccount.value.userName,
+      phoneNumber: modifyAccount.value.phoneNumber,
+      sex: modifyAccount.value.sex,
+      birthday: modifyAccount.value.birthday,
+      permission: modifyAccount.value.permission
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
-    .catch((error) => {
-      ElMessage.error(error)
-    })
+    }
+  ).catch((error) => {
+    ElMessage.error(error)
+  })
   searchByPage()
   dialogVisble.value = false
 }

@@ -25,8 +25,8 @@
       <el-form-item label="验证码" prop="verificationCode">
         <el-input v-model="verificationCode" type="text" placeholder="请输入验证码"></el-input>
       </el-form-item>
-      <el-form-item align="center">
-        <el-button class="button2" type="primary" size="mini" @click="next">下一步</el-button>
+      <el-form-item>
+        <el-button class="button2" type="primary" @click="next">下一步</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import router from '@/router'
-import instance from '@/axios'
+import { Client } from '@/data'
 import { ElMessage } from 'element-plus'
 // 定义响应式数据
 const phonenumber = ref('')
@@ -52,7 +52,7 @@ const sendVerificationCode = async () => {
     return
   }
   try {
-    const response = await instance.post(
+    const response = await Client.post(
       'user/auth/find',
       {
         userName: 'test',
@@ -76,7 +76,7 @@ const sendVerificationCode = async () => {
   }
 
   try {
-    const response = await instance.post(
+    const response = await Client.post(
       'user/auth/messageSend',
       {
         phoneNumber: phonenumber.value
@@ -117,7 +117,7 @@ const next = async () => {
     return
   }
   try {
-    const response = await instance.post(
+    const response = await Client.post(
       '/user/auth/message',
       {
         phoneNumber: phonenumber.value,

@@ -7,8 +7,8 @@
       <el-form-item label="密码" prop="password">
         <el-input v-model="password" type="password" placeholder="密码" required></el-input>
       </el-form-item>
-      <el-form-item align="center">
-        <el-button type="primary" size="mini" @click="handleSubmit">登录</el-button>
+      <el-form-item>
+        <el-button type="primary" @click="handleSubmit">登录</el-button>
       </el-form-item>
 
       <div class="tips" style="float: left">
@@ -22,9 +22,9 @@
 </template>
 
 <script setup lang="ts">
-import router from '../router'
+import router from '@/router'
 import { ref } from 'vue'
-import instance from '../axios'
+import { Client } from '@/data'
 import md5 from 'crypto-js/md5'
 import { ElMessage } from 'element-plus'
 
@@ -38,7 +38,7 @@ const uid = ref('')
 const handleSubmit = async () => {
   try {
     const newPwd = md5(password.value).toString()
-    const response = await instance.post(
+    const response = await Client.post(
       '/user/auth/login',
       {
         userName: username.value,
@@ -63,7 +63,7 @@ const handleSubmit = async () => {
     uid.value = data.uid
     localStorage.setItem('token', token.value)
     localStorage.setItem('permission', permission.value)
-    const response2 = await instance.get('/user/userInfo')
+    const response2 = await Client.get('/user/userInfo')
     console.log(response2)
     localStorage.setItem('uid', response2.data.data.uid)
     localStorage.setItem('userName', response2.data.data.userName)
@@ -96,10 +96,6 @@ const regis = () => {
   border-radius: 10px;
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
-  margin-bottom: 20px;
 }
 
 label {

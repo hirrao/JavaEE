@@ -64,7 +64,7 @@
           <el-form-item class="dialogInput" label="内容" prop="content">
             <el-input v-model="addArticle.content" placeholder="请输入内容"></el-input>
           </el-form-item>
-          <el-form-item align="center">
+          <el-form-item>
             <el-button type="primary" size="small" @click="saveAddArticle">添加</el-button>
             <el-button type="info" size="small" @click="closeAddDialog">取消</el-button>
           </el-form-item>
@@ -140,7 +140,7 @@
         <el-form-item class="dialogInput" label="内容" prop="content">
           <el-input v-model="modifyArticle.content" placeholder="请输入内容"></el-input>
         </el-form-item>
-        <el-form-item align="center">
+        <el-form-item>
           <el-button type="primary" size="small" @click="saveArticle">更改</el-button>
           <el-button type="info" size="small" @click="closeDialog">取消</el-button>
         </el-form-item>
@@ -151,7 +151,7 @@
 
 <script setup lang="ts">
 import { ElMessage } from 'element-plus'
-import instance from '../axios'
+import { Client } from '@/data'
 import { onMounted, ref } from 'vue'
 
 let articles = ref([])
@@ -190,18 +190,17 @@ function updateArticle(row: {
 function deleteArticle(id: string) {
   let conf = confirm('是否删除这篇文章？')
   if (conf) {
-    instance
-      .post(
-        '/articles/deleteArticle',
-        {
-          id: id
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
+    Client.post(
+      '/articles/deleteArticle',
+      {
+        id: id
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
         }
-      )
+      }
+    )
       .then(() => {
         ElMessage.success('删除成功')
         searchByPage()
@@ -213,25 +212,23 @@ function deleteArticle(id: string) {
 }
 
 function searchByPage() {
-  instance
-    .post(
-      '/articles/searchArticleByCondition',
-      {
-        curPage: currentPage.value,
-        size: pageSize.value,
-        searchCondition: searchCondition.value,
-        conditionValue: conditionValue.value
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+  Client.post(
+    '/articles/searchArticleByCondition',
+    {
+      curPage: currentPage.value,
+      size: pageSize.value,
+      searchCondition: searchCondition.value,
+      conditionValue: conditionValue.value
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
-    .then((response) => {
-      articles.value = response.data.data.records
-      total.value = response.data.data.total
-    })
+    }
+  ).then((response) => {
+    articles.value = response.data.data.records
+    total.value = response.data.data.total
+  })
 }
 
 function searchByCondition() {
@@ -264,22 +261,21 @@ function handleCurrentChange(newPage: number) {
 }
 
 async function saveArticle() {
-  await instance
-    .post(
-      '/articles/modifyArticleInfo',
-      {
-        id: modifyArticle.value.id,
-        title: modifyArticle.value.title,
-        description: modifyArticle.value.description,
-        image: modifyArticle.value.image,
-        content: modifyArticle.value.content
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+  await Client.post(
+    '/articles/modifyArticleInfo',
+    {
+      id: modifyArticle.value.id,
+      title: modifyArticle.value.title,
+      description: modifyArticle.value.description,
+      image: modifyArticle.value.image,
+      content: modifyArticle.value.content
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
+    }
+  )
     .then(() => {
       ElMessage.success('更新成功')
       searchByPage()
@@ -299,21 +295,20 @@ function addArticlesDialog() {
 }
 
 async function saveAddArticle() {
-  await instance
-    .post(
-      '/articles/add',
-      {
-        title: addArticle.value.title,
-        description: addArticle.value.description,
-        image: addArticle.value.image,
-        content: addArticle.value.content
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+  await Client.post(
+    '/articles/add',
+    {
+      title: addArticle.value.title,
+      description: addArticle.value.description,
+      image: addArticle.value.image,
+      content: addArticle.value.content
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
+    }
+  )
     .then(() => {
       ElMessage.success('添加成功')
       searchByPage()

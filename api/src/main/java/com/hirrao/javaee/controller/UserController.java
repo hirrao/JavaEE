@@ -59,11 +59,11 @@ public class UserController {
         var sex = map.get("sex");
         var birthday = map.get("birthday");
         var permission = Integer.parseInt(map.get("permission"));
-        System.out.println("modifyUserInfo uid:" + uid);
-        System.out.println("modifyUserInfo userName:" + userName);
-        System.out.println("modifyUserInfo sex:" + sex);
-        System.out.println("modifyUserInfo birthday:" + birthday);
-        System.out.println("modifyUserInfo permission:" + permission);
+        logger.debug("modifyUserInfo uid:" + uid);
+        logger.debug("modifyUserInfo userName:" + userName);
+        logger.debug("modifyUserInfo sex:" + sex);
+        logger.debug("modifyUserInfo birthday:" + birthday);
+        logger.debug("modifyUserInfo permission:" + permission);
 
         userService.modifyUserInfo(uid, userName, phoneNumber, sex, birthday, permission);
         return Result.success();
@@ -98,11 +98,11 @@ public class UserController {
 
     @PostMapping("/deleteUser")
     public Result deleteUser(@RequestBody Map<String, String> map) {
-//        System.out.println(map.size());
+//        logger.debug(map.size());
 //        User user = ThreadLocalUtil.get();
         var uid = Long.parseLong(map.get("uid"));
         userService.deleteUser(uid);
-        System.out.println("delete uid:" + uid);
+        logger.debug("delete uid:" + uid);
         return Result.success();
     }
 
@@ -112,10 +112,10 @@ public class UserController {
         var size = Integer.parseInt(map.get("size"));
         var searchCondition = map.get("searchCondition");
         var conditionValue = map.get("conditionValue");
-        System.out.println("curPage:" + curPage);
-        System.out.println("size:" + size);
-        System.out.println("searchCondition:" + searchCondition);
-        System.out.println("conditionValue:" + conditionValue);
+        logger.debug("curPage:" + curPage);
+        logger.debug("size:" + size);
+        logger.debug("searchCondition:" + searchCondition);
+        logger.debug("conditionValue:" + conditionValue);
         if (!searchCondition.isEmpty() && !conditionValue.isEmpty()) {
             return Result.success(userService.searchUserByCondition(curPage, size, searchCondition, conditionValue));
         } else {

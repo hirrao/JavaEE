@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import instance from '../axios'
+import { Client } from '@/data'
 
 interface Article {
   id: number
@@ -64,7 +64,7 @@ const paginatedArticles = computed(() => {
 // 获取文章列表数据
 async function fetchArticles() {
   try {
-    const response = await instance.get('/articles')
+    const response = await Client.get('/articles')
     articles.value = response.data.reverse()
   } catch (error) {
     console.error('获取文章失败', error)

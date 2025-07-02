@@ -50,10 +50,10 @@ public class DrugController {
         var size = Integer.parseInt(map.get("size"));
         var drugName = map.get("drugName");
         if (!drugName.isEmpty()) {
-            System.out.println("notEmpty");
+            logger.debug("notEmpty");
             return Result.success(drugService.getPageDrugInfoByDrugName(uid, curPage, size, drugName));
         } else {
-            System.out.println("Empty");
+            logger.debug("Empty");
             return Result.success(drugService.getPageDrugInfo(uid, curPage, size));
         }
     }
@@ -94,10 +94,10 @@ public class DrugController {
         var size = Integer.parseInt(map.get("size"));
         var drugName = map.get("drugName");
         if (!drugName.isEmpty()) {
-            System.out.println("notEmpty");
+            logger.debug("notEmpty");
             return Result.success(drugService.getPageDrugAlertInfoByDrugName(uid, curPage, size, drugName));
         } else {
-            System.out.println("Empty");
+            logger.debug("Empty");
             return Result.success(drugService.getPageDrugAlertInfo(uid, curPage, size));
         }
     }

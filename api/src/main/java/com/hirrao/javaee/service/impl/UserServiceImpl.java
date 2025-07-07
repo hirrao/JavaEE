@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Deprecated
     public void register(long uid, String userName, String userPassword, String phoneNumber) {
-        userMapper.addUser(uid, userName, userPassword, phoneNumber, "");
+        userMapper.addUser(uid, userName, userPassword, phoneNumber);
     }
 
     @Override

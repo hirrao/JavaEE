@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS `user`
     email         VARCHAR(64)  NOT NULL,
     user_name     VARCHAR(64)  NOT NULL,
     salt_password VARCHAR(128) NOT NULL,
-    salt          VARCHAR(64)  NOT NULL,
     sex           TINYINT      NOT NULL DEFAULT 0,
     birthday      DATE         NOT NULL DEFAULT '2024-08-31',
     permission    TINYINT      NOT NULL DEFAULT 0,

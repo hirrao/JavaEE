@@ -16,7 +16,6 @@ public class User {
     private String userName;
     private String email;
     private String saltPassword;
-    private String salt;
     private int sex;
     private String birthday;
     private int permission;

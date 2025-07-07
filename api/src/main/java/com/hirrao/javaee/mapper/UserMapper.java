@@ -18,8 +18,8 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("SELECT * from user WHERE email = #{email}")
     User findByEmail(String email);
 
-    @Insert("insert into user(uid,user_name, salt_password,salt,email) values(#{uid},#{userName}, #{saltPassword},#{salt},#{phoneNumber})")
-    void addUser(long uid, String userName, String saltPassword, String salt, String email);
+    @Insert("insert into user(uid,user_name, salt_password,email) values(#{uid},#{userName}, #{saltPassword},#{phoneNumber})")
+    void addUser(long uid, String userName, String saltPassword, String email);
 
     @Deprecated
     @Select("select * from user where phone_number = #{phoneNumber}")

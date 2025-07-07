@@ -22,12 +22,14 @@ java {
 dependencies {
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.data.redis)
+    implementation(libs.spring.boot.starter.security)
     implementation(libs.jjwt.api)
     implementation(libs.druid.spring.boot.starter)
     implementation(libs.mybatis.plus.starter)
     implementation(libs.mybatis.plus.jsqlparser)
     implementation(libs.dysmsapi20170525)
     implementation(libs.pagehelper.starter)
+    implementation(libs.mapstruct)
 
     testImplementation(libs.mybatis.plus.starter.test)
     testImplementation(libs.spring.boot.starter.test)
@@ -37,6 +39,7 @@ dependencies {
     runtimeOnly(libs.mysql.connector)
 
     annotationProcessor(libs.lombok)
+    annotationProcessor(libs.mapstruct.processor)
 }
 
 tasks.withType<JavaCompile> {
@@ -54,5 +57,8 @@ tasks.withType<JavaCompile> {
 }*/
 
 tasks.test {
+    jvmArgs("--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
+        "--add-opens=java.base/java.util=ALL-UNNAMED",
+        "--add-opens=java.base/java.lang=ALL-UNNAMED")
     useJUnitPlatform()
 }

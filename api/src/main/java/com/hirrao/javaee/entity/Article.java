@@ -17,7 +17,7 @@ import org.springframework.data.annotation.Id;
 public class Article {
     @Id
     private Long id;
-
+    private Long articleId;
     private String title;
     private String description;
     private String image;

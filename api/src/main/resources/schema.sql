@@ -1,18 +1,21 @@
 use javaee;
 CREATE TABLE IF NOT EXISTS `user`
 (
-    uid          INT PRIMARY KEY,
-    phoneNumber  VARCHAR(32)  NOT NULL,
-    userName     VARCHAR(64)  NOT NULL,
-    userPassword VARCHAR(128) NOT NULL,
-    sex          VARCHAR(16)  NOT NULL DEFAULT 'unknown',
-    birthday     DATE         NOT NULL DEFAULT '2024-08-31',
-    permission   INT          NOT NULL DEFAULT 0
+    id            BIGINT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    uid           BIGINT          NOT NULL,
+    email         VARCHAR(64)  NOT NULL,
+    user_name     VARCHAR(64)  NOT NULL,
+    salt_password VARCHAR(128) NOT NULL,
+    salt          VARCHAR(64)  NOT NULL,
+    sex           VARCHAR(16)  NOT NULL DEFAULT 'unknown',
+    birthday      DATE         NOT NULL DEFAULT '2024-08-31',
+    permission    INT          NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS articles
 (
-    id          INT PRIMARY KEY,
+    id        INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    articleId INT NOT NULL,
     title       VARCHAR(255) NOT NULL,
     description TEXT         NOT NULL,
     image       VARCHAR(255) NOT NULL,
@@ -21,7 +24,8 @@ CREATE TABLE IF NOT EXISTS articles
 
 CREATE TABLE IF NOT EXISTS blog
 (
-    blogId     INT PRIMARY KEY,
+    id     INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    blogId INT NOT NULL,
     content    TEXT         NOT NULL,
     createTime DATETIME     NOT NULL,
     updateTime DATETIME     NOT NULL,

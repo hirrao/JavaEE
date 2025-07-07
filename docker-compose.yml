@@ -13,13 +13,14 @@ services:
   mysql:
     image: mysql:8.4.5
     environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
       - MYSQL_DATABASE
       - MYSQL_USER
       - MYSQL_PASSWORD
     volumes:
       - ./data/mysql/data:/var/lib/mysql
-      - ./data/mysql/conf:/etc/mysql/conf.d
+      - ./conf/mysql/conf:/etc/mysql/conf.d
       - ./data/mysql/log:/var/log/mysql
+      - ./conf/mysql/init:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"

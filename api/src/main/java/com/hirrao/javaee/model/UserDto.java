@@ -1,23 +1,17 @@
-package com.hirrao.javaee.entity;
+package com.hirrao.javaee.model;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @AllArgsConstructor
-public class User {
-    @TableId
-    private Long id;
+public class UserDto {
     private Long uid;
     private String userName;
     private String email;
-    private String saltPassword;
-    private String salt;
-    private int sex;
+    private String sex;
     private String birthday;
     private int permission;
 }

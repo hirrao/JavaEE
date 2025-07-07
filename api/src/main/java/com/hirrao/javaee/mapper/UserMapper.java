@@ -1,32 +1,38 @@
 package com.hirrao.javaee.mapper;
 
-import com.hirrao.javaee.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hirrao.javaee.entity.User;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
-    //根据用户名查询用户
-    @Select("select * from user where userName = #{userName}")
-    User findByUsername(String userName);
+    @Select("select * from user where id = #{id}")
+    User findById(long uid);
 
     @Select("select * from user where uid = #{uid}")
     User findByUid(long uid);
 
-    @Select("select * from user where phoneNumber = #{phoneNumber}")
-    User findByPhoneNumber(String phoneNumber);
+    @Select("select * from user where user_name = #{userName}")
+    User findByUsername(String userName);
 
-    @Insert("insert into user(uid,userName, userPassword,phoneNumber) values(#{uid},#{userName}, #{userPassword},#{phoneNumber})")
-    void addUser(long uid, String userName, String userPassword, String phoneNumber);
+    @Select("SELECT * from user WHERE email = #{email}")
+    User findByEmail(String email);
+
+    @Insert("insert into user(uid,user_name, salt_password,salt,email) values(#{uid},#{userName}, #{saltPassword},#{salt},#{phoneNumber})")
+    void addUser(long uid, String userName, String saltPassword, String salt, String email);
+
+    @Deprecated
+    @Select("select * from user where phone_number = #{phoneNumber}")
+    User findByPhoneNumber(String phoneNumber);
 
     @Update("update user set phoneNumber=#{phoneNumber},sex=#{sex},birthday=#{birthday} where uid=#{uid}")
     void update(long uid, String phoneNumber, String sex, String birthday);
 
-    @Update("update user set userPassword=#{userPassword} where uid = #{uid}")
+    @Update("update user set salt_password=#{userPassword} where uid = #{uid}")
     void updatePassword(long uid, String userPassword);
 
     @Update("update user set uid=#{uid},userName=#{userName},phoneNumber=#{phoneNumber},sex=#{sex},birthday=#{birthday},permission=#{permission} where uid=#{uid}")
-    void modifyUserInfo(long uid, String userName,String phoneNumber, String sex, String birthday,int permission);
+    void modifyUserInfo(long uid, String userName, String phoneNumber, String sex, String birthday, int permission);
 
     @Delete("delete from user where uid=#{uid}")
     void deleteUser(long uid);

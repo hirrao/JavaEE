@@ -11,8 +11,6 @@ public interface UserService {
 
     User findByUid(long uid);
 
-    User findByPhoneNumber(String phoneNumber);
-
     void register(long uid, String userName, String userPassword, String phoneNumber);
 
     void update(long uid, String phoneNumber, String sex, String birthday);

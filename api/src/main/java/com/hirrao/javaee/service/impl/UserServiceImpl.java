@@ -38,13 +38,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Deprecated
     public void update(long uid, String phoneNumber, String sex, String birthday) {
-        userMapper.update(uid, phoneNumber, sex, birthday);
+        userMapper.updateD(uid, phoneNumber, sex, birthday);
     }
 
     @Override
     @Deprecated
     public void updatePassword(long uid, String userPassword) {
-        userMapper.updatePassword(uid, userPassword);
+        userMapper.updatePasswordD(uid, userPassword);
     }
 
     @Override
@@ -57,12 +57,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Deprecated
     public void modifyUserInfo(long uid, String userName, String phoneNumber, String sex, String birthday, int permission) {
-        userMapper.modifyUserInfo(uid, userName, phoneNumber, sex, birthday, permission);
+        userMapper.modifyUserInfoD(uid, userName, phoneNumber, sex, birthday, permission);
     }
 
     @Override
     public void deleteUser(long uid) {
-        userMapper.deleteUser(uid);
+        userMapper.deleteUserD(uid);
     }
 
     @Override
@@ -77,18 +77,18 @@ public class UserServiceImpl implements UserService {
     @Override
     @Deprecated
     public void updateUserName(long uid, String userName) {
-        userMapper.updateUserName(uid, userName);
+        userMapper.updateUserNameD(uid, userName);
     }
 
     @Override
     @Deprecated
     public void updateBirthday(long uid, String birthday) {
-        userMapper.updateBirthday(uid, birthday);
+        userMapper.updateBirthdayD(uid, birthday);
     }
 
     @Override
     @Deprecated
     public void updateSex(long uid, String sex) {
-        userMapper.updateSex(uid, sex);
+        userMapper.updateSexD(uid, sex);
     }
 }

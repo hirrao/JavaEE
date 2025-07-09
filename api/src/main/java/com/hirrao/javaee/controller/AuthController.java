@@ -6,6 +6,7 @@ import com.hirrao.javaee.entity.Result;
 import com.hirrao.javaee.entity.User;
 import com.hirrao.javaee.model.ApiResponse;
 import com.hirrao.javaee.model.UserDto;
+import com.hirrao.javaee.model.enums.PermissionEnum;
 import com.hirrao.javaee.service.RedisService;
 import com.hirrao.javaee.service.UserService;
 import com.hirrao.javaee.utils.ResponseBuilder;
@@ -117,18 +118,19 @@ public class AuthController {
         User user = userService.findByUsername(userName);
         if (user == null) {
             return Result.error(104, "用户名或密码错误");
-        } else {
-                //密码正确，根据用户的uid和用户名生成token
-                String tokens = createToken(user);
-                @Getter
-                class Data {
-                    private final int permission = user.getPermission();
-                    private final String token = tokens;
-                }
-                var data = new Data();
-                if (data.getPermission() == -1)
-                    return Result.error(106, "该用户已被封禁");
-                return Result.success(data);
+        }
+        else {
+            //密码正确，根据用户的uid和用户名生成token
+            String tokens = createToken(user);
+            @Getter
+            class Data {
+                private final PermissionEnum permission = user.getPermission();
+                private final String token = tokens;
+            }
+            var data = new Data();
+            if (data.getPermission() == PermissionEnum.BANNED)
+                return Result.error(106, "该用户已被封禁");
+            return Result.success(data);
         }
     }
 
